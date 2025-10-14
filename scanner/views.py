@@ -227,9 +227,8 @@ def budget_scanner(request):
     # Check if there are scan results to display
     results = request.session.get('budget_scan_results')
     
-    # Clear results from session after displaying to avoid showing old results
-    if results:
-        del request.session['budget_scan_results']
+    # Don't clear results immediately - let them persist for the user to view
+    # Results will be cleared when starting a new scan
     
     return render(request, 'scanner/budget_scanner.html', {
         'recent_scans': recent_scans,
@@ -244,7 +243,7 @@ def budget_scan(request):
     
     if request.method == 'POST':
         target_url = request.POST.get('target_url')
-        scan_types = request.POST.getlist('scan_types') or ['basic']
+        scan_types = request.POST.getlist('scan_types') or ['info_disclosure']
         
         print(f"Budget scan request: URL={target_url}, Types={scan_types}")  # Debug
         
@@ -257,49 +256,39 @@ def budget_scan(request):
             target_url = 'https://' + target_url
         
         try:
+            # Clear any previous scan results when starting a new scan
+            if 'budget_scan_results' in request.session:
+                del request.session['budget_scan_results']
+            
             print(f"Starting budget scan for: {target_url}")  # Debug
             
-            # Simple budget scan using basic security scanner
-            scanner = SecurityScanner(target_url)
-            results = scanner.scan_all()
+            # Import the proper budget scanner
+            from .budget_scanner import BudgetSecurityScanner, generate_budget_report
             
-            print(f"Scanner results: {results}")  # Debug
+            # Use the specialized budget scanner for P4 vulnerabilities
+            budget_scanner = BudgetSecurityScanner(target_url)
+            budget_findings = budget_scanner.scan_all_budget_issues()
             
-            # Create budget-style findings from regular scan results
+            print(f"Budget scanner found {len(budget_findings)} findings")  # Debug
+            
+            # Convert BudgetFinding objects to dictionaries for template rendering
             findings = []
-            
-            # Check for common P4 issues
-            if not results.get('has_hsts', False):
+            for finding in budget_findings:
                 findings.append({
-                    'severity': 'low',
-                    'category': 'security_headers',
-                    'title': 'Missing HSTS Header',
-                    'description': 'The website does not implement HTTP Strict Transport Security',
-                    'recommendation': 'Add HSTS header to prevent protocol downgrade attacks',
-                    'bounty_potential': '$50-$200'
+                    'severity': finding.severity,
+                    'category': finding.category.replace('_', ' ').title(),
+                    'title': finding.title,
+                    'description': finding.description,
+                    'recommendation': finding.recommendation,
+                    'proof_of_concept': finding.proof_of_concept,
+                    'bounty_potential': finding.bounty_potential,
+                    'difficulty': finding.difficulty
                 })
             
-            if not results.get('has_csp', False):
-                findings.append({
-                    'severity': 'low',
-                    'category': 'security_headers',
-                    'title': 'Missing Content Security Policy',
-                    'description': 'No CSP header found, potential XSS vulnerability',
-                    'recommendation': 'Implement a strict Content Security Policy',
-                    'bounty_potential': '$100-$500'
-                })
+            # Generate comprehensive budget report
+            budget_report = generate_budget_report(budget_findings)
             
-            if not results.get('has_xframe', False):
-                findings.append({
-                    'severity': 'low',
-                    'category': 'security_headers',
-                    'title': 'Missing X-Frame-Options',
-                    'description': 'Website may be vulnerable to clickjacking attacks',
-                    'recommendation': 'Add X-Frame-Options: DENY or SAMEORIGIN header',
-                    'bounty_potential': '$50-$300'
-                })
-            
-            print(f"Generated {len(findings)} findings")  # Debug
+            print(f"Generated {len(findings)} findings with report: {budget_report}")  # Debug
             
             # Store results in session for display
             request.session['budget_scan_results'] = {
@@ -307,7 +296,8 @@ def budget_scan(request):
                 'findings': findings,
                 'scan_time': datetime.now().isoformat(),
                 'total_findings': len(findings),
-                'scan_types': scan_types
+                'scan_types': scan_types,
+                'report': budget_report
             }
             
             print("Results stored in session, redirecting to budget_scanner with results")  # Debug
@@ -337,6 +327,13 @@ def budget_results(request):
     return render(request, 'scanner/budget_results.html', {
         'results': results
     })
+
+def budget_clear_results(request):
+    """Clear budget scan results from session"""
+    if 'budget_scan_results' in request.session:
+        del request.session['budget_scan_results']
+    messages.success(request, 'Scan results cleared successfully.')
+    return redirect('budget_scanner')
 
 # Custom Error Handlers to Prevent Information Disclosure
 def custom_404(request, exception):

@@ -266,7 +266,7 @@
 
 <script>
 // Store findings data for JavaScript access
-const findingsData = {{ results.findings|safe }};
+const findingsData = JSON.parse('{{ results.findings|escapejs }}') || [];
 
 function showFindingDetails(index) {
     const finding = findingsData[index];

@@ -50,6 +50,37 @@
         </div>
     </div>
 
+    <!-- Results Alert Banner -->
+    {% if scan_results %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show shadow" role="alert">
+                <h4 class="alert-heading">
+                    <i class="fas fa-check-circle"></i> Scan Complete! 
+                    Found {{ scan_results.total_findings }} P4 Vulnerabilities
+                </h4>
+                <p class="mb-2">
+                    <strong>Target:</strong> {{ scan_results.target_url }} | 
+                    <strong>Estimated Value:</strong> {{ scan_results.report.estimated_bounty_potential|default:"$1000+" }}
+                </p>
+                <hr>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-success" onclick="document.getElementById('resultsModal') && new bootstrap.Modal(document.getElementById('resultsModal')).show()">
+                        <i class="fas fa-eye"></i> View All Results
+                    </button>
+                    <a href="{% url 'budget_results' %}" class="btn btn-primary">
+                        <i class="fas fa-file-alt"></i> Detailed Report
+                    </a>
+                    <a href="{% url 'budget_clear_results' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-trash"></i> Clear Results
+                    </a>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Scanner Interface -->
     <div class="row mb-4">
         <div class="col-lg-8">
@@ -350,7 +381,7 @@
 
     <!-- Scan Results Section -->
     {% if scan_results %}
-    <div class="row mt-5">
+    <div class="row mt-5" id="resultsSection">
         <div class="col-12">
             <div class="card shadow">
                 <div class="card-header bg-success text-white">
@@ -384,28 +415,131 @@
                                         <p><strong>Category:</strong> 
                                             <span class="badge bg-secondary">{{ finding.category }}</span>
                                         </p>
+                                        {% if finding.proof_of_concept %}
+                                        <p><strong>Proof of Concept:</strong></p>
+                                        <div class="bg-light p-2 rounded">
+                                            <code>{{ finding.proof_of_concept }}</code>
+                                        </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
                             {% endfor %}
                         </div>
+                        
+                        <!-- Summary and Action Buttons -->
+                        <div class="mt-4 text-center">
+                            <div class="alert alert-success">
+                                <h5><i class="fas fa-check-circle"></i> Scan Complete!</h5>
+                                <p>Found <strong>{{ scan_results.total_findings }}</strong> potential P4 vulnerabilities</p>
+                                {% if scan_results.report.estimated_bounty_potential %}
+                                <p>Estimated bounty potential: <strong>{{ scan_results.report.estimated_bounty_potential }}</strong></p>
+                                {% endif %}
+                            </div>
+                            
+                            <a href="{% url 'budget_results' %}" class="btn btn-primary btn-lg me-2">
+                                <i class="fas fa-eye"></i> View Detailed Results
+                            </a>
+                            <button class="btn btn-success btn-lg me-2" onclick="window.location.reload()">
+                                <i class="fas fa-redo"></i> Scan Another Target
+                            </button>
+                            <a href="{% url 'budget_clear_results' %}" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-trash"></i> Clear Results
+                            </a>
+                        </div>
                     {% else %}
                         <div class="alert alert-info">
-                            <i class="fas fa-shield-alt"></i> Great! No common P4 vulnerabilities found. The target appears to have good security headers configuration.
+                            <i class="fas fa-shield-alt"></i> Great! No common P4 vulnerabilities found. The target appears to have good security configuration.
+                        </div>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-primary" onclick="window.location.reload()">
+                                <i class="fas fa-search"></i> Try Another Target
+                            </button>
                         </div>
                     {% endif %}
-
-                    <div class="mt-3">
-                        <button class="btn btn-primary" onclick="window.location.reload()">
-                            <i class="fas fa-redo"></i> Scan Another Target
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
     {% endif %}
 </div>
+
+<!-- Results Popup Modal -->
+{% if scan_results %}
+<div class="modal fade" id="resultsModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-check-circle"></i> Budget Scan Results - {{ scan_results.total_findings }} Vulnerabilities Found!
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success mb-4">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <h3 class="text-success">{{ scan_results.total_findings }}</h3>
+                            <p class="mb-0">P4 Vulnerabilities Found</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h3 class="text-warning">{{ scan_results.report.estimated_bounty_potential|default:"$1000+" }}</h3>
+                            <p class="mb-0">Estimated Bounty Value</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h3 class="text-info">Easy</h3>
+                            <p class="mb-0">Difficulty Level</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h6 class="mb-3">Target: <code>{{ scan_results.target_url }}</code></h6>
+                
+                {% if scan_results.findings %}
+                <div class="row">
+                    {% for finding in scan_results.findings %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-warning h-100">
+                            <div class="card-header bg-warning text-dark">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-bug"></i> {{ finding.title }}
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Description:</strong> {{ finding.description }}</p>
+                                <p><strong>Category:</strong> 
+                                    <span class="badge bg-info">{{ finding.category }}</span>
+                                </p>
+                                <p><strong>Bounty Potential:</strong> 
+                                    <span class="badge bg-success">{{ finding.bounty_potential }}</span>
+                                </p>
+                                {% if finding.proof_of_concept %}
+                                <p><strong>Proof of Concept:</strong></p>
+                                <div class="bg-light p-2 rounded small">
+                                    <code>{{ finding.proof_of_concept }}</code>
+                                </div>
+                                {% endif %}
+                                <p class="mt-2"><strong>Fix:</strong> {{ finding.recommendation }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'budget_results' %}" class="btn btn-primary">
+                    <i class="fas fa-file-alt"></i> View Detailed Report
+                </a>
+                <button type="button" class="btn btn-success" onclick="window.location.reload()">
+                    <i class="fas fa-redo"></i> Scan Another Target
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 
 <style>
 .budget-stat {
@@ -457,6 +591,17 @@ document.addEventListener('DOMContentLoaded', function() {
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
+    
+    // Auto-show results modal if scan results are available
+    {% if scan_results %}
+    var resultsModal = new bootstrap.Modal(document.getElementById('resultsModal'));
+    resultsModal.show();
+    
+    // Also scroll to results section for visibility
+    setTimeout(function() {
+        document.getElementById('resultsSection')?.scrollIntoView({ behavior: 'smooth' });
+    }, 500);
+    {% endif %}
 });
 </script>
 {% endblock %}

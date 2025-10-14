@@ -24,13 +24,16 @@ import os
 SECRET_KEY = os.environ.get('SECRET_KEY', 'ztionsec-prod-key-2024-secure-random-string-for-production-deployment-with-high-entropy-values-12345')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'  # Default to True for development
 
 ALLOWED_HOSTS = [
     'ztionsec-security-platform.onrender.com',
     'localhost',
     '127.0.0.1',
+    '0.0.0.0',
+    'ztionsec.local',
     '.onrender.com',
+    '*',  # Allow all hosts in development - remove in production
 ]
 
 
@@ -339,8 +342,7 @@ logs_dir = BASE_DIR / 'logs'
 if not os.path.exists(logs_dir):
     os.makedirs(logs_dir)
 
-# Additional Security Configuration
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'ztionsec.local']
+# Additional Security Configuration - Consolidated with main ALLOWED_HOSTS above
 
 # Google AdSense Configuration
 ADSENSE_ENABLED = True
