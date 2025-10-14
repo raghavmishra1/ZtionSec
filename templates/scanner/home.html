@@ -247,6 +247,13 @@
                             <button type="submit" class="btn btn-primary btn-lg w-100" id="scanButton">
                                 <i class="fas fa-search"></i> Start Security Scan
                             </button>
+                            
+                            <!-- Fallback button for when JavaScript fails -->
+                            <noscript>
+                                <button type="submit" class="btn btn-success btn-lg w-100 mt-2">
+                                    <i class="fas fa-search"></i> Start Security Scan (No JS)
+                                </button>
+                            </noscript>
                         </form>
                     </div>
                     
@@ -605,57 +612,51 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Additional validation can be added here
     
-    // Website scanner form submission - Fixed for mobile and laptop
-    if (websiteForm) {
-        websiteForm.addEventListener('submit', function(e) {
+    // Website scanner form submission - Ultra-reliable version
+    if (websiteForm && scanButton) {
+        // Add click handler to button as backup
+        scanButton.addEventListener('click', function(e) {
             e.preventDefault();
             
-            if (validateURL(urlInput)) {
-                // Check if at least one scan option is selected
-                const scanOptions = document.querySelectorAll('input[name^="check_"]:checked');
-                if (scanOptions.length === 0) {
-                    showError('Scan Options Required', 'Please select at least one scan option to proceed.');
-                    return;
-                }
-                
-                // Show loading state
-                showLoadingState(scanButton, 'Scanning Website...');
-                
-                // Submit form after validation - works on all devices
-                setTimeout(() => {
-                    // Create form data
-                    const formData = new FormData(this);
-                    
-                    // Submit via fetch for better mobile compatibility
-                    fetch(this.action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                        }
-                    })
-                    .then(response => {
-                        if (response.redirected) {
-                            window.location.href = response.url;
-                        } else {
-                            return response.text();
-                        }
-                    })
-                    .then(html => {
-                        if (html) {
-                            document.open();
-                            document.write(html);
-                            document.close();
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Scan error:', error);
-                        showError('Scan Failed', 'Please try again or check your internet connection.');
-                        resetLoadingState(scanButton, '<i class="fas fa-search"></i> Start Security Scan');
-                    });
-                }, 500);
-            } else {
-                websiteForm.classList.add('was-validated');
+            const url = urlInput.value.trim();
+            if (!url) {
+                alert('Please enter a website URL');
+                urlInput.focus();
+                return;
+            }
+            
+            // Add protocol if missing
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                urlInput.value = 'https://' + url;
+            }
+            
+            // Show loading
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
+            
+            // Submit form directly
+            websiteForm.submit();
+        });
+        
+        // Form submit handler as backup
+        websiteForm.addEventListener('submit', function(e) {
+            const url = urlInput.value.trim();
+            if (!url) {
+                e.preventDefault();
+                alert('Please enter a website URL');
+                urlInput.focus();
+                return;
+            }
+            
+            // Add protocol if missing
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                urlInput.value = 'https://' + url;
+            }
+            
+            // Show loading
+            if (scanButton) {
+                scanButton.disabled = true;
+                scanButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
             }
         });
     }
@@ -928,6 +929,12 @@ function clearFieldError(input) {
     if (feedback) {
         feedback.textContent = '';
     }
+}
+
+function setFieldValid(input) {
+    input.classList.remove('is-invalid');
+    input.classList.add('is-valid');
+    clearFieldError(input);
 }
 
 // Track form focus events

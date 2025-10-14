@@ -64,6 +64,8 @@ def scan_website(request):
     """Perform website security scan"""
     if request.method == 'POST':
         url = request.POST.get('url')
+        print(f"DEBUG: Received URL: {url}")  # Debug logging
+        
         if not url:
             messages.error(request, 'Please provide a valid URL')
             return redirect('home')
@@ -73,9 +75,13 @@ def scan_website(request):
             url = 'https://' + url
         
         try:
+            print(f"DEBUG: Starting scan for URL: {url}")  # Debug logging
+            
             # Perform security scan
             scanner = SecurityScanner(url)
             results = scanner.scan_all()
+            
+            print(f"DEBUG: Scan results: {results}")  # Debug logging
             
             # Save to database
             scan = SecurityScan.objects.create(
@@ -97,6 +103,8 @@ def scan_website(request):
                 grade=results.get('grade', 'F'),
                 server_info=results.get('server_info', ''),
             )
+            
+            print(f"DEBUG: Scan saved with ID: {scan.id}")  # Debug logging
             
             return render(request, 'scanner/results.html', {
                 'scan': scan,
