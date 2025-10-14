@@ -205,7 +205,11 @@ class SecurityScanner:
                         cert = ssock.getpeercert()
                         
                         self.results['ssl_valid'] = True
-                        self.results['ssl_issuer'] = cert.get('issuer', [{}])[0].get('organizationName', 'Unknown')
+                        issuer_info = cert.get('issuer', [{}])
+                        if issuer_info and len(issuer_info) > 0:
+                            self.results['ssl_issuer'] = issuer_info[0].get('organizationName', 'Unknown')
+                        else:
+                            self.results['ssl_issuer'] = 'Unknown'
                         
                         # Parse expiry date
                         expiry_str = cert.get('notAfter')
