@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ZtionSec - Security Analysis Tool{% endblock %}</title>
+    
+    <!-- Favicon -->
+    {% load static %}
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+    <link rel="alternate icon" href="{% static 'images/favicon.svg' %}">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Simple Styles - No Animations -->
+    <link rel="stylesheet" href="{% static 'css/simple-styles.css' %}">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9693358517951567"
+            crossorigin="anonymous"></script>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{% block description %}Professional security analysis and vulnerability scanning tool. Free comprehensive security assessment for websites and web applications.{% endblock %}">
+    <meta name="keywords" content="security scanner, vulnerability assessment, penetration testing, web security, cybersecurity, security analysis">
+    <meta name="author" content="ZtionSec">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="{% block og_title %}ZtionSec - Professional Security Analysis{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Free comprehensive security scanning and vulnerability assessment tool{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="{% block og_image %}{% load static %}{% static 'images/ztionsec_logo.svg' %}{% endblock %}">
+    <!-- Custom CSS -->
+    <style>
+        /* Modern CSS Variables - Fixed Shadow Values */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --shadow-heavy: 0 8px 20px rgba(0, 0, 0, 0.2);
+            --border-radius: 12px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Modern Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(102, 126, 234, 0.6);
+            }
+        }
+
+        /* Enhanced Navbar - Fixed Background */
+        .navbar {
+            background: rgba(52, 58, 64, 0.98) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: var(--transition-smooth);
+            z-index: 1030 !important; /* Below modals but above content */
+            position: relative;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .navbar-brand:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-img {
+            height: 40px;
+            width: 40px;
+            transition: var(--transition-bounce);
+            border-radius: 50%;
+            box-shadow: var(--shadow-light);
+        }
+
+        .logo-img:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: var(--shadow-medium);
+            animation: glow 2s infinite;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: var(--transition-smooth);
+            border-radius: 8px;
+            margin: 0 5px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: var(--transition-smooth);
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        /* Fix Dropdown Overlapping Issues */
+        .dropdown-menu {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1035 !important; /* Higher than navbar but below modals */
+            margin-top: 8px;
+            padding: 8px 0;
+            min-width: 200px;
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            transition: var(--transition-smooth);
+            border-radius: 8px;
+            margin: 2px 8px;
+        }
+
+        .dropdown-item:hover {
+            background: var(--primary-gradient);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            margin-right: 8px;
+        }
+
+        /* Ensure dropdowns don't overlap with content */
+        .navbar-nav .dropdown {
+            position: static;
+        }
+
+        @media (min-width: 992px) {
+            .navbar-nav .dropdown {
+                position: relative;
+            }
+        }
+
+        /* Fix for mobile dropdown overlapping */
+        @media (max-width: 991px) {
+            .dropdown-menu {
+                position: static !important;
+                transform: none !important;
+                box-shadow: none;
+                border: none;
+                background: rgba(0, 0, 0, 0.1);
+                margin-top: 0;
+            }
+            
+            .dropdown-item {
+                color: rgba(255, 255, 255, 0.8);
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .dropdown-item:hover {
+                background: rgba(255, 255, 255, 0.1);
+                color: white;
+                transform: none;
+            }
+        }
+
+        .footer-logo {
+            height: 30px;
+            width: 30px;
+            transition: var(--transition-smooth);
+            border-radius: 50%;
+        }
+
+        .footer-logo:hover {
+            transform: scale(1.1);
+            animation: float 2s infinite;
+        }
+
+        .hero-logo {
+            height: 80px;
+            width: 80px;
+            flex-shrink: 0;
+            display: block;
+            transition: var(--transition-bounce);
+            border-radius: 50%;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .hero-logo:hover {
+            transform: scale(1.05);
+            animation: pulse 2s infinite;
+        }
+        .security-grade {
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 50%;
+            color: white;
+            display: inline-block;
+            min-width: 80px;
+            text-align: center;
+        }
+        .grade-A, .grade-A\+ { background-color: #28a745; }
+        .grade-B { background-color: #17a2b8; }
+        .grade-C { background-color: #ffc107; color: #000; }
+        .grade-D { background-color: #fd7e14; }
+        .grade-F { background-color: #dc3545; }
+        
+        /* Modern Cards - Fixed Shadow Issues */
+        .security-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: var(--transition-smooth);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .security-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-gradient);
+            transition: var(--transition-smooth);
+        }
+
+        .security-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .security-card:hover::before {
+            width: 6px;
+        }
+
+        /* Modern Feature Icons */
+        .feature-icon {
+            font-size: 3rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            transition: var(--transition-smooth);
+            display: inline-block;
+        }
+
+        .feature-icon:hover {
+            transform: scale(1.1);
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Enhanced Hero Section */
+        .hero-section {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+            margin-top: 0; /* Ensure no gap between navbar and hero */
+        }
+
+        /* Fix body and main content positioning */
+        body {
+            padding-top: 0; /* Remove any default padding that might cause overlap */
+        }
+
+        main {
+            position: relative;
+            z-index: 1; /* Ensure main content is below navbar but above background */
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Modern Buttons */
+        .btn {
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            border: none;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: var(--transition-smooth);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%);
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-outline-light {
+            border: 2px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-outline-light:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Modern Status Badges */
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: var(--transition-smooth);
+            display: inline-block;
+        }
+        
+        .status-present {
+            background: var(--success-gradient);
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+
+        .status-present:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .status-missing {
+            background: var(--secondary-gradient);
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+
+        .status-missing:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        /* Enhanced Footer */
+        .footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+
+        .footer h5, .footer h6 {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer h5::after, .footer h6::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--primary-gradient);
+        }
+
+        .footer .list-unstyled li {
+            margin-bottom: 0.8rem;
+            transition: var(--transition-smooth);
+        }
+
+        .footer .list-unstyled li:hover {
+            transform: translateX(5px);
+        }
+
+        .footer .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            transition: var(--transition-smooth);
+            margin-right: 10px;
+        }
+
+        .footer .social-links a:hover {
+            background: var(--primary-gradient);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Modern Popup Styles - Professional Implementation */
+        .modern-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1055 !important; /* Above universal modals */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+            backdrop-filter: blur(3px);
+        }
+
+        .modern-popup.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-content {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: scale(0.7);
+            transition: var(--transition-bounce);
+        }
+
+        .modern-popup.show .popup-content {
+            transform: scale(1);
+        }
+
+        .popup-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            position: relative;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .popup-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .popup-body {
+            padding: 2rem;
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Notification Toast */
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 1rem 1.5rem;
+            z-index: 1060 !important; /* Above all modals */
+            transform: translateX(400px);
+            transition: var(--transition-bounce);
+        }
+
+        .toast-notification.show {
+            transform: translateX(0);
+        }
+
+        .toast-success {
+            border-left: 4px solid #28a745;
+        }
+
+        .toast-error {
+            border-left: 4px solid #dc3545;
+        }
+
+        .toast-warning {
+            border-left: 4px solid #ffc107;
+        }
+        
+        /* AdSense Styling */
+        .adsense-banner-header, .adsense-banner-footer {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .adsense-sidebar {
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .adsense-responsive {
+            margin: 20px 0;
+        }
+        
+        .adsense-in-article {
+            margin: 30px 0;
+            padding: 20px 0;
+            border-top: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        /* Ztion AdSense Container */
+        .ztion-adsense-container {
+            margin: 20px 0;
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .ztion-adsense-container .adsbygoogle {
+            display: block !important;
+        }
+        
+        /* Mobile responsive ads */
+        @media (max-width: 768px) {
+            .adsense-banner-header ins,
+            .adsense-banner-footer ins {
+                width: 320px !important;
+                height: 100px !important;
+            }
+            
+            .adsense-sidebar ins {
+                width: 300px !important;
+                height: 250px !important;
+            }
+            
+            .ztion-adsense-container {
+                margin: 15px 0;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <img src="{% static 'images/ztionsec_logo.svg' %}?v=3" alt="ZtionSec Logo" class="logo-img me-2">
+                Sec
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="scanningDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-search"></i> Scanning
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'home' %}">
+                                <i class="fas fa-bolt"></i> Quick Scan
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'advanced_dashboard' %}">
+                                <i class="fas fa-microscope"></i> Advanced Scan
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'scan_history' %}">
+                                <i class="fas fa-history"></i> Basic History
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'advanced_scan_history' %}">
+                                <i class="fas fa-chart-line"></i> Advanced History
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="intelligenceDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-brain"></i> Intelligence
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'vulnerability_database' %}">
+                                <i class="fas fa-bug"></i> Vulnerabilities
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'threat_intelligence' %}">
+                                <i class="fas fa-shield-alt"></i> Threat Intel
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'security_analytics' %}">
+                                <i class="fas fa-chart-bar"></i> Analytics
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'breach_history' %}">
+                            <i class="fas fa-database"></i> Breach Check
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'scan_configurations' %}">
+                            <i class="fas fa-cog"></i> Config
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-ellipsis-h"></i> More
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'about' %}">
+                                <i class="fas fa-info-circle"></i> About ZtionSec
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'contact' %}">
+                                <i class="fas fa-envelope"></i> Contact & Support
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'budget_scanner' %}">
+                                <i class="fas fa-dollar-sign"></i> Budget Scanner (P4)
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="https://github.com/ztionsec/ztionsec" target="_blank">
+                                <i class="fab fa-github"></i> GitHub Repository
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}
+        {% endblock %}
+        
+        <!-- AdSense Banner Ad (After Main Content) -->
+        <div class="container my-4">
+            <div class="row justify-content-center">
+                <div class="col-12 text-center">
+                    <!-- AdSense Responsive Banner -->
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+                         data-ad-slot="YOUR_AD_SLOT_ID"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="footer bg-dark text-light py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <!-- Company Info -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="d-flex align-items-center">
+                        <img src="{% static 'images/ztionsec_logo.svg' %}?v=3" alt="ZtionSec Logo" class="footer-logo me-2">
+                        Sec
+                    </h5>
+                    <p class="mb-3">Professional security analysis platform providing comprehensive vulnerability assessment, penetration testing, and threat intelligence for modern web applications.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-light me-3" title="GitHub"><i class="fab fa-github fa-lg"></i></a>
+                        <a href="#" class="text-light me-3" title="Twitter"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-light me-3" title="LinkedIn"><i class="fab fa-linkedin fa-lg"></i></a>
+                        <a href="#" class="text-light me-3" title="Discord"><i class="fab fa-discord fa-lg"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="text-primary mb-3">Security Tools</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'home' %}" class="text-light text-decoration-none"><i class="fas fa-globe"></i> Website Scanner</a></li>
+                        <li class="mb-2"><a href="{% url 'advanced_dashboard' %}" class="text-light text-decoration-none"><i class="fas fa-microscope"></i> Advanced Scan</a></li>
+                        <li class="mb-2"><a href="{% url 'budget_scanner' %}" class="text-light text-decoration-none"><i class="fas fa-dollar-sign"></i> Budget Scanner</a></li>
+                        <li class="mb-2"><a href="{% url 'breach_history' %}" class="text-light text-decoration-none"><i class="fas fa-database"></i> Breach Check</a></li>
+                        <li class="mb-2"><a href="{% url 'vulnerability_database' %}" class="text-light text-decoration-none"><i class="fas fa-bug"></i> CVE Database</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Resources -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="text-primary mb-3">Resources</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'about' %}" class="text-light text-decoration-none"><i class="fas fa-info-circle"></i> About Us</a></li>
+                        <li class="mb-2"><a href="{% url 'contact' %}" class="text-light text-decoration-none"><i class="fas fa-envelope"></i> Contact</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-book"></i> Documentation</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-graduation-cap"></i> Tutorials</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Enterprise -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="text-primary mb-3">Enterprise</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-building"></i> Enterprise</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-code"></i> API Access</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-users"></i> Team Plans</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-handshake"></i> Partnerships</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Newsletter -->
+                <div class="col-lg-2 col-md-12 mb-4">
+                    <h6 class="text-primary mb-3">Stay Updated</h6>
+                    <p class="small mb-3">Get security alerts and updates</p>
+                    <form class="newsletter-form">
+                        <div class="input-group mb-2">
+                            <input type="email" class="form-control form-control-sm" placeholder="Enter email">
+                            <button class="btn btn-primary btn-sm" type="submit">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="security-badges mt-3">
+                        <span class="badge bg-success me-1"><i class="fas fa-lock"></i> SSL Secured</span>
+                        <span class="badge bg-info"><i class="fas fa-shield-alt"></i> GDPR Compliant</span>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-4 border-secondary">
+            
+            <!-- Bottom Footer -->
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 small">&copy; 2025 ZtionSec. All rights reserved. Professional Security Platform.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="footer-links small">
+                        <a href="#" class="text-light text-decoration-none me-3">Privacy Policy</a>
+                        <a href="#" class="text-light text-decoration-none me-3">Terms of Service</a>
+                        <a href="#" class="text-light text-decoration-none">Security Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Simple Popup System -->
+    {% include 'scanner/simple_popups.html' %}
+    
+    <!-- Modern JavaScript Interactions -->
+    <script>
+        // Modern Animation Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, observerOptions);
+
+        // Simple page initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ Simple popup system loaded');
+            
+            // Animate cards and features
+            const animateElements = document.querySelectorAll('.security-card, .feature-icon, .hero-stats .stat-item');
+            animateElements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.animationDelay = `${index * 0.1}s`;
+                observer.observe(el);
+            });
+
+            // Simple popup functionality - NO ANIMATIONS
+            window.showModernPopup = function(title, content) {
+                showSimpleInfo(title, content);
+            };
+
+            window.closeModernPopup = function() {
+                closeAllSimplePopups();
+            };
+
+            // Simple toast - just use popup
+            window.showToast = function(message, type = 'success') {
+                if (type === 'success') {
+                    showSimpleSuccess('Notification', message);
+                } else if (type === 'error') {
+                    showSimpleError('Notification', message);
+                } else {
+                    showSimpleInfo('Notification', message);
+                }
+            };
+
+            // Simple button interactions - NO ANIMATIONS
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Enhanced navbar scroll effect with overlap prevention
+            let lastScrollTop = 0;
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Close any open dropdowns when scrolling
+                const openDropdowns = document.querySelectorAll('.dropdown-menu.show');
+                openDropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('show');
+                });
+                
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    navbar.style.transform = 'translateY(-100%)';
+                } else {
+                    navbar.style.transform = 'translateY(0)';
+                }
+                
+                if (scrollTop > 50) {
+                    navbar.style.background = 'rgba(52, 58, 64, 0.98)';
+                    navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+                    navbar.style.zIndex = '1030';
+                } else {
+                    navbar.style.background = 'rgba(52, 58, 64, 0.95)';
+                    navbar.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+                    navbar.style.zIndex = '1030';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+        });
+
+        // Simple Button Initialization
+        function initializeAllButtons() {
+            // Simple modal triggers - just use Bootstrap default
+            console.log('Simple buttons initialized');
+        }
+        
+        function fixBrokenButtons() {
+            // Simple button fixes - no complex handlers
+            console.log('Simple button fixes applied');
+        }
+        
+        function setupProfessionalCleanup() {
+            // Simple cleanup - no complex systems needed
+            console.log('Simple cleanup initialized');
+        }
+
+        // No animations or complex styles needed
+    </script>
+
+    {% block extra_js %}
+    {% endblock %}
+</body>
+</html>

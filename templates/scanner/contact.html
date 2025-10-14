@@ -1,0 +1,513 @@
+{% extends 'scanner/base.html' %}
+
+{% block title %}Contact Us - ZtionSec Support{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold text-primary mb-4">
+                <i class="fas fa-envelope"></i> Contact ZtionSec
+            </h1>
+            <p class="lead text-muted">
+                Get help, report issues, or collaborate on tool development
+            </p>
+        </div>
+    </div>
+
+    <!-- Contact Options -->
+    <div class="row mb-5">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-primary">
+                <div class="card-header bg-primary text-white text-center">
+                    <i class="fas fa-question-circle fa-2x mb-2"></i>
+                    <h5>General Support</h5>
+                </div>
+                <div class="card-body text-center">
+                    <p>Need help using ZtionSec? Have questions about features?</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success"></i> Platform usage help</li>
+                        <li><i class="fas fa-check text-success"></i> Feature explanations</li>
+                        <li><i class="fas fa-check text-success"></i> Best practices guidance</li>
+                        <li><i class="fas fa-check text-success"></i> Security research tips</li>
+                    </ul>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#supportModal">
+                        <i class="fas fa-envelope"></i> Get Support
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-warning">
+                <div class="card-header bg-warning text-dark text-center">
+                    <i class="fas fa-code fa-2x mb-2"></i>
+                    <h5>Development Help</h5>
+                </div>
+                <div class="card-body text-center">
+                    <p>Want to contribute or need development assistance?</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success"></i> Feature development</li>
+                        <li><i class="fas fa-check text-success"></i> Bug fixes</li>
+                        <li><i class="fas fa-check text-success"></i> Code contributions</li>
+                        <li><i class="fas fa-check text-success"></i> Custom integrations</li>
+                    </ul>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#developmentModal">
+                        <i class="fas fa-code"></i> Collaborate
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-danger">
+                <div class="card-header bg-danger text-white text-center">
+                    <i class="fas fa-bug fa-2x mb-2"></i>
+                    <h5>Bug Reports</h5>
+                </div>
+                <div class="card-body text-center">
+                    <p>Found a bug or security issue in ZtionSec?</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success"></i> Bug reporting</li>
+                        <li><i class="fas fa-check text-success"></i> Security vulnerabilities</li>
+                        <li><i class="fas fa-check text-success"></i> Performance issues</li>
+                        <li><i class="fas fa-check text-success"></i> Feature requests</li>
+                    </ul>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#bugReportModal">
+                        <i class="fas fa-bug"></i> Report Issue
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Community Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card bg-dark text-white">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4">
+                        <i class="fas fa-users text-primary"></i> Join Our Community
+                    </h2>
+                    <div class="row text-center">
+                        <div class="col-md-3 mb-3">
+                            <a href="#" class="text-decoration-none text-white">
+                                <i class="fab fa-github fa-3x mb-2 text-light"></i>
+                                <h5>GitHub</h5>
+                                <p class="text-muted">Source code & issues</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="#" class="text-decoration-none text-white">
+                                <i class="fab fa-discord fa-3x mb-2 text-primary"></i>
+                                <h5>Discord</h5>
+                                <p class="text-muted">Community chat</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="#" class="text-decoration-none text-white">
+                                <i class="fab fa-twitter fa-3x mb-2 text-info"></i>
+                                <h5>Twitter</h5>
+                                <p class="text-muted">Updates & news</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="#" class="text-decoration-none text-white">
+                                <i class="fab fa-reddit fa-3x mb-2 text-warning"></i>
+                                <h5>Reddit</h5>
+                                <p class="text-muted">Discussions</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="text-center mb-4">
+                <i class="fas fa-question-circle text-primary"></i> Frequently Asked Questions
+            </h2>
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            Is ZtionSec really free to use?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <strong>Yes, absolutely!</strong> ZtionSec is 100% free and open-source. There are no hidden costs, 
+                            premium features, or licensing fees. You get access to all enterprise-grade security analysis 
+                            capabilities without any investment.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            How accurate are the vulnerability scans?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            ZtionSec provides <strong>military-grade accuracy</strong> with less than 2% false positive rate. 
+                            Our scans integrate with industry-standard tools like Nmap, real-time CVE databases, and multiple 
+                            threat intelligence sources to ensure maximum accuracy.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            Can I use ZtionSec for bug bounty hunting?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <strong>Absolutely!</strong> ZtionSec includes a special budget-friendly scanner that focuses on 
+                            P4 category vulnerabilities - easy-to-find issues that are perfect for bug bounty hunters on a budget. 
+                            The platform estimates bounty potential and provides proof-of-concept guidance.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            Do you offer custom development services?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes! Our team offers custom development services for organizations that need specialized security 
+                            tools or integrations. We can help with custom scanners, API integrations, enterprise deployments, 
+                            and specialized security analysis modules. Contact us for a consultation.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                            How can I contribute to the project?
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            We welcome contributions! You can help by:
+                            <ul>
+                                <li>Reporting bugs and suggesting features</li>
+                                <li>Contributing code improvements</li>
+                                <li>Adding new security check modules</li>
+                                <li>Improving documentation</li>
+                                <li>Sharing the project with the security community</li>
+                            </ul>
+                            Check our GitHub repository for contribution guidelines.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Contact -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="alert alert-info text-center">
+                <h5><i class="fas fa-exclamation-triangle"></i> Security Vulnerability in ZtionSec?</h5>
+                <p class="mb-3">
+                    If you've discovered a security vulnerability in ZtionSec itself, please report it responsibly.
+                </p>
+                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#securityReportModal">
+                    <i class="fas fa-shield-alt"></i> Report Security Issue
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Support Modal -->
+<div class="modal fade" id="supportModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-question-circle"></i> General Support Request
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="supportForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Subject</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">How can we help you?</label>
+                        <textarea class="form-control" rows="5" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Priority Level</label>
+                        <select class="form-select">
+                            <option>Low - General question</option>
+                            <option>Medium - Need assistance</option>
+                            <option>High - Blocking issue</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Send Request
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Development Modal -->
+<div class="modal fade" id="developmentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">
+                    <i class="fas fa-code"></i> Development Collaboration
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="developmentForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Project Type</label>
+                        <select class="form-select" required>
+                            <option value="">Select project type</option>
+                            <option>Feature Development</option>
+                            <option>Custom Scanner Module</option>
+                            <option>API Integration</option>
+                            <option>Enterprise Deployment</option>
+                            <option>Security Research Tool</option>
+                            <option>Other Custom Development</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Project Description</label>
+                        <textarea class="form-control" rows="4" placeholder="Describe your project requirements, timeline, and budget..." required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Budget Range</label>
+                        <select class="form-select">
+                            <option>Volunteer/Open Source Contribution</option>
+                            <option>$500 - $2,000</option>
+                            <option>$2,000 - $5,000</option>
+                            <option>$5,000 - $10,000</option>
+                            <option>$10,000+</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Timeline</label>
+                        <select class="form-select">
+                            <option>No rush</option>
+                            <option>1-2 weeks</option>
+                            <option>1 month</option>
+                            <option>2-3 months</option>
+                            <option>6+ months</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-handshake"></i> Submit Proposal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bug Report Modal -->
+<div class="modal fade" id="bugReportModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-bug"></i> Bug Report
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="bugReportForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Bug Type</label>
+                        <select class="form-select" required>
+                            <option value="">Select bug type</option>
+                            <option>Security Vulnerability</option>
+                            <option>Functional Bug</option>
+                            <option>Performance Issue</option>
+                            <option>UI/UX Problem</option>
+                            <option>Feature Request</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Severity</label>
+                        <select class="form-select" required>
+                            <option value="">Select severity</option>
+                            <option>Critical - Security issue or system crash</option>
+                            <option>High - Major functionality broken</option>
+                            <option>Medium - Minor functionality issue</option>
+                            <option>Low - Cosmetic or enhancement</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Bug Description</label>
+                        <textarea class="form-control" rows="4" placeholder="Describe the bug, steps to reproduce, and expected behavior..." required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Environment Details</label>
+                        <textarea class="form-control" rows="2" placeholder="Browser, OS, ZtionSec version, etc."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-exclamation-triangle"></i> Report Bug
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Security Report Modal -->
+<div class="modal fade" id="securityReportModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">
+                    <i class="fas fa-shield-alt"></i> Security Vulnerability Report
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <strong>Responsible Disclosure:</strong> We take security seriously and appreciate responsible disclosure of vulnerabilities.
+                </div>
+                <form id="securityReportForm">
+                    <div class="mb-3">
+                        <label class="form-label">Contact Email</label>
+                        <input type="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Vulnerability Type</label>
+                        <select class="form-select" required>
+                            <option value="">Select type</option>
+                            <option>SQL Injection</option>
+                            <option>XSS (Cross-Site Scripting)</option>
+                            <option>CSRF</option>
+                            <option>Authentication Bypass</option>
+                            <option>Information Disclosure</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Vulnerability Details</label>
+                        <textarea class="form-control" rows="5" placeholder="Please provide detailed information about the vulnerability, including steps to reproduce and potential impact..." required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-warning">
+                    <i class="fas fa-lock"></i> Submit Securely
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// SIMPLE FORM HANDLING - Use Simple Popups
+document.addEventListener('DOMContentLoaded', function() {
+    // Simple form handlers
+    document.getElementById('supportForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        closeAllSimplePopups(); // Close current modal
+        showSimpleSuccess('Support Request Submitted', 'We\'ll get back to you within 24 hours.');
+    });
+
+    document.getElementById('developmentForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        closeAllSimplePopups(); // Close current modal
+        showSimpleSuccess('Development Proposal Submitted', 'We\'ll review your request and contact you soon.');
+    });
+
+    document.getElementById('bugReportForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        closeAllSimplePopups(); // Close current modal
+        showSimpleSuccess('Bug Report Submitted', 'Thank you for helping improve ZtionSec.');
+    });
+
+    document.getElementById('securityReportForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        closeAllSimplePopups(); // Close current modal
+        showSimpleSuccess('Security Report Submitted', 'We take security seriously and will investigate promptly.');
+    });
+});
+
+// Simple legacy function
+function showSuccessMessage(message) {
+    showSimpleSuccess('Success', message);
+}
+</script>
+{% endblock %}

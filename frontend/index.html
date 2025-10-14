@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZtionSec - Advanced Security Analysis Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <i class="fas fa-shield-alt"></i> ZtionSec
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#scanner">Scanner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#history">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold text-white mb-4">
+                        Advanced Security Analysis Platform
+                    </h1>
+                    <p class="lead text-light mb-4">
+                        Comprehensive security scanning and vulnerability assessment for modern web applications.
+                        Powered by enterprise-grade security tools and threat intelligence.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-primary btn-lg" onclick="scrollToSection('scanner')">
+                            <i class="fas fa-search"></i> Start Scanning
+                        </button>
+                        <button class="btn btn-outline-light btn-lg" onclick="scrollToSection('about')">
+                            <i class="fas fa-info-circle"></i> Learn More
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalScans">0</div>
+                            <div class="stat-label">Total Scans</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalFindings">0</div>
+                            <div class="stat-label">Vulnerabilities Found</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="recentScans">0</div>
+                            <div class="stat-label">Recent Scans (24h)</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">99.9%</div>
+                            <div class="stat-label">Uptime</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scanner Section -->
+    <section id="scanner" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center mb-5">
+                    <h2 class="display-5 fw-bold">Security Scanner</h2>
+                    <p class="lead">Choose your scanning method and analyze your target</p>
+                </div>
+            </div>
+
+            <!-- Scan Type Selection -->
+            <div class="row mb-4">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button class="btn btn-outline-primary w-100 scan-type-btn active" data-type="basic">
+                                        <i class="fas fa-search"></i><br>
+                                        Basic Scan
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-outline-primary w-100 scan-type-btn" data-type="advanced">
+                                        <i class="fas fa-microscope"></i><br>
+                                        Advanced Scan
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-outline-primary w-100 scan-type-btn" data-type="budget">
+                                        <i class="fas fa-dollar-sign"></i><br>
+                                        Budget Scan
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-outline-primary w-100 scan-type-btn" data-type="p4">
+                                        <i class="fas fa-shield-virus"></i><br>
+                                        P4 Categories
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scan Form -->
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="scanForm">
+                                <div class="mb-3">
+                                    <label for="targetUrl" class="form-label">Target URL</label>
+                                    <input type="url" class="form-control" id="targetUrl" 
+                                           placeholder="https://example.com" required>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="scanButton">
+                                        <i class="fas fa-play"></i> Start Scan
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scan Results -->
+            <div class="row mt-4" id="scanResults" style="display: none;">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-chart-line"></i> Scan Results</h5>
+                        </div>
+                        <div class="card-body" id="resultsContent">
+                            <!-- Results will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div class="row mt-4" id="loadingSpinner" style="display: none;">
+                <div class="col-lg-12 text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Scanning in progress...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breach Check Section -->
+    <section id="breach-check" class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="display-5 fw-bold mb-4">Data Breach Check</h2>
+                    <p class="lead mb-4">Check if your email has been compromised in known data breaches</p>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="breachForm">
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" id="breachEmail" 
+                                           placeholder="Enter your email address" required>
+                                </div>
+                                <button type="submit" class="btn btn-warning btn-lg">
+                                    <i class="fas fa-exclamation-triangle"></i> Check for Breaches
+                                </button>
+                            </form>
+                            <div id="breachResults" class="mt-4" style="display: none;">
+                                <!-- Breach results will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section id="history" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="display-5 fw-bold text-center mb-5">Scan History</h2>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="historyTable">
+                                    <thead>
+                                        <tr>
+                                            <th>URL</th>
+                                            <th>Scan Date</th>
+                                            <th>Security Score</th>
+                                            <th>Risk Level</th>
+                                            <th>Findings</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- History will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5 bg-dark text-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="display-5 fw-bold mb-4">About ZtionSec</h2>
+                    <p class="lead mb-4">
+                        ZtionSec is an enterprise-grade security analysis platform that provides comprehensive 
+                        vulnerability assessment and threat intelligence for modern web applications.
+                    </p>
+                    
+                    <div class="row mt-5">
+                        <div class="col-md-4 mb-4">
+                            <div class="feature-card">
+                                <i class="fas fa-shield-alt fa-3x mb-3"></i>
+                                <h4>Advanced Security</h4>
+                                <p>Bank-grade security implementation with multiple layers of protection</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="feature-card">
+                                <i class="fas fa-search fa-3x mb-3"></i>
+                                <h4>Comprehensive Scanning</h4>
+                                <p>Multiple scanning modes including P4 categories and budget-friendly options</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="feature-card">
+                                <i class="fas fa-chart-line fa-3x mb-3"></i>
+                                <h4>Real-time Analytics</h4>
+                                <p>Live monitoring and detailed reporting with actionable insights</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p>&copy; 2024 ZtionSec. All rights reserved.</p>
+                </div>
+                <div class="col-lg-6 text-end">
+                    <p>Powered by advanced security intelligence</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

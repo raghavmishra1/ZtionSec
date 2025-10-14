@@ -1,0 +1,384 @@
+{% extends 'scanner/base.html' %}
+
+{% block title %}About ZtionSec - Advanced Security Platform{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-3 fw-bold text-primary mb-4">
+                <i class="fas fa-shield-alt"></i> About ZtionSec
+            </h1>
+            <p class="lead text-muted">
+                Military-grade security analysis platform built with 100% open-source technologies
+            </p>
+        </div>
+    </div>
+
+    <!-- Mission Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4">
+                        <i class="fas fa-bullseye text-primary"></i> Our Mission
+                    </h2>
+                    <p class="lead text-center">
+                        To democratize cybersecurity by providing enterprise-grade security analysis tools 
+                        that are completely free, open-source, and accessible to everyone.
+                    </p>
+                    <hr class="my-4">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <i class="fas fa-lock fa-3x text-primary mb-3"></i>
+                            <h5>Security First</h5>
+                            <p class="text-muted">Advanced threat detection and vulnerability assessment</p>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="fas fa-code fa-3x text-success mb-3"></i>
+                            <h5>Open Source</h5>
+                            <p class="text-muted">100% transparent, community-driven development</p>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="fas fa-users fa-3x text-info mb-3"></i>
+                            <h5>Community</h5>
+                            <p class="text-muted">Built by security professionals, for security professionals</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Platform Features -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="text-center mb-5">
+                <i class="fas fa-rocket text-primary"></i> Platform Capabilities
+            </h2>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-microscope"></i> Advanced Security Scanning
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Comprehensive vulnerability assessment</li>
+                                <li><i class="fas fa-check text-success"></i> SSL/TLS deep analysis</li>
+                                <li><i class="fas fa-check text-success"></i> Network port scanning (Nmap integration)</li>
+                                <li><i class="fas fa-check text-success"></i> Web application security testing</li>
+                                <li><i class="fas fa-check text-success"></i> DNS intelligence gathering</li>
+                                <li><i class="fas fa-check text-success"></i> Subdomain enumeration</li>
+                                <li><i class="fas fa-check text-success"></i> Technology stack detection</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-warning">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">
+                                <i class="fas fa-brain"></i> Threat Intelligence
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Real-time CVE database integration</li>
+                                <li><i class="fas fa-check text-success"></i> Multi-source threat intelligence</li>
+                                <li><i class="fas fa-check text-success"></i> IOC correlation and analysis</li>
+                                <li><i class="fas fa-check text-success"></i> HaveIBeenPwned integration</li>
+                                <li><i class="fas fa-check text-success"></i> Threat actor profiling</li>
+                                <li><i class="fas fa-check text-success"></i> Campaign tracking</li>
+                                <li><i class="fas fa-check text-success"></i> Attribution analysis</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-info">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-bar"></i> Analytics & Reporting
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Interactive security dashboards</li>
+                                <li><i class="fas fa-check text-success"></i> Professional PDF reports</li>
+                                <li><i class="fas fa-check text-success"></i> Executive summaries</li>
+                                <li><i class="fas fa-check text-success"></i> Compliance reporting (OWASP, NIST, ISO)</li>
+                                <li><i class="fas fa-check text-success"></i> Risk trend analysis</li>
+                                <li><i class="fas fa-check text-success"></i> Security metrics visualization</li>
+                                <li><i class="fas fa-check text-success"></i> Custom report generation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-success">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-dollar-sign"></i> Budget-Friendly Features
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> P4 vulnerability detection</li>
+                                <li><i class="fas fa-check text-success"></i> Easy-to-find security issues</li>
+                                <li><i class="fas fa-check text-success"></i> Low-hanging fruit identification</li>
+                                <li><i class="fas fa-check text-success"></i> Information disclosure scanning</li>
+                                <li><i class="fas fa-check text-success"></i> Configuration error detection</li>
+                                <li><i class="fas fa-check text-success"></i> Bounty potential estimation</li>
+                                <li><i class="fas fa-check text-success"></i> Cost-effective security research</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technology Stack -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="text-center mb-5">
+                <i class="fas fa-cogs text-primary"></i> Technology Stack
+            </h2>
+            <div class="row text-center">
+                <div class="col-md-2 col-sm-4 mb-4">
+                    <div class="tech-item">
+                        <i class="fab fa-python fa-3x text-primary mb-2"></i>
+                        <h6>Python</h6>
+                        <small class="text-muted">Core Language</small>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4 mb-4">
+                    <div class="tech-item">
+                        <i class="fab fa-django fa-3x text-success mb-2"></i>
+                        <h6>Django</h6>
+                        <small class="text-muted">Web Framework</small>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4 mb-4">
+                    <div class="tech-item">
+                        <i class="fab fa-bootstrap fa-3x text-info mb-2"></i>
+                        <h6>Bootstrap 5</h6>
+                        <small class="text-muted">Frontend</small>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4 mb-4">
+                    <div class="tech-item">
+                        <i class="fas fa-network-wired fa-3x text-warning mb-2"></i>
+                        <h6>Nmap</h6>
+                        <small class="text-muted">Network Scanning</small>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4 mb-4">
+                    <div class="tech-item">
+                        <i class="fas fa-chart-line fa-3x text-danger mb-2"></i>
+                        <h6>Plotly</h6>
+                        <small class="text-muted">Visualization</small>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4 mb-4">
+                    <div class="tech-item">
+                        <i class="fas fa-database fa-3x text-secondary mb-2"></i>
+                        <h6>SQLite</h6>
+                        <small class="text-muted">Database</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Open Source Philosophy -->
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="card bg-dark text-white">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4">
+                        <i class="fab fa-osi text-warning"></i> Open Source Philosophy
+                    </h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-unlock text-success"></i> Transparency</h5>
+                            <p>Every line of code is open for inspection. No hidden backdoors, no proprietary algorithms - just pure, transparent security analysis.</p>
+                            
+                            <h5><i class="fas fa-users text-info"></i> Community-Driven</h5>
+                            <p>Built by the security community, for the security community. Contributions welcome from researchers worldwide.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-graduation-cap text-warning"></i> Educational</h5>
+                            <p>Learn how security tools work by examining the source code. Perfect for students and aspiring security professionals.</p>
+                            
+                            <h5><i class="fas fa-rocket text-primary"></i> Innovation</h5>
+                            <p>Rapid development and feature additions driven by real-world security needs and community feedback.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="text-center mb-5">
+                <i class="fas fa-chart-pie text-primary"></i> Platform Statistics
+            </h2>
+            <div class="row text-center">
+                <div class="col-md-3 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-number text-primary">200,000+</div>
+                        <div class="stat-label">CVE Database Entries</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-number text-success">50+</div>
+                        <div class="stat-label">Security Check Types</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-number text-warning">1M+</div>
+                        <div class="stat-label">Threat Intelligence IOCs</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-number text-info">100%</div>
+                        <div class="stat-label">Open Source</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h2 class="mb-4">
+                <i class="fas fa-heart text-danger"></i> Built with Love for Security
+            </h2>
+            <p class="lead">
+                ZtionSec is developed by passionate security researchers who believe that 
+                powerful security tools should be accessible to everyone, regardless of budget.
+            </p>
+            <p>
+                Whether you're a seasoned penetration tester, a bug bounty hunter on a budget, 
+                a student learning cybersecurity, or an enterprise security team, ZtionSec 
+                provides the tools you need to identify and fix security vulnerabilities.
+            </p>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+            <div class="card bg-primary text-white">
+                <div class="card-body p-4">
+                    <h3 class="mb-3">Ready to Secure Your Digital Assets?</h3>
+                    <p class="mb-4">
+                        Start your first comprehensive security scan today and discover 
+                        vulnerabilities before the bad guys do.
+                    </p>
+                    <div class="btn-group">
+                        <a href="{% url 'home' %}" class="btn btn-light btn-lg">
+                            <i class="fas fa-play"></i> Start Basic Scan
+                        </a>
+                        <a href="{% url 'advanced_dashboard' %}" class="btn btn-warning btn-lg">
+                            <i class="fas fa-microscope"></i> Advanced Analysis
+                        </a>
+                        <a href="{% url 'contact' %}" class="btn btn-success btn-lg">
+                            <i class="fas fa-envelope"></i> Get Support
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.tech-item {
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.tech-item:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card {
+    padding: 30px 20px;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Add some interactive elements
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate statistics on scroll
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.stat-card').forEach(card => {
+        observer.observe(card);
+    });
+});
+</script>
+
+<style>
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+{% endblock %}

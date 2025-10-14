@@ -1,0 +1,307 @@
+<!-- SIMPLE POPUP SYSTEM - No Animations, Basic Implementation -->
+
+<!-- Simple Success Popup -->
+<div id="simpleSuccessPopup" class="simple-popup" style="display: none;">
+    <div class="simple-popup-content">
+        <div class="simple-popup-header">
+            <h4 id="simpleSuccessTitle">Success</h4>
+            <button class="simple-close-btn" onclick="closeSimplePopup('simpleSuccessPopup')">&times;</button>
+        </div>
+        <div class="simple-popup-body">
+            <p id="simpleSuccessMessage">Operation completed successfully.</p>
+        </div>
+        <div class="simple-popup-footer">
+            <button class="simple-btn simple-btn-success" onclick="closeSimplePopup('simpleSuccessPopup')">OK</button>
+        </div>
+    </div>
+</div>
+
+<!-- Simple Error Popup -->
+<div id="simpleErrorPopup" class="simple-popup" style="display: none;">
+    <div class="simple-popup-content">
+        <div class="simple-popup-header">
+            <h4 id="simpleErrorTitle">Error</h4>
+            <button class="simple-close-btn" onclick="closeSimplePopup('simpleErrorPopup')">&times;</button>
+        </div>
+        <div class="simple-popup-body">
+            <p id="simpleErrorMessage">An error occurred.</p>
+        </div>
+        <div class="simple-popup-footer">
+            <button class="simple-btn simple-btn-error" onclick="closeSimplePopup('simpleErrorPopup')">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Simple Info Popup -->
+<div id="simpleInfoPopup" class="simple-popup" style="display: none;">
+    <div class="simple-popup-content">
+        <div class="simple-popup-header">
+            <h4 id="simpleInfoTitle">Information</h4>
+            <button class="simple-close-btn" onclick="closeSimplePopup('simpleInfoPopup')">&times;</button>
+        </div>
+        <div class="simple-popup-body">
+            <p id="simpleInfoMessage">Here is some information.</p>
+        </div>
+        <div class="simple-popup-footer">
+            <button class="simple-btn simple-btn-info" onclick="closeSimplePopup('simpleInfoPopup')">Got it</button>
+        </div>
+    </div>
+</div>
+
+<!-- Simple Confirm Popup -->
+<div id="simpleConfirmPopup" class="simple-popup" style="display: none;">
+    <div class="simple-popup-content">
+        <div class="simple-popup-header">
+            <h4 id="simpleConfirmTitle">Confirm</h4>
+            <button class="simple-close-btn" onclick="closeSimplePopup('simpleConfirmPopup')">&times;</button>
+        </div>
+        <div class="simple-popup-body">
+            <p id="simpleConfirmMessage">Are you sure?</p>
+        </div>
+        <div class="simple-popup-footer">
+            <button class="simple-btn simple-btn-cancel" onclick="closeSimplePopup('simpleConfirmPopup')">Cancel</button>
+            <button class="simple-btn simple-btn-confirm" id="simpleConfirmAction">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<!-- Simple Loading Popup -->
+<div id="simpleLoadingPopup" class="simple-popup" style="display: none;">
+    <div class="simple-popup-content">
+        <div class="simple-popup-body text-center">
+            <p id="simpleLoadingMessage">Loading...</p>
+            <div class="simple-loading">Please wait...</div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* SIMPLE POPUP STYLES - NO ANIMATIONS */
+.simple-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.simple-popup-content {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.simple-popup-header {
+    background: #f8f9fa;
+    padding: 15px;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.simple-popup-header h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.simple-close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.simple-close-btn:hover {
+    color: #000;
+}
+
+.simple-popup-body {
+    padding: 20px;
+}
+
+.simple-popup-body p {
+    margin: 0;
+    color: #333;
+    line-height: 1.5;
+}
+
+.simple-popup-footer {
+    padding: 15px;
+    border-top: 1px solid #dee2e6;
+    text-align: right;
+}
+
+.simple-btn {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    margin-left: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.simple-btn:hover {
+    background: #f8f9fa;
+}
+
+.simple-btn-success {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.simple-btn-success:hover {
+    background: #218838;
+}
+
+.simple-btn-error {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+.simple-btn-error:hover {
+    background: #c82333;
+}
+
+.simple-btn-info {
+    background: #17a2b8;
+    color: white;
+    border-color: #17a2b8;
+}
+
+.simple-btn-info:hover {
+    background: #138496;
+}
+
+.simple-btn-confirm {
+    background: #ffc107;
+    color: #212529;
+    border-color: #ffc107;
+}
+
+.simple-btn-confirm:hover {
+    background: #e0a800;
+}
+
+.simple-loading {
+    margin-top: 10px;
+    font-style: italic;
+    color: #666;
+}
+
+.text-center {
+    text-align: center;
+}
+</style>
+
+<script>
+// SIMPLE POPUP JAVASCRIPT - NO ANIMATIONS, BASIC FUNCTIONALITY
+
+// Simple popup functions
+function showSimpleSuccess(title, message) {
+    document.getElementById('simpleSuccessTitle').textContent = title || 'Success';
+    document.getElementById('simpleSuccessMessage').textContent = message || 'Operation completed successfully.';
+    document.getElementById('simpleSuccessPopup').style.display = 'flex';
+}
+
+function showSimpleError(title, message) {
+    document.getElementById('simpleErrorTitle').textContent = title || 'Error';
+    document.getElementById('simpleErrorMessage').textContent = message || 'An error occurred.';
+    document.getElementById('simpleErrorPopup').style.display = 'flex';
+}
+
+function showSimpleInfo(title, message) {
+    document.getElementById('simpleInfoTitle').textContent = title || 'Information';
+    document.getElementById('simpleInfoMessage').textContent = message || 'Here is some information.';
+    document.getElementById('simpleInfoPopup').style.display = 'flex';
+}
+
+function showSimpleConfirm(title, message, callback) {
+    document.getElementById('simpleConfirmTitle').textContent = title || 'Confirm';
+    document.getElementById('simpleConfirmMessage').textContent = message || 'Are you sure?';
+    document.getElementById('simpleConfirmPopup').style.display = 'flex';
+    
+    // Set up confirm button
+    document.getElementById('simpleConfirmAction').onclick = function() {
+        closeSimplePopup('simpleConfirmPopup');
+        if (callback && typeof callback === 'function') {
+            callback();
+        }
+    };
+}
+
+function showSimpleLoading(message) {
+    document.getElementById('simpleLoadingMessage').textContent = message || 'Loading...';
+    document.getElementById('simpleLoadingPopup').style.display = 'flex';
+}
+
+function hideSimpleLoading() {
+    document.getElementById('simpleLoadingPopup').style.display = 'none';
+}
+
+function closeSimplePopup(popupId) {
+    document.getElementById(popupId).style.display = 'none';
+}
+
+function closeAllSimplePopups() {
+    const popups = document.querySelectorAll('.simple-popup');
+    popups.forEach(popup => {
+        popup.style.display = 'none';
+    });
+}
+
+// Close popup when clicking outside
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('simple-popup')) {
+        e.target.style.display = 'none';
+    }
+});
+
+// Close popup with ESC key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeAllSimplePopups();
+    }
+});
+
+// Global aliases for compatibility
+window.showSuccess = showSimpleSuccess;
+window.showError = showSimpleError;
+window.showInfo = showSimpleInfo;
+window.showConfirm = showSimpleConfirm;
+window.showLoading = showSimpleLoading;
+window.hideLoading = hideSimpleLoading;
+window.showSuccessMessage = showSimpleSuccess;
+
+// Replace alert and confirm
+window.alert = function(message) {
+    showSimpleInfo('Alert', message);
+};
+
+window.confirm = function(message) {
+    return new Promise((resolve) => {
+        showSimpleConfirm('Confirm', message, () => resolve(true));
+        // Add cancel handler
+        setTimeout(() => resolve(false), 100);
+    });
+};
+</script>

@@ -1,0 +1,19 @@
+# Railway.app deployment configuration for ZtionSec
+[build]
+  builder = "NIXPACKS"
+
+[deploy]
+  startCommand = "python manage.py migrate && gunicorn Ztionsec.wsgi:application"
+  restartPolicyType = "ON_FAILURE"
+  restartPolicyMaxRetries = 10
+
+[environments.production]
+  [environments.production.variables]
+    DEBUG = "False"
+    DJANGO_SETTINGS_MODULE = "Ztionsec.settings"
+    ALLOWED_HOSTS = "*"
+    
+[environments.development]
+  [environments.production.variables]
+    DEBUG = "True"
+    DJANGO_SETTINGS_MODULE = "Ztionsec.settings"

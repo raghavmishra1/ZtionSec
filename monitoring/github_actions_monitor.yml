@@ -1,0 +1,132 @@
+# GitHub Actions Workflow for Website Monitoring
+# Place this file in .github/workflows/monitor.yml
+
+name: ZtionSec Website Monitoring
+
+on:
+  schedule:
+    # Run every 5 minutes
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+    # Allow manual triggering
+
+jobs:
+  monitor-website:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+        
+    - name: Run website monitoring
+      run: |
+        cd monitoring
+        python uptime_monitor.py --once
+      env:
+        WEBSITE_URL: ${{ secrets.WEBSITE_URL }}
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        
+    - name: Upload monitoring logs
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: monitoring-logs
+        path: monitoring/monitoring_log_*.json
+        retention-days: 30
+
+  health-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check website health
+      run: |
+        WEBSITE_URL="${{ secrets.WEBSITE_URL }}"
+        if [ -z "$WEBSITE_URL" ]; then
+          echo "WEBSITE_URL secret not set"
+          exit 1
+        fi
+        
+        echo "Checking health of: $WEBSITE_URL"
+        
+        # Check main page
+        response=$(curl -s -o /dev/null -w "%{http_code}" "$WEBSITE_URL" || echo "000")
+        if [ "$response" != "200" ]; then
+          echo "❌ Main page check failed: HTTP $response"
+          exit 1
+        fi
+        echo "✅ Main page is healthy: HTTP $response"
+        
+        # Check health endpoint if available
+        health_response=$(curl -s -o /dev/null -w "%{http_code}" "$WEBSITE_URL/health/" || echo "000")
+        if [ "$health_response" = "200" ]; then
+          echo "✅ Health endpoint is healthy: HTTP $health_response"
+        else
+          echo "⚠️ Health endpoint check: HTTP $health_response (may not be implemented)"
+        fi
+        
+        # Check response time
+        response_time=$(curl -s -o /dev/null -w "%{time_total}" "$WEBSITE_URL")
+        echo "⏱️ Response time: ${response_time}s"
+        
+        # Alert if response time is too slow
+        if (( $(echo "$response_time > 10" | bc -l) )); then
+          echo "⚠️ Slow response time detected: ${response_time}s"
+        fi
+
+  security-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Security headers check
+      run: |
+        WEBSITE_URL="${{ secrets.WEBSITE_URL }}"
+        if [ -z "$WEBSITE_URL" ]; then
+          echo "WEBSITE_URL secret not set"
+          exit 1
+        fi
+        
+        echo "Checking security headers for: $WEBSITE_URL"
+        
+        # Check for important security headers
+        headers=$(curl -s -I "$WEBSITE_URL")
+        
+        # Check X-Frame-Options
+        if echo "$headers" | grep -i "x-frame-options" > /dev/null; then
+          echo "✅ X-Frame-Options header present"
+        else
+          echo "⚠️ X-Frame-Options header missing"
+        fi
+        
+        # Check X-Content-Type-Options
+        if echo "$headers" | grep -i "x-content-type-options" > /dev/null; then
+          echo "✅ X-Content-Type-Options header present"
+        else
+          echo "⚠️ X-Content-Type-Options header missing"
+        fi
+        
+        # Check Strict-Transport-Security (HSTS)
+        if echo "$headers" | grep -i "strict-transport-security" > /dev/null; then
+          echo "✅ HSTS header present"
+        else
+          echo "⚠️ HSTS header missing"
+        fi
+        
+        # Check Content-Security-Policy
+        if echo "$headers" | grep -i "content-security-policy" > /dev/null; then
+          echo "✅ CSP header present"
+        else
+          echo "⚠️ CSP header missing"
+        fi

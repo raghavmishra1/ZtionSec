@@ -1,0 +1,706 @@
+{% extends 'scanner/base.html' %}
+
+{% block title %}Advanced Scan Results - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-lg">
+                <div class="card-body text-center">
+                    <h1 class="display-4 mb-3">
+                        <i class="fas fa-microscope"></i> Advanced Security Analysis
+                    </h1>
+                    <h3 class="mb-3 text-primary">{{ scan.url }}</h3>
+                    
+                    <div class="row justify-content-center">
+                        <div class="col-md-3 text-center">
+                            <div class="risk-indicator risk-{{ scan.risk_level }}">
+                                {{ scan.risk_level|title }}
+                            </div>
+                            <p class="mt-2 mb-0 fw-bold">Risk Level</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h2 class="display-6 mb-0 text-primary">{{ scan.security_score }}/100</h2>
+                            <p class="mt-2 mb-0 fw-bold">Security Score</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h2 class="display-6 mb-0 text-warning">{{ scan.total_findings }}</h2>
+                            <p class="mt-2 mb-0 fw-bold">Total Findings</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h2 class="display-6 mb-0 text-info">{{ scan.scan_duration|floatformat:1 }}s</h2>
+                            <p class="mt-2 mb-0 fw-bold">Scan Duration</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'generate_advanced_report' scan.id %}" class="btn btn-primary btn-lg me-2">
+                            <i class="fas fa-file-pdf"></i> Generate Report
+                        </a>
+                        <a href="{% url 'advanced_dashboard' %}" class="btn btn-outline-secondary btn-lg me-2">
+                            <i class="fas fa-arrow-left"></i> New Scan
+                        </a>
+                        <a href="{% url 'advanced_scan_history' %}" class="btn btn-outline-info btn-lg">
+                            <i class="fas fa-history"></i> Scan History
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-2">
+            <div class="card text-center {% if severity_counts.critical > 0 %}border-danger{% endif %}">
+                <div class="card-body">
+                    <h3 class="text-danger">{{ severity_counts.critical }}</h3>
+                    <p class="mb-0">Critical</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center {% if severity_counts.high > 0 %}border-warning{% endif %}">
+                <div class="card-body">
+                    <h3 class="text-warning">{{ severity_counts.high }}</h3>
+                    <p class="mb-0">High</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-info">{{ severity_counts.medium }}</h3>
+                    <p class="mb-0">Medium</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-secondary">{{ severity_counts.low }}</h3>
+                    <p class="mb-0">Low</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-muted">{{ severity_counts.info }}</h3>
+                    <p class="mb-0">Info</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3 class="text-primary">{{ scan.ip_address|default:"N/A" }}</h3>
+                    <p class="mb-0">IP Address</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scan Results Tabs -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="scanTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="findings-tab" data-bs-toggle="tab" data-bs-target="#findings" type="button">
+                                <i class="fas fa-bug"></i> Security Findings
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="network-tab" data-bs-toggle="tab" data-bs-target="#network" type="button">
+                                <i class="fas fa-network-wired"></i> Network Analysis
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="webapp-tab" data-bs-toggle="tab" data-bs-target="#webapp" type="button">
+                                <i class="fas fa-globe"></i> Web Application
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="ssl-tab" data-bs-toggle="tab" data-bs-target="#ssl" type="button">
+                                <i class="fas fa-certificate"></i> SSL/TLS
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="intel-tab" data-bs-toggle="tab" data-bs-target="#intel" type="button">
+                                <i class="fas fa-brain"></i> Threat Intel
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="scanTabsContent">
+                        <!-- Security Findings Tab -->
+                        <div class="tab-pane fade show active" id="findings" role="tabpanel">
+                            <h5><i class="fas fa-bug"></i> Security Findings ({{ findings|length }})</h5>
+                            
+                            {% if findings %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Severity</th>
+                                                <th>Category</th>
+                                                <th>Finding</th>
+                                                <th>CVE</th>
+                                                <th>CVSS</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for finding in findings %}
+                                            <tr>
+                                                <td>
+                                                    <span class="badge 
+                                                        {% if finding.severity == 'critical' %}bg-danger
+                                                        {% elif finding.severity == 'high' %}bg-warning
+                                                        {% elif finding.severity == 'medium' %}bg-info
+                                                        {% elif finding.severity == 'low' %}bg-secondary
+                                                        {% else %}bg-light text-dark{% endif %}">
+                                                        {{ finding.severity|title }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-primary">{{ finding.get_category_display }}</span>
+                                                </td>
+                                                <td>
+                                                    <strong>{{ finding.title }}</strong><br>
+                                                    <small class="text-muted">{{ finding.description|truncatechars:100 }}</small>
+                                                </td>
+                                                <td>
+                                                    {% if finding.cve_id %}
+                                                        <a href="https://nvd.nist.gov/vuln/detail/{{ finding.cve_id }}" target="_blank" class="text-decoration-none">
+                                                            {{ finding.cve_id }}
+                                                        </a>
+                                                    {% else %}
+                                                        <span class="text-muted">N/A</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if finding.cvss_score %}
+                                                        <span class="badge 
+                                                            {% if finding.cvss_score >= 9 %}bg-danger
+                                                            {% elif finding.cvss_score >= 7 %}bg-warning
+                                                            {% elif finding.cvss_score >= 4 %}bg-info
+                                                            {% else %}bg-secondary{% endif %}">
+                                                            {{ finding.cvss_score }}
+                                                        </span>
+                                                    {% else %}
+                                                        <span class="text-muted">N/A</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-info" onclick="showFindingDetails({{ finding.id }})">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Pagination -->
+                                {% if findings.has_other_pages %}
+                                <nav aria-label="Findings pagination">
+                                    <ul class="pagination justify-content-center">
+                                        {% if findings.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ findings.previous_page_number }}">Previous</a>
+                                            </li>
+                                        {% endif %}
+                                        
+                                        {% for num in findings.paginator.page_range %}
+                                            {% if findings.number == num %}
+                                                <li class="page-item active">
+                                                    <span class="page-link">{{ num }}</span>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        
+                                        {% if findings.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ findings.next_page_number }}">Next</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                                {% endif %}
+                            {% else %}
+                                <div class="text-center py-4">
+                                    <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                                    <h4>No Security Findings</h4>
+                                    <p class="text-muted">Great! No security issues were detected during the scan.</p>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Network Analysis Tab -->
+                        <div class="tab-pane fade" id="network" role="tabpanel">
+                            <h5><i class="fas fa-network-wired"></i> Network Analysis</h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>DNS Information</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <tr>
+                                                <td><strong>IP Address:</strong></td>
+                                                <td>{{ scan.dns_analysis.ip_address|default:"N/A" }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>A Records:</strong></td>
+                                                <td>{{ scan.dns_analysis.a_records|length|default:"0" }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>MX Records:</strong></td>
+                                                <td>{{ scan.dns_analysis.mx_records|length|default:"0" }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>SPF Record:</strong></td>
+                                                <td>
+                                                    {% if scan.dns_analysis.has_spf %}
+                                                        <span class="badge bg-success">Present</span>
+                                                    {% else %}
+                                                        <span class="badge bg-warning">Missing</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>DMARC Record:</strong></td>
+                                                <td>
+                                                    {% if scan.dns_analysis.has_dmarc %}
+                                                        <span class="badge bg-success">Present</span>
+                                                    {% else %}
+                                                        <span class="badge bg-warning">Missing</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6>Open Ports</h6>
+                                    {% if scan.port_scan_results.open_ports %}
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Port</th>
+                                                        <th>Service</th>
+                                                        <th>Version</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for port in scan.port_scan_results.open_ports %}
+                                                    <tr>
+                                                        <td>{{ port.port }}/{{ port.protocol }}</td>
+                                                        <td>{{ port.service|default:"unknown" }}</td>
+                                                        <td>{{ port.version|default:"N/A" }}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted">No open ports detected or scan not performed.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- Subdomains -->
+                            {% if scan.subdomain_results.found_subdomains %}
+                            <div class="mt-4">
+                                <h6>Discovered Subdomains</h6>
+                                <div class="d-flex flex-wrap gap-2">
+                                    {% for subdomain in scan.subdomain_results.found_subdomains %}
+                                        <span class="badge bg-info">{{ subdomain }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Web Application Tab -->
+                        <div class="tab-pane fade" id="webapp" role="tabpanel">
+                            <h5><i class="fas fa-globe"></i> Web Application Analysis</h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Technology Stack</h6>
+                                    <div class="mb-3">
+                                        <strong>Server:</strong> {{ scan.technology_stack.server|default:"Unknown" }}<br>
+                                        <strong>Frameworks:</strong>
+                                        {% if scan.technology_stack.client_frameworks %}
+                                            {% for framework in scan.technology_stack.client_frameworks %}
+                                                <span class="badge bg-primary me-1">{{ framework }}</span>
+                                            {% endfor %}
+                                        {% elif scan.technology_stack.frameworks %}
+                                            {% for framework in scan.technology_stack.frameworks %}
+                                                {% if framework == 'Django' %}
+                                                    <span class="badge bg-primary me-1">Web Application Framework</span>
+                                                {% elif framework == 'Laravel' %}
+                                                    <span class="badge bg-primary me-1">PHP Framework</span>
+                                                {% elif framework == 'Flask' %}
+                                                    <span class="badge bg-primary me-1">Python Web Framework</span>
+                                                {% else %}
+                                                    <span class="badge bg-primary me-1">{{ framework }}</span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            <span class="text-muted">None detected</span>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <h6>JavaScript Libraries</h6>
+                                    {% if scan.technology_stack.javascript_libraries %}
+                                        <div class="d-flex flex-wrap gap-1">
+                                            {% for library in scan.technology_stack.javascript_libraries %}
+                                                <span class="badge bg-secondary">{{ library }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted">No JavaScript libraries detected</p>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6>Security Headers</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            {% for header, data in scan.security_headers.present_headers.items %}
+                                            <tr>
+                                                <td><strong>{{ header }}:</strong></td>
+                                                <td><span class="badge bg-success">Present</span></td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% for header_data in scan.security_headers.missing_headers %}
+                                            <tr>
+                                                <td><strong>{{ header_data.header }}:</strong></td>
+                                                <td><span class="badge bg-danger">Missing</span></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Found Files -->
+                            {% if scan.webapp_scan_results.found_files %}
+                            <div class="mt-4">
+                                <h6>Discovered Files/Directories</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Path</th>
+                                                <th>Status</th>
+                                                <th>Size</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for file in scan.webapp_scan_results.found_files %}
+                                            <tr>
+                                                <td><code>{{ file.path }}</code></td>
+                                                <td><span class="badge bg-success">{{ file.status_code }}</span></td>
+                                                <td>{{ file.size|filesizeformat }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- SSL/TLS Tab -->
+                        <div class="tab-pane fade" id="ssl" role="tabpanel">
+                            <h5><i class="fas fa-certificate"></i> SSL/TLS Analysis</h5>
+                            
+                            {% if scan.ssl_analysis.ssl_enabled %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>Certificate Information</h6>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <tr>
+                                                    <td><strong>Subject:</strong></td>
+                                                    <td>{{ scan.ssl_analysis.certificate.subject.commonName|default:"N/A" }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Issuer:</strong></td>
+                                                    <td>{{ scan.ssl_analysis.certificate.issuer.organizationName|default:"N/A" }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Valid From:</strong></td>
+                                                    <td>{{ scan.ssl_analysis.certificate.not_before|default:"N/A" }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Valid Until:</strong></td>
+                                                    <td>{{ scan.ssl_analysis.certificate.not_after|default:"N/A" }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Days Until Expiry:</strong></td>
+                                                    <td>
+                                                        {% if scan.ssl_analysis.days_until_expiry %}
+                                                            {{ scan.ssl_analysis.days_until_expiry }} days
+                                                            {% if scan.ssl_analysis.days_until_expiry < 30 %}
+                                                                <span class="badge bg-warning">Expiring Soon</span>
+                                                            {% endif %}
+                                                        {% else %}
+                                                            N/A
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <h6>Cipher Suite</h6>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <tr>
+                                                    <td><strong>Cipher:</strong></td>
+                                                    <td>{{ scan.ssl_analysis.cipher_suite.name|default:"N/A" }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Version:</strong></td>
+                                                    <td>{{ scan.ssl_analysis.cipher_suite.version|default:"N/A" }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Key Size:</strong></td>
+                                                    <td>{{ scan.ssl_analysis.cipher_suite.bits|default:"N/A" }} bits</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    SSL/TLS is not enabled for this website. This is a significant security risk.
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Threat Intelligence Tab -->
+                        <div class="tab-pane fade" id="intel" role="tabpanel">
+                            <h5><i class="fas fa-brain"></i> Threat Intelligence</h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>IP Reputation</h6>
+                                    <div class="alert alert-info">
+                                        <strong>Status:</strong> {{ scan.threat_intelligence.ip_reputation|default:"Not checked" }}<br>
+                                        <strong>Domain Reputation:</strong> {{ scan.threat_intelligence.domain_reputation|default:"Not checked" }}<br>
+                                        <strong>Malware Check:</strong> {{ scan.threat_intelligence.malware_check|default:"Not performed" }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6>Risk Assessment</h6>
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar 
+                                            {% if scan.security_score >= 80 %}bg-success
+                                            {% elif scan.security_score >= 60 %}bg-warning
+                                            {% else %}bg-danger{% endif %}" 
+                                            style="width: {{ scan.security_score }}%">
+                                            {{ scan.security_score }}%
+                                        </div>
+                                    </div>
+                                    <p class="text-muted">Overall security posture based on comprehensive analysis</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.risk-indicator {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 25px;
+    color: white;
+    display: inline-block;
+    min-width: 120px;
+    text-align: center;
+}
+
+.risk-low { background-color: #28a745; }
+.risk-medium { background-color: #ffc107; color: #000; }
+.risk-high { background-color: #fd7e14; }
+.risk-critical { background-color: #dc3545; }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Finding Details Modal -->
+<div class="modal fade" id="findingDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-bug"></i> Security Finding Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="findingDetailsContent">
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="copyFindingDetails()">
+                    <i class="fas fa-copy"></i> Copy Details
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Store findings data for JavaScript access
+const findingsData = {
+    {% for finding in findings %}
+    {{ finding.id }}: {
+        id: {{ finding.id }},
+        title: "{{ finding.title|escapejs }}",
+        description: "{{ finding.description|escapejs }}",
+        severity: "{{ finding.severity }}",
+        category: "{{ finding.category }}",
+        recommendation: "{{ finding.recommendation|escapejs }}",
+        cve_id: "{{ finding.cve_id|default:'' }}",
+        cvss_score: {{ finding.cvss_score|default:0 }},
+        created_date: "{{ finding.created_date|date:'M d, Y H:i' }}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+};
+
+function showFindingDetails(findingId) {
+    const finding = findingsData[findingId];
+    
+    if (!finding) {
+        alert('Finding details not found.');
+        return;
+    }
+    
+    const severityClass = {
+        'critical': 'danger',
+        'high': 'warning', 
+        'medium': 'info',
+        'low': 'success',
+        'info': 'secondary'
+    }[finding.severity] || 'secondary';
+    
+    const content = `
+        <div class="row">
+            <div class="col-12">
+                <div class="finding-header mb-3">
+                    <h6 class="mb-2">${finding.title}</h6>
+                    <div class="d-flex gap-2 mb-2">
+                        <span class="badge bg-${severityClass}">${finding.severity.toUpperCase()}</span>
+                        <span class="badge bg-info">${finding.category.replace('_', ' ').toUpperCase()}</span>
+                        ${finding.cve_id ? '<span class="badge bg-dark">' + finding.cve_id + '</span>' : ''}
+                        ${finding.cvss_score > 0 ? '<span class="badge bg-warning">CVSS: ' + finding.cvss_score + '</span>' : ''}
+                    </div>
+                </div>
+                
+                <div class="finding-details">
+                    <h6><i class="fas fa-info-circle text-primary"></i> Description</h6>
+                    <p class="mb-3">${finding.description}</p>
+                    
+                    <h6><i class="fas fa-lightbulb text-warning"></i> Recommendation</h6>
+                    <p class="mb-3">${finding.recommendation}</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-exclamation-triangle text-danger"></i> Risk Level</h6>
+                            <span class="badge bg-${severityClass} fs-6">${finding.severity.toUpperCase()}</span>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-calendar text-info"></i> Detected</h6>
+                            <small class="text-muted">${finding.created_date}</small>
+                        </div>
+                    </div>
+                    
+                    ${finding.cve_id ? '<div class="mt-3"><h6><i class="fas fa-database text-secondary"></i> CVE Information</h6><p><strong>CVE ID:</strong> ' + finding.cve_id + '<br>' + (finding.cvss_score > 0 ? '<strong>CVSS Score:</strong> ' + finding.cvss_score + '/10<br>' : '') + '<a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=' + finding.cve_id + '" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fas fa-external-link-alt"></i> View CVE Details</a></p></div>' : ''}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('findingDetailsContent').innerHTML = content;
+    window.currentFinding = finding;
+    
+    const modal = new bootstrap.Modal(document.getElementById('findingDetailsModal'));
+    modal.show();
+}
+
+function copyFindingDetails() {
+    if (!window.currentFinding) {
+        alert('No finding details to copy.');
+        return;
+    }
+    
+    const finding = window.currentFinding;
+    const detailsText = 'SECURITY FINDING DETAILS\\n========================\\n\\nTitle: ' + finding.title + '\\nSeverity: ' + finding.severity.toUpperCase() + '\\nCategory: ' + finding.category.replace('_', ' ').toUpperCase() + '\\n' + (finding.cve_id ? 'CVE ID: ' + finding.cve_id + '\\n' : '') + (finding.cvss_score > 0 ? 'CVSS Score: ' + finding.cvss_score + '/10\\n' : '') + 'Detected: ' + finding.created_date + '\\n\\nDESCRIPTION:\\n' + finding.description + '\\n\\nRECOMMENDATION:\\n' + finding.recommendation + '\\n\\nGenerated by ZtionSec Advanced Security Scanner';
+    
+    navigator.clipboard.writeText(detailsText).then(() => {
+        showToast('Finding details copied to clipboard!', 'success');
+    }).catch(() => {
+        const textArea = document.createElement('textarea');
+        textArea.value = detailsText;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showToast('Finding details copied to clipboard!', 'success');
+    });
+}
+
+function showToast(message, type) {
+    const toastDiv = document.createElement('div');
+    toastDiv.className = 'alert alert-' + type + ' alert-dismissible fade show position-fixed';
+    toastDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toastDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
+    
+    document.body.appendChild(toastDiv);
+    
+    setTimeout(() => {
+        if (toastDiv.parentNode) {
+            toastDiv.remove();
+        }
+    }, 4000);
+}
+
+// Initialize tooltips
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+});
+</script>
+{% endblock %}

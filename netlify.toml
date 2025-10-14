@@ -1,0 +1,41 @@
+# Netlify configuration for ZtionSec Frontend
+# This deploys the static frontend that connects to the Django API backend
+
+[build]
+  # Build command for static frontend
+  command = "echo 'Static frontend - no build required'"
+  publish = "frontend"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Redirects for SPA-like behavior
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# API proxy to backend (optional - for development)
+[[redirects]]
+  from = "/api/*"
+  to = "https://your-ztionsec-api.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+# Headers for security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' data: https://cdnjs.cloudflare.com; connect-src 'self' https://your-ztionsec-api.onrender.com;"
+
+# CORS headers for API calls
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"

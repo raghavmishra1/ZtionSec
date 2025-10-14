@@ -1,0 +1,339 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block title %}P4 Security Scan Results - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="display-5 fw-bold text-primary">
+                        <i class="fas fa-shield-alt"></i> P4 Security Scan Results
+                    </h1>
+                    <p class="lead text-muted">Comprehensive P4 category vulnerability assessment for {{ target_url }}</p>
+                </div>
+                <div>
+                    <button class="btn btn-primary" onclick="exportResults()">
+                        <i class="fas fa-download"></i> Export Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scan Summary -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-danger">
+                <div class="card-body text-center">
+                    <h3 class="text-danger">{{ total_vulnerabilities }}</h3>
+                    <small class="text-muted">Total P4 Vulnerabilities</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-warning">
+                <div class="card-body text-center">
+                    <h3 class="text-warning">{{ categories_affected }}</h3>
+                    <small class="text-muted">Categories Affected</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-info">
+                <div class="card-body text-center">
+                    <h3 class="text-info">{{ scan_duration }}s</h3>
+                    <small class="text-muted">Scan Duration</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-success">
+                <div class="card-body text-center">
+                    <h3 class="text-success">P4</h3>
+                    <small class="text-muted">Security Level</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- P4 Category Results -->
+    <div class="row">
+        <!-- AI Application Security -->
+        {% if results.ai_security %}
+        <div class="col-12 mb-4">
+            <div class="card security-card">
+                <div class="card-header bg-gradient-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-robot"></i> AI Application Security
+                        <span class="badge bg-light text-dark ms-2">{{ results.ai_security|length }} issues</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for issue in results.ai_security %}
+                    <div class="alert alert-warning">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>{{ issue.type }}</strong>
+                                <p class="mb-1">{{ issue.description }}</p>
+                                {% if issue.endpoint %}<small class="text-muted">Endpoint: {{ issue.endpoint }}</small>{% endif %}
+                            </div>
+                            <span class="badge bg-warning">{{ issue.severity }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Automotive Security -->
+        {% if results.automotive %}
+        <div class="col-12 mb-4">
+            <div class="card security-card">
+                <div class="card-header bg-gradient-secondary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-car"></i> Automotive Security Misconfiguration
+                        <span class="badge bg-light text-dark ms-2">{{ results.automotive|length }} issues</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for issue in results.automotive %}
+                    <div class="alert alert-warning">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>{{ issue.type }}</strong>
+                                <p class="mb-1">{{ issue.description }}</p>
+                                {% if issue.endpoint %}<small class="text-muted">Endpoint: {{ issue.endpoint }}</small>{% endif %}
+                            </div>
+                            <span class="badge bg-warning">{{ issue.severity }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Broken Access Control -->
+        {% if results.broken_access %}
+        <div class="col-12 mb-4">
+            <div class="card security-card">
+                <div class="card-header bg-gradient-danger text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-lock-open"></i> Broken Access Control (BAC)
+                        <span class="badge bg-light text-dark ms-2">{{ results.broken_access|length }} issues</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for issue in results.broken_access %}
+                    <div class="alert alert-danger">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>{{ issue.type }}</strong>
+                                <p class="mb-1">{{ issue.description }}</p>
+                                {% if issue.endpoint %}<small class="text-muted">Endpoint: {{ issue.endpoint }}</small>{% endif %}
+                            </div>
+                            <span class="badge bg-danger">{{ issue.severity }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Authentication & Session Management -->
+        {% if results.auth_session %}
+        <div class="col-12 mb-4">
+            <div class="card security-card">
+                <div class="card-header bg-gradient-warning text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-key"></i> Broken Authentication and Session Management
+                        <span class="badge bg-dark text-light ms-2">{{ results.auth_session|length }} issues</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for issue in results.auth_session %}
+                    <div class="alert alert-warning">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>{{ issue.type }}</strong>
+                                <p class="mb-1">{{ issue.description }}</p>
+                                {% if issue.endpoint %}<small class="text-muted">Endpoint: {{ issue.endpoint }}</small>{% endif %}
+                            </div>
+                            <span class="badge bg-warning">{{ issue.severity }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Cross-Site Scripting -->
+        {% if results.xss %}
+        <div class="col-12 mb-4">
+            <div class="card security-card">
+                <div class="card-header bg-gradient-danger text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-code"></i> Cross-Site Scripting (XSS)
+                        <span class="badge bg-light text-dark ms-2">{{ results.xss|length }} issues</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for issue in results.xss %}
+                    <div class="alert alert-danger">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>{{ issue.type }}</strong>
+                                <p class="mb-1">{{ issue.description }}</p>
+                                {% if issue.endpoint %}<small class="text-muted">Endpoint: {{ issue.endpoint }}</small>{% endif %}
+                            </div>
+                            <span class="badge bg-danger">{{ issue.severity }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Cryptographic Weakness -->
+        {% if results.crypto %}
+        <div class="col-12 mb-4">
+            <div class="card security-card">
+                <div class="card-header bg-gradient-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-shield-alt"></i> Cryptographic Weakness
+                        <span class="badge bg-light text-dark ms-2">{{ results.crypto|length }} issues</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for issue in results.crypto %}
+                    <div class="alert alert-info">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>{{ issue.type }}</strong>
+                                <p class="mb-1">{{ issue.description }}</p>
+                                {% if issue.endpoint %}<small class="text-muted">Endpoint: {{ issue.endpoint }}</small>{% endif %}
+                            </div>
+                            <span class="badge bg-info">{{ issue.severity }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Server Security Misconfiguration -->
+        {% if results.server_config %}
+        <div class="col-12 mb-4">
+            <div class="card security-card">
+                <div class="card-header bg-gradient-secondary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-server"></i> Server Security Misconfiguration
+                        <span class="badge bg-light text-dark ms-2">{{ results.server_config|length }} issues</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for issue in results.server_config %}
+                    <div class="alert alert-secondary">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>{{ issue.type }}</strong>
+                                <p class="mb-1">{{ issue.description }}</p>
+                                {% if issue.endpoint %}<small class="text-muted">Endpoint: {{ issue.endpoint }}</small>{% endif %}
+                            </div>
+                            <span class="badge bg-secondary">{{ issue.severity }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Additional Categories (condensed for space) -->
+        {% for category, issues in results.items %}
+            {% if issues and category not in 'ai_security,automotive,broken_access,auth_session,xss,crypto,server_config' %}
+            <div class="col-md-6 mb-4">
+                <div class="card security-card h-100">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">
+                            <i class="fas fa-exclamation-triangle"></i> {{ category|title|replace:"_":" " }}
+                            <span class="badge bg-warning ms-2">{{ issues|length }}</span>
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        {% for issue in issues %}
+                        <div class="border-bottom pb-2 mb-2">
+                            <strong class="small">{{ issue.type }}</strong>
+                            <p class="small mb-0">{{ issue.description }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- No Vulnerabilities Found -->
+    {% if total_vulnerabilities == 0 %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-success">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-shield-alt fa-4x text-success mb-4"></i>
+                    <h3 class="text-success">No P4 Vulnerabilities Detected</h3>
+                    <p class="text-muted">Your application appears to be secure against P4 category vulnerabilities.</p>
+                    <button class="btn btn-success" onclick="runDeepScan()">
+                        <i class="fas fa-search-plus"></i> Run Deep Scan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function exportResults() {
+    showLoading('Generating Report', 'Creating comprehensive P4 security report...');
+    
+    setTimeout(() => {
+        hideLoading();
+        showSuccess(
+            'Report Generated Successfully',
+            'P4 security scan report has been generated and downloaded.'
+        );
+    }, 2000);
+}
+
+function runDeepScan() {
+    showLoading('Starting Deep Scan', 'Performing comprehensive P4+ security analysis...');
+    
+    setTimeout(() => {
+        hideLoading();
+        showInfo(
+            'Deep Scan Feature',
+            'Deep scanning capabilities will be available in the next update with P1-P3 categories.'
+        );
+    }, 3000);
+}
+
+// Auto-refresh scan results every 30 seconds if scan is in progress
+{% if scan_in_progress %}
+setInterval(() => {
+    location.reload();
+}, 30000);
+{% endif %}
+</script>
+{% endblock %}

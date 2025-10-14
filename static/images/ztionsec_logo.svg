@@ -1,0 +1,14 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- White circular background -->
+  <circle cx="100" cy="100" r="100" fill="white"/>
+  
+  <!-- Blue Z letter - exact proportions from the image -->
+  <g transform="translate(40, 60)">
+    <!-- Z shape with proper angles and thickness -->
+    <path d="M0 0 L60 0 L60 12 L18 48 L60 48 L60 60 L0 60 L0 48 L42 12 L0 12 Z" 
+          fill="#6B9BD2" stroke="none"/>
+  </g>
+  
+  <!-- "tion" text - positioned exactly as in the image -->
+  <text x="105" y="125" font-family="Arial, sans-serif" font-size="32" font-weight="normal" fill="black">tion</text>
+</svg>

@@ -1,0 +1,237 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block title %}P4 Security Scanner - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold text-primary mb-3">
+                <i class="fas fa-shield-alt"></i> P4 Security Scanner
+            </h1>
+            <p class="lead text-muted mb-4">
+                Comprehensive P4 category vulnerability assessment covering 16 major security domains
+            </p>
+        </div>
+    </div>
+
+    <!-- Scan Form -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8">
+            <div class="card security-card">
+                <div class="card-header bg-gradient-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-search"></i> Start P4 Security Scan
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" id="p4ScanForm">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="targetUrl" class="form-label fw-bold">Target URL</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-globe"></i>
+                                </span>
+                                <input type="url" class="form-control form-control-lg" 
+                                       id="targetUrl" name="url" 
+                                       placeholder="https://example.com" 
+                                       required>
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-info-circle"></i> 
+                                Enter the complete URL including protocol (http:// or https://)
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-rocket"></i> Launch P4 Security Scan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- P4 Categories Overview -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="text-center mb-4">
+                <i class="fas fa-list-check"></i> P4 Security Categories Covered
+            </h3>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="card h-100 border-primary">
+                        <div class="card-body text-center">
+                            <i class="fas fa-robot fa-2x text-primary mb-2"></i>
+                            <h6 class="fw-bold">AI Application Security</h6>
+                            <small class="text-muted">Adversarial attacks, misclassification, DoS protection</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-secondary">
+                        <div class="card-body text-center">
+                            <i class="fas fa-car fa-2x text-secondary mb-2"></i>
+                            <h6 class="fw-bold">Automotive Security</h6>
+                            <small class="text-muted">CAN injection, GPS spoofing, infotainment vulnerabilities</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-danger">
+                        <div class="card-body text-center">
+                            <i class="fas fa-lock-open fa-2x text-danger mb-2"></i>
+                            <h6 class="fw-bold">Broken Access Control</h6>
+                            <small class="text-muted">IDOR, privilege escalation, enumeration attacks</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-warning">
+                        <div class="card-body text-center">
+                            <i class="fas fa-key fa-2x text-warning mb-2"></i>
+                            <h6 class="fw-bold">Authentication Issues</h6>
+                            <small class="text-muted">Session management, weak login, cleartext transmission</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-info">
+                        <div class="card-body text-center">
+                            <i class="fas fa-cloud fa-2x text-info mb-2"></i>
+                            <h6 class="fw-bold">Cloud Security</h6>
+                            <small class="text-muted">API misconfigurations, insecure endpoints</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-danger">
+                        <div class="card-body text-center">
+                            <i class="fas fa-code fa-2x text-danger mb-2"></i>
+                            <h6 class="fw-bold">Cross-Site Scripting</h6>
+                            <small class="text-muted">Referer XSS, Data URI, Universal XSS</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-success">
+                        <div class="card-body text-center">
+                            <i class="fas fa-shield-alt fa-2x text-success mb-2"></i>
+                            <h6 class="fw-bold">Cryptographic Weakness</h6>
+                            <small class="text-muted">Weak ciphers, expired certificates, entropy issues</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-dark">
+                        <div class="card-body text-center">
+                            <i class="fas fa-database fa-2x text-dark mb-2"></i>
+                            <h6 class="fw-bold">Data Storage Security</h6>
+                            <small class="text-muted">Unencrypted storage, credential exposure</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-primary">
+                        <div class="card-body text-center">
+                            <i class="fas fa-exchange-alt fa-2x text-primary mb-2"></i>
+                            <h6 class="fw-bold">Data Transport Security</h6>
+                            <small class="text-muted">Insecure downloads, integrity checks</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Categories -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="text-center mb-3">
+                        <i class="fas fa-plus-circle"></i> Additional P4 Categories
+                    </h5>
+                    <div class="row text-center">
+                        <div class="col-md-2">
+                            <i class="fas fa-cog text-muted"></i>
+                            <small class="d-block">Security Configuration</small>
+                        </div>
+                        <div class="col-md-2">
+                            <i class="fas fa-user-secret text-muted"></i>
+                            <small class="d-block">Privacy Concerns</small>
+                        </div>
+                        <div class="col-md-2">
+                            <i class="fas fa-eye text-muted"></i>
+                            <small class="d-block">Data Exposure</small>
+                        </div>
+                        <div class="col-md-2">
+                            <i class="fas fa-server text-muted"></i>
+                            <small class="d-block">Server Misconfiguration</small>
+                        </div>
+                        <div class="col-md-2">
+                            <i class="fas fa-syringe text-muted"></i>
+                            <small class="d-block">Injection Attacks</small>
+                        </div>
+                        <div class="col-md-2">
+                            <i class="fas fa-link text-muted"></i>
+                            <small class="d-block">Smart Contracts & Redirects</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('p4ScanForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const targetUrl = document.getElementById('targetUrl').value;
+    
+    if (!targetUrl) {
+        showError('Missing URL', 'Please enter a target URL to scan.');
+        return;
+    }
+    
+    // Validate URL format
+    try {
+        new URL(targetUrl);
+    } catch {
+        showError('Invalid URL', 'Please enter a valid URL including protocol (http:// or https://).');
+        return;
+    }
+    
+    // Show loading modal
+    showLoading('Initializing P4 Security Scan', 'Preparing comprehensive vulnerability assessment...');
+    
+    // Submit form
+    this.submit();
+});
+
+// Auto-fill demo URL for testing
+document.addEventListener('DOMContentLoaded', function() {
+    const urlInput = document.getElementById('targetUrl');
+    
+    // Add demo button
+    const demoBtn = document.createElement('button');
+    demoBtn.type = 'button';
+    demoBtn.className = 'btn btn-outline-secondary btn-sm mt-2';
+    demoBtn.innerHTML = '<i class="fas fa-flask"></i> Use Demo URL';
+    demoBtn.onclick = function() {
+        urlInput.value = 'https://example.com';
+        showInfo('Demo URL Loaded', 'You can now run a P4 security scan on the demo target.');
+    };
+    
+    urlInput.parentNode.parentNode.appendChild(demoBtn);
+});
+</script>
+{% endblock %}

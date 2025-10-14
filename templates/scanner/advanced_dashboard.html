@@ -1,0 +1,1014 @@
+{% extends 'scanner/base.html' %}
+
+{% block title %}Advanced Security Dashboard - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="display-5 fw-bold text-primary">
+                        <i class="fas fa-microscope"></i> Advanced Security Dashboard
+                    </h1>
+                    <p class="lead text-muted">Comprehensive security analysis with advanced threat detection</p>
+                </div>
+                <div>
+                    <a href="{% url 'security_analytics' %}" class="btn btn-outline-primary me-2">
+                        <i class="fas fa-chart-bar"></i> Analytics
+                    </a>
+                    <a href="{% url 'advanced_scan_history' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-history"></i> History
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ total_scans }}</h4>
+                            <p class="card-text">Total Scans</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-search fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ critical_findings }}</h4>
+                            <p class="card-text">Critical Issues</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-exclamation-triangle fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ high_findings }}</h4>
+                            <p class="card-text">High Priority</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-shield-alt fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ recent_vulnerabilities|length }}</h4>
+                            <p class="card-text">New CVEs</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-bug fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advanced Scanner Section -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-rocket"></i> Advanced Security Scanner
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'advanced_scan' %}" id="advancedScanForm">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="url" class="form-label">Target URL</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-globe"></i>
+                                        </span>
+                                        <input type="url" class="form-control" id="url" name="url" 
+                                               placeholder="https://example.com" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="scan_type" class="form-label">Scan Type</label>
+                                    <select class="form-select" id="scan_type" name="scan_type">
+                                        <option value="comprehensive">Comprehensive</option>
+                                        <option value="quick">Quick Scan</option>
+                                        <option value="deep">Deep Analysis</option>
+                                        <option value="compliance">Compliance Check</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Advanced Options -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="accordion" id="advancedOptions">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" 
+                                                    data-bs-toggle="collapse" data-bs-target="#scanOptions">
+                                                <i class="fas fa-cogs me-2"></i> Advanced Options
+                                            </button>
+                                        </h2>
+                                        <div id="scanOptions" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <h6 class="text-primary mb-2">Core Security</h6>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enablePortScan" name="enable_port_scan" checked>
+                                                            <label class="form-check-label" for="enablePortScan">
+                                                                <i class="fas fa-network-wired text-info"></i> Port Scanning
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableVulnScan" name="enable_vuln_scan" checked>
+                                                            <label class="form-check-label" for="enableVulnScan">
+                                                                <i class="fas fa-bug text-danger"></i> Vulnerability Scanning
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableWebAppScan" name="enable_webapp_scan" checked>
+                                                            <label class="form-check-label" for="enableWebAppScan">
+                                                                <i class="fas fa-globe text-primary"></i> Web Application Testing
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableSSLAnalysis" name="enable_ssl_analysis" checked>
+                                                            <label class="form-check-label" for="enableSSLAnalysis">
+                                                                <i class="fas fa-lock text-success"></i> Deep SSL/TLS Analysis
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <h6 class="text-warning mb-2">Intelligence & Recon</h6>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableSubdomainEnum" name="enable_subdomain_enum" checked>
+                                                            <label class="form-check-label" for="enableSubdomainEnum">
+                                                                <i class="fas fa-sitemap text-info"></i> Subdomain Enumeration
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableThreatIntel" name="enable_threat_intel" checked>
+                                                            <label class="form-check-label" for="enableThreatIntel">
+                                                                <i class="fas fa-eye text-warning"></i> Threat Intelligence
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableDNSAnalysis" name="enable_dns_analysis" checked>
+                                                            <label class="form-check-label" for="enableDNSAnalysis">
+                                                                <i class="fas fa-server text-secondary"></i> DNS Deep Analysis
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableWHOISLookup" name="enable_whois_lookup" checked>
+                                                            <label class="form-check-label" for="enableWHOISLookup">
+                                                                <i class="fas fa-search text-info"></i> WHOIS Intelligence
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <h6 class="text-success mb-2">Advanced Tools</h6>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableCMSDetection" name="enable_cms_detection" checked>
+                                                            <label class="form-check-label" for="enableCMSDetection">
+                                                                <i class="fas fa-cogs text-primary"></i> CMS Detection & Audit
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableTechStack" name="enable_tech_stack" checked>
+                                                            <label class="form-check-label" for="enableTechStack">
+                                                                <i class="fas fa-layer-group text-info"></i> Technology Stack Analysis
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableSecHeaders" name="enable_sec_headers" checked>
+                                                            <label class="form-check-label" for="enableSecHeaders">
+                                                                <i class="fas fa-shield-alt text-success"></i> Security Headers Audit
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableOWASPCheck" name="enable_owasp_check" checked>
+                                                            <label class="form-check-label" for="enableOWASPCheck">
+                                                                <i class="fas fa-list-check text-danger"></i> OWASP Top 10 Check
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Advanced Options -->
+                                                <div class="row mt-4">
+                                                    <div class="col-12">
+                                                        <h6 class="text-danger mb-3">
+                                                            <i class="fas fa-exclamation-triangle"></i> Aggressive Testing Options
+                                                            <small class="text-muted">(Use with caution)</small>
+                                                        </h6>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableSQLInjection" name="enable_sql_injection">
+                                                            <label class="form-check-label" for="enableSQLInjection">
+                                                                <i class="fas fa-database text-danger"></i> SQL Injection Testing
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableXSSTest" name="enable_xss_test">
+                                                            <label class="form-check-label" for="enableXSSTest">
+                                                                <i class="fas fa-code text-warning"></i> XSS Vulnerability Test
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableDirBruteforce" name="enable_dir_bruteforce">
+                                                            <label class="form-check-label" for="enableDirBruteforce">
+                                                                <i class="fas fa-folder-open text-info"></i> Directory Bruteforce
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableFileInclusion" name="enable_file_inclusion">
+                                                            <label class="form-check-label" for="enableFileInclusion">
+                                                                <i class="fas fa-file-code text-danger"></i> File Inclusion Test
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableCSRFTest" name="enable_csrf_test">
+                                                            <label class="form-check-label" for="enableCSRFTest">
+                                                                <i class="fas fa-shield-virus text-warning"></i> CSRF Testing
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" 
+                                                                   id="enableCommandInjection" name="enable_command_injection">
+                                                            <label class="form-check-label" for="enableCommandInjection">
+                                                                <i class="fas fa-terminal text-danger"></i> Command Injection Test
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-play"></i> Start Advanced Scan
+                            </button>
+                            <small class="text-muted ms-3">
+                                <i class="fas fa-clock"></i> Estimated time: 5-15 minutes
+                            </small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Quick Tools -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-success text-white">
+                    <h6 class="mb-0">
+                        <i class="fas fa-tools"></i> Quick Security Tools
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'budget_scanner' %}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-dollar-sign"></i> P4 Budget Scanner
+                        </a>
+                        <a href="{% url 'vulnerability_database' %}" class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-database"></i> CVE Database
+                        </a>
+                        <a href="{% url 'threat_intelligence' %}" class="btn btn-outline-warning btn-sm">
+                            <i class="fas fa-eye"></i> Threat Intel
+                        </a>
+                        <a href="{% url 'security_analytics' %}" class="btn btn-outline-info btn-sm">
+                            <i class="fas fa-chart-bar"></i> Security Analytics
+                        </a>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="openSubdomainTool()">
+                            <i class="fas fa-sitemap"></i> Subdomain Finder
+                        </button>
+                        <button class="btn btn-outline-success btn-sm" onclick="openPortScanner()">
+                            <i class="fas fa-network-wired"></i> Port Scanner
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scan Presets -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h6 class="mb-0">
+                        <i class="fas fa-magic"></i> Scan Presets
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="loadPreset('basic')">
+                            <i class="fas fa-shield-alt"></i> Basic Security Scan
+                        </button>
+                        <button class="btn btn-outline-warning btn-sm" onclick="loadPreset('comprehensive')">
+                            <i class="fas fa-microscope"></i> Comprehensive Audit
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="loadPreset('penetration')">
+                            <i class="fas fa-crosshairs"></i> Penetration Test
+                        </button>
+                        <button class="btn btn-outline-info btn-sm" onclick="loadPreset('compliance')">
+                            <i class="fas fa-clipboard-check"></i> Compliance Check
+                        </button>
+                        <button class="btn btn-outline-success btn-sm" onclick="loadPreset('recon')">
+                            <i class="fas fa-search"></i> Reconnaissance Only
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Risk Distribution -->
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0">
+                        <i class="fas fa-chart-pie"></i> Risk Distribution
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% if risk_distribution %}
+                        {% for risk in risk_distribution %}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-capitalize">{{ risk.risk_level }}</span>
+                            <span class="badge 
+                                {% if risk.risk_level == 'critical' %}bg-danger
+                                {% elif risk.risk_level == 'high' %}bg-warning
+                                {% elif risk.risk_level == 'medium' %}bg-info
+                                {% else %}bg-success{% endif %}">
+                                {{ risk.count }}
+                            </span>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No scan data available</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Scans and Vulnerabilities -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-history"></i> Recent Advanced Scans
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_scans %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Target</th>
+                                        <th>Risk Level</th>
+                                        <th>Score</th>
+                                        <th>Findings</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for scan in recent_scans %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-globe text-muted me-2"></i>
+                                                <span>{{ scan.domain|truncatechars:30 }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge 
+                                                {% if scan.risk_level == 'critical' %}bg-danger
+                                                {% elif scan.risk_level == 'high' %}bg-warning
+                                                {% elif scan.risk_level == 'medium' %}bg-info
+                                                {% else %}bg-success{% endif %}">
+                                                {{ scan.risk_level|title }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="progress me-2" style="width: 60px; height: 8px;">
+                                                    <div class="progress-bar 
+                                                        {% if scan.security_score >= 80 %}bg-success
+                                                        {% elif scan.security_score >= 60 %}bg-warning
+                                                        {% else %}bg-danger{% endif %}" 
+                                                        data-width="{{ scan.security_score }}"></div>
+                                                </div>
+                                                <small>{{ scan.security_score }}/100</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-secondary">{{ scan.total_findings }}</span>
+                                            {% if scan.critical_findings > 0 %}
+                                                <span class="badge bg-danger ms-1">{{ scan.critical_findings }} Critical</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <small>{{ scan.scan_date|date:"M d, H:i" }}</small>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="{% url 'advanced_scan_results' scan.id %}" 
+                                                   class="btn btn-outline-primary" title="View Results">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="{% url 'generate_advanced_report' scan.id %}" 
+                                                   class="btn btn-outline-secondary" title="Generate Report">
+                                                    <i class="fas fa-file-pdf"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No advanced scans yet. Start your first comprehensive scan!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bug"></i> Recent Vulnerabilities
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_vulnerabilities %}
+                        {% for vuln in recent_vulnerabilities %}
+                        <div class="border-bottom pb-2 mb-2">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <strong class="text-danger">{{ vuln.cve_id }}</strong>
+                                    <br>
+                                    <small class="text-muted">{{ vuln.description|truncatechars:80 }}</small>
+                                </div>
+                                <span class="badge 
+                                    {% if vuln.cvss_score >= 9 %}bg-danger
+                                    {% elif vuln.cvss_score >= 7 %}bg-warning
+                                    {% else %}bg-info{% endif %}">
+                                    {{ vuln.cvss_score }}
+                                </span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="text-center mt-3">
+                            <a href="{% url 'vulnerability_database' %}" class="btn btn-sm btn-outline-warning">
+                                View All Vulnerabilities
+                            </a>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No vulnerability data available</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="scanningModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h5>Advanced Security Scan in Progress</h5>
+                <p class="text-muted">This may take several minutes. Please wait...</p>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('advancedScanForm').addEventListener('submit', function(e) {
+    // Show loading modal
+    var modal = new bootstrap.Modal(document.getElementById('scanningModal'));
+    modal.show();
+});
+
+// Quick Tools Functions
+function openSubdomainTool() {
+    // Create professional subdomain enumeration modal
+    const subdomainModal = `
+        <div class="modal fade" id="subdomainToolModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-info text-white">
+                        <h5 class="modal-title">
+                            <i class="fas fa-sitemap"></i> Subdomain Enumeration Tool
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="subdomainForm">
+                            <div class="mb-3">
+                                <label class="form-label">Target Domain</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-globe"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="subdomainTarget" 
+                                           placeholder="example.com" required>
+                                </div>
+                                <div class="form-text">Enter the root domain for subdomain discovery</div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Scan Depth</label>
+                                        <select class="form-select" id="scanDepth">
+                                            <option value="basic">Basic (Fast)</option>
+                                            <option value="comprehensive" selected>Comprehensive</option>
+                                            <option value="deep">Deep (Thorough)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Wordlist Size</label>
+                                        <select class="form-select" id="wordlistSize">
+                                            <option value="small">Small (1K entries)</option>
+                                            <option value="medium" selected>Medium (5K entries)</option>
+                                            <option value="large">Large (10K entries)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                <strong>Subdomain Discovery:</strong> This tool will enumerate subdomains using DNS queries, certificate transparency logs, and common subdomain wordlists.
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="includeWildcard" checked>
+                                    <label class="form-check-label" for="includeWildcard">
+                                        Include wildcard detection
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="includeCertTransparency" checked>
+                                    <label class="form-check-label" for="includeCertTransparency">
+                                        Check certificate transparency logs
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="includePortScan">
+                                    <label class="form-check-label" for="includePortScan">
+                                        Perform port scan on discovered subdomains
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="button" class="btn btn-info" onclick="startSubdomainScan()">
+                            <i class="fas fa-search"></i> Start Enumeration
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remove existing modal if present
+    const existingModal = document.getElementById('subdomainToolModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Add modal to page
+    document.body.insertAdjacentHTML('beforeend', subdomainModal);
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('subdomainToolModal'));
+    modal.show();
+}
+
+function openPortScanner() {
+    // Create professional port scanner modal
+    const portScanModal = `
+        <div class="modal fade" id="portScanToolModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title">
+                            <i class="fas fa-network-wired"></i> Port Scanner Tool
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="portScanForm">
+                            <div class="mb-3">
+                                <label class="form-label">Target Host/IP</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-server"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="portScanTarget" 
+                                           placeholder="example.com or 192.168.1.1" required>
+                                </div>
+                                <div class="form-text">Enter domain name or IP address for port scanning</div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Port Range</label>
+                                        <select class="form-select" id="portRange">
+                                            <option value="common">Common Ports (Top 100)</option>
+                                            <option value="well-known" selected>Well-Known Ports (1-1024)</option>
+                                            <option value="extended">Extended Range (1-5000)</option>
+                                            <option value="full">Full Range (1-65535)</option>
+                                            <option value="custom">Custom Range</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Scan Speed</label>
+                                        <select class="form-select" id="scanSpeed">
+                                            <option value="stealth">Stealth (Slow)</option>
+                                            <option value="normal" selected>Normal</option>
+                                            <option value="aggressive">Aggressive (Fast)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3" id="customPortRange" style="display: none;">
+                                <label class="form-label">Custom Port Range</label>
+                                <input type="text" class="form-control" id="customPorts" 
+                                       placeholder="80,443,8080-8090,3000">
+                                <div class="form-text">Examples: 80,443 or 8080-8090 or 80,443,8080-8090</div>
+                            </div>
+                            
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <strong>Security Notice:</strong> Only scan systems you own or have explicit permission to test. Unauthorized port scanning may be illegal.
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="enableServiceDetection" checked>
+                                    <label class="form-check-label" for="enableServiceDetection">
+                                        Enable service detection
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="enableVersionDetection">
+                                    <label class="form-check-label" for="enableVersionDetection">
+                                        Enable version detection (slower)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="enableOSDetection">
+                                    <label class="form-check-label" for="enableOSDetection">
+                                        Enable OS fingerprinting
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="startPortScan()">
+                            <i class="fas fa-search"></i> Start Port Scan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remove existing modal if present
+    const existingModal = document.getElementById('portScanToolModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Add modal to page
+    document.body.insertAdjacentHTML('beforeend', portScanModal);
+    
+    // Show/hide custom port range based on selection
+    document.getElementById('portRange').addEventListener('change', function() {
+        const customDiv = document.getElementById('customPortRange');
+        if (this.value === 'custom') {
+            customDiv.style.display = 'block';
+        } else {
+            customDiv.style.display = 'none';
+        }
+    });
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('portScanToolModal'));
+    modal.show();
+}
+
+// Scan Preset Functions
+function loadPreset(presetType) {
+    // Reset all checkboxes first
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => cb.checked = false);
+    
+    switch(presetType) {
+        case 'basic':
+            // Basic security scan
+            document.getElementById('enablePortScan').checked = true;
+            document.getElementById('enableSSLAnalysis').checked = true;
+            document.getElementById('enableSecHeaders').checked = true;
+            document.getElementById('enableTechStack').checked = true;
+            showToast('Basic Security Scan preset loaded', 'info');
+            break;
+            
+        case 'comprehensive':
+            // Enable all safe options
+            document.getElementById('enablePortScan').checked = true;
+            document.getElementById('enableVulnScan').checked = true;
+            document.getElementById('enableWebAppScan').checked = true;
+            document.getElementById('enableSSLAnalysis').checked = true;
+            document.getElementById('enableSubdomainEnum').checked = true;
+            document.getElementById('enableThreatIntel').checked = true;
+            document.getElementById('enableDNSAnalysis').checked = true;
+            document.getElementById('enableWHOISLookup').checked = true;
+            document.getElementById('enableCMSDetection').checked = true;
+            document.getElementById('enableTechStack').checked = true;
+            document.getElementById('enableSecHeaders').checked = true;
+            document.getElementById('enableOWASPCheck').checked = true;
+            showToast('Comprehensive Audit preset loaded', 'success');
+            break;
+            
+        case 'penetration':
+            // Enable aggressive testing
+            document.getElementById('enablePortScan').checked = true;
+            document.getElementById('enableVulnScan').checked = true;
+            document.getElementById('enableWebAppScan').checked = true;
+            document.getElementById('enableSQLInjection').checked = true;
+            document.getElementById('enableXSSTest').checked = true;
+            document.getElementById('enableDirBruteforce').checked = true;
+            document.getElementById('enableFileInclusion').checked = true;
+            document.getElementById('enableCSRFTest').checked = true;
+            document.getElementById('enableCommandInjection').checked = true;
+            showToast('Penetration Test preset loaded - Use with caution!', 'warning');
+            break;
+            
+        case 'compliance':
+            // Compliance focused scan
+            document.getElementById('enableSSLAnalysis').checked = true;
+            document.getElementById('enableSecHeaders').checked = true;
+            document.getElementById('enableOWASPCheck').checked = true;
+            document.getElementById('enableTechStack').checked = true;
+            document.getElementById('enableCMSDetection').checked = true;
+            showToast('Compliance Check preset loaded', 'info');
+            break;
+            
+        case 'recon':
+            // Reconnaissance only
+            document.getElementById('enableSubdomainEnum').checked = true;
+            document.getElementById('enableDNSAnalysis').checked = true;
+            document.getElementById('enableWHOISLookup').checked = true;
+            document.getElementById('enableThreatIntel').checked = true;
+            document.getElementById('enableTechStack').checked = true;
+            showToast('Reconnaissance Only preset loaded', 'secondary');
+            break;
+    }
+    
+    // Expand the advanced options accordion
+    const accordion = document.getElementById('scanOptions');
+    if (!accordion.classList.contains('show')) {
+        const button = document.querySelector('[data-bs-target="#scanOptions"]');
+        button.click();
+    }
+}
+
+function showToast(message, type) {
+    const toastDiv = document.createElement('div');
+    toastDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    toastDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toastDiv.innerHTML = `
+        <i class="fas fa-info-circle"></i> ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(toastDiv);
+    
+    setTimeout(() => {
+        if (toastDiv.parentNode) {
+            toastDiv.remove();
+        }
+    }, 4000);
+}
+
+// Handle subdomain scan start
+function startSubdomainScan() {
+    const target = document.getElementById('subdomainTarget').value;
+    const scanDepth = document.getElementById('scanDepth').value;
+    const wordlistSize = document.getElementById('wordlistSize').value;
+    const includeWildcard = document.getElementById('includeWildcard').checked;
+    const includeCertTransparency = document.getElementById('includeCertTransparency').checked;
+    const includePortScan = document.getElementById('includePortScan').checked;
+    
+    if (!target) {
+        showError('Missing Target', 'Please enter a domain name for subdomain enumeration.');
+        return;
+    }
+    
+    // Close modal
+    bootstrap.Modal.getInstance(document.getElementById('subdomainToolModal')).hide();
+    
+    // Show loading
+    showLoading('Starting Subdomain Enumeration', `Discovering subdomains for ${target}...`);
+    
+    // Create form and submit
+    setTimeout(() => {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{% url "advanced_scan" %}';
+        
+        const csrfToken = document.createElement('input');
+        csrfToken.type = 'hidden';
+        csrfToken.name = 'csrfmiddlewaretoken';
+        csrfToken.value = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        const urlInput = document.createElement('input');
+        urlInput.type = 'hidden';
+        urlInput.name = 'url';
+        urlInput.value = target.startsWith('http') ? target : 'https://' + target;
+        
+        const subdomainOnly = document.createElement('input');
+        subdomainOnly.type = 'hidden';
+        subdomainOnly.name = 'subdomain_only';
+        subdomainOnly.value = 'true';
+        
+        form.appendChild(csrfToken);
+        form.appendChild(urlInput);
+        form.appendChild(subdomainOnly);
+        document.body.appendChild(form);
+        form.submit();
+    }, 1500);
+}
+
+// Handle port scan start
+function startPortScan() {
+    const target = document.getElementById('portScanTarget').value;
+    const portRange = document.getElementById('portRange').value;
+    const scanSpeed = document.getElementById('scanSpeed').value;
+    const customPorts = document.getElementById('customPorts').value;
+    const enableServiceDetection = document.getElementById('enableServiceDetection').checked;
+    const enableVersionDetection = document.getElementById('enableVersionDetection').checked;
+    const enableOSDetection = document.getElementById('enableOSDetection').checked;
+    
+    if (!target) {
+        showError('Missing Target', 'Please enter a target host or IP address for port scanning.');
+        return;
+    }
+    
+    if (portRange === 'custom' && !customPorts) {
+        showError('Missing Port Range', 'Please specify custom port range or select a predefined range.');
+        return;
+    }
+    
+    // Close modal
+    bootstrap.Modal.getInstance(document.getElementById('portScanToolModal')).hide();
+    
+    // Show loading
+    showLoading('Starting Port Scan', `Scanning ports on ${target}...`);
+    
+    // Create form and submit
+    setTimeout(() => {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{% url "advanced_scan" %}';
+        
+        const csrfToken = document.createElement('input');
+        csrfToken.type = 'hidden';
+        csrfToken.name = 'csrfmiddlewaretoken';
+        csrfToken.value = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        const urlInput = document.createElement('input');
+        urlInput.type = 'hidden';
+        urlInput.name = 'url';
+        urlInput.value = target.startsWith('http') ? target : 'https://' + target;
+        
+        const portOnly = document.createElement('input');
+        portOnly.type = 'hidden';
+        portOnly.name = 'port_scan_only';
+        portOnly.value = 'true';
+        
+        form.appendChild(csrfToken);
+        form.appendChild(urlInput);
+        form.appendChild(portOnly);
+        document.body.appendChild(form);
+        form.submit();
+    }, 1500);
+}
+
+// Add tooltips for better UX
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Add warning for aggressive options
+    const aggressiveCheckboxes = document.querySelectorAll('#enableSQLInjection, #enableXSSTest, #enableDirBruteforce, #enableFileInclusion, #enableCSRFTest, #enableCommandInjection');
+    aggressiveCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                showToast('Aggressive testing enabled - Use only on authorized targets!', 'warning');
+            }
+        });
+    });
+});
+
+// Initialize progress bars
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.progress-bar[data-width]').forEach(function(bar) {
+        const width = bar.getAttribute('data-width');
+        bar.style.width = width + '%';
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{
+  "websites": [
+    {
+      "name": "ZtionSec Main",
+      "url": "https://your-ztionsec-app.onrender.com",
+      "expected_status": 200,
+      "timeout": 30,
+      "check_interval": 300
+    },
+    {
+      "name": "ZtionSec API Health",
+      "url": "https://your-ztionsec-app.onrender.com/api/health/",
+      "expected_status": 200,
+      "timeout": 15,
+      "check_interval": 300
+    }
+  ],
+  "notifications": {
+    "email": {
+      "enabled": false,
+      "smtp_server": "smtp.gmail.com",
+      "smtp_port": 587,
+      "username": "your-email@gmail.com",
+      "password": "your-app-password",
+      "to_email": "alerts@yourdomain.com"
+    },
+    "webhook": {
+      "enabled": false,
+      "url": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK",
+      "comment": "Replace with your Slack webhook URL or Discord webhook"
+    }
+  },
+  "thresholds": {
+    "response_time_warning": 5.0,
+    "response_time_critical": 10.0,
+    "consecutive_failures": 3
+  }
+}

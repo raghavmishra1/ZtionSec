@@ -1,0 +1,203 @@
+{% extends 'scanner/base.html' %}
+
+{% block title %}Scan History - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-4 mb-3">
+                <i class="fas fa-history"></i> Security Scan History
+            </h1>
+            <p class="lead">View all your previous website security scans</p>
+            <a href="{% url 'home' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> New Scan
+            </a>
+        </div>
+    </div>
+
+    {% if scans %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-list"></i> All Scans ({{ scans|length }})
+                    </h4>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Website</th>
+                                    <th>Grade</th>
+                                    <th>Score</th>
+                                    <th>SSL</th>
+                                    <th>Headers</th>
+                                    <th>Response Time</th>
+                                    <th>Scan Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for scan in scans %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-globe text-muted me-2"></i>
+                                            <div>
+                                                <div class="fw-bold">{{ scan.url|truncatechars:40 }}</div>
+                                                <small class="text-muted">{{ scan.cms_detected|default:"Unknown CMS" }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="security-grade grade-{{ scan.grade }}" style="font-size: 1rem; padding: 5px 10px;">
+                                            {{ scan.grade }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="progress me-2" style="width: 60px; height: 8px;">
+                                                <div class="progress-bar 
+                                                    {% if scan.security_score >= 80 %}bg-success
+                                                    {% elif scan.security_score >= 60 %}bg-warning
+                                                    {% else %}bg-danger{% endif %}" 
+                                                    style="width: {{ scan.security_score }}%"></div>
+                                            </div>
+                                            <small>{{ scan.security_score }}/100</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if scan.ssl_valid %}
+                                            <span class="badge bg-success">Valid</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Invalid</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% with headers_count=scan.has_hsts|add:scan.has_csp|add:scan.has_xframe|add:scan.has_xss_protection|add:scan.has_content_type %}
+                                            <span class="badge {% if headers_count >= 4 %}bg-success{% elif headers_count >= 2 %}bg-warning{% else %}bg-danger{% endif %}">
+                                                {{ headers_count }}/5
+                                            </span>
+                                        {% endwith %}
+                                    </td>
+                                    <td>
+                                        {% if scan.response_time %}
+                                            {{ scan.response_time }}ms
+                                            {% if scan.response_time < 1000 %}
+                                                <i class="fas fa-check text-success"></i>
+                                            {% elif scan.response_time < 3000 %}
+                                                <i class="fas fa-exclamation text-warning"></i>
+                                            {% else %}
+                                                <i class="fas fa-times text-danger"></i>
+                                            {% endif %}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <small>{{ scan.scan_date|date:"M d, Y H:i" }}</small>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{% url 'generate_report' scan.id %}" class="btn btn-outline-primary" title="Download Report">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="row mt-5">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-chart-line fa-2x text-primary mb-2"></i>
+                    <h5>Total Scans</h5>
+                    <h3 class="text-primary">{{ scans|length }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-shield-alt fa-2x text-success mb-2"></i>
+                    <h5>SSL Secured</h5>
+                    <h3 class="text-success">
+                        {% with ssl_count=scans|length %}
+                            {% for scan in scans %}
+                                {% if scan.ssl_valid %}{{ forloop.counter0|add:1 }}{% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-trophy fa-2x text-warning mb-2"></i>
+                    <h5>Grade A+/A</h5>
+                    <h3 class="text-warning">
+                        {% with grade_a_count=0 %}
+                            {% for scan in scans %}
+                                {% if scan.grade == 'A+' or scan.grade == 'A' %}{{ forloop.counter0|add:1 }}{% endif %}
+                            {% endfor %}
+                        {% endwith %}
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-clock fa-2x text-info mb-2"></i>
+                    <h5>Avg Response</h5>
+                    <h3 class="text-info">
+                        {% with total_time=0 count=0 %}
+                            {% for scan in scans %}
+                                {% if scan.response_time %}
+                                    {% with total_time=total_time|add:scan.response_time count=count|add:1 %}
+                                    {% endwith %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if count > 0 %}
+                                {{ total_time|floatformat:0 }}ms
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        {% endwith %}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-search fa-4x text-muted mb-4"></i>
+                    <h3>No Scans Yet</h3>
+                    <p class="text-muted">You haven't performed any security scans yet. Start by scanning your first website!</p>
+                    <a href="{% url 'home' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus"></i> Start Your First Scan
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

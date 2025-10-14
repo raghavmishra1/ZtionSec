@@ -1,0 +1,804 @@
+<!-- Universal Modal System for ZtionSec -->
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-success">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-check-circle"></i> Success
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="success-icon mb-3">
+                    <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                </div>
+                <h4 id="successTitle">Operation Successful</h4>
+                <p id="successMessage" class="text-muted">Your action has been completed successfully.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                    <i class="fas fa-thumbs-up"></i> Great!
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-danger">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle"></i> Error
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="error-icon mb-3">
+                    <i class="fas fa-exclamation-triangle text-danger" style="font-size: 4rem;"></i>
+                </div>
+                <h4 id="errorTitle">Something Went Wrong</h4>
+                <p id="errorMessage" class="text-muted">An error occurred while processing your request.</p>
+                <div id="errorDetails" class="alert alert-light text-start mt-3" style="display: none;">
+                    <small class="text-muted" id="errorDetailsText"></small>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-danger" onclick="retryLastAction()">
+                    <i class="fas fa-redo"></i> Try Again
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Warning/Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-warning">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">
+                    <i class="fas fa-question-circle"></i> Confirmation Required
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="warning-icon mb-3">
+                    <i class="fas fa-question-circle text-warning" style="font-size: 4rem;"></i>
+                </div>
+                <h4 id="confirmTitle">Are you sure?</h4>
+                <p id="confirmMessage" class="text-muted">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-warning" id="confirmAction">
+                    <i class="fas fa-check"></i> Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Info Modal -->
+<div class="modal fade" id="infoModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-info">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-info-circle"></i> Information
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="info-icon mb-3">
+                    <i class="fas fa-info-circle text-info" style="font-size: 4rem;"></i>
+                </div>
+                <h4 id="infoTitle">Information</h4>
+                <p id="infoMessage" class="text-muted">Here's some important information.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-info" data-bs-dismiss="modal">
+                    <i class="fas fa-check"></i> Got it!
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-5">
+                <div class="loading-spinner mb-3">
+                    <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <h4 id="loadingTitle">Processing...</h4>
+                <p id="loadingMessage" class="text-muted">Please wait while we process your request.</p>
+                <div class="progress mt-3" style="height: 8px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Feature Coming Soon Modal -->
+<div class="modal fade" id="comingSoonModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-primary">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-rocket"></i> Coming Soon
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="coming-soon-icon mb-3">
+                    <i class="fas fa-rocket text-primary" style="font-size: 4rem;"></i>
+                </div>
+                <h4 id="comingSoonTitle">Feature Coming Soon!</h4>
+                <p id="comingSoonMessage" class="text-muted">This feature is under development and will be available in a future update.</p>
+                <div class="alert alert-light mt-3">
+                    <small class="text-muted">
+                        <i class="fas fa-clock"></i> Expected release: <span id="expectedRelease">Next update</span>
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">
+                    <i class="fas fa-bell"></i> Notify Me
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <i class="fas fa-check"></i> Understood
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Security Warning Modal -->
+<div class="modal fade" id="securityWarningModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-danger">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-shield-alt"></i> Security Warning
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="security-icon mb-3">
+                    <i class="fas fa-shield-alt text-danger" style="font-size: 4rem;"></i>
+                </div>
+                <h4 id="securityTitle">Security Alert</h4>
+                <p id="securityMessage" class="text-muted">This action may have security implications.</p>
+                <div class="alert alert-warning mt-3">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Important:</strong> Only proceed if you understand the risks.
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-danger" id="securityConfirm">
+                    <i class="fas fa-exclamation-triangle"></i> I Understand, Proceed
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Universal Modal JavaScript -->
+<script>
+// PROFESSIONAL MODAL SYSTEM - Senior Developer Implementation
+class UniversalModal {
+    static activeModals = new Set();
+    static isInitialized = false;
+    static backdropElement = null;
+    
+    static init() {
+        if (this.isInitialized) return;
+        this.isInitialized = true;
+        
+        // Global modal protection system
+        this.setupGlobalProtection();
+        
+        // Initialize all existing modals
+        this.initializeExistingModals();
+        
+        // Create reliable backdrop system
+        this.createReliableBackdrop();
+    }
+    
+    static createReliableBackdrop() {
+        // NO BACKDROP/SHADOW SYSTEM - Clean popups without background
+        this.backdropElement = null; // Disabled backdrop system
+    }
+    
+    static setupGlobalProtection() {
+        // ESC key support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.activeModals.size > 0) {
+                this.hideAll();
+            }
+        });
+        
+        // Close button support
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('[data-bs-dismiss="modal"], .btn-close, .modal-close')) {
+                this.hideAll();
+            }
+        });
+    }
+    
+    static initializeExistingModals() {
+        // Find and initialize all modals on the page
+        const allModals = document.querySelectorAll('.modal');
+        allModals.forEach(modal => {
+            this.protectModal(modal);
+        });
+    }
+    
+    static protectModal(modal) {
+        // Allow all interactions - no protection needed
+        if (modal && !modal.hasAttribute('data-protected')) {
+            modal.setAttribute('data-protected', 'true');
+        }
+    }
+    
+    static show(type, title, message, options = {}) {
+        // Initialize if not done
+        this.init();
+        
+        const modalId = type + 'Modal';
+        const modal = document.getElementById(modalId);
+        
+        if (!modal) {
+            console.error('Modal not found:', modalId);
+            return;
+        }
+        
+        // Protect this modal
+        this.protectModal(modal);
+        
+        // Update content
+        const titleElement = document.getElementById(type + 'Title');
+        const messageElement = document.getElementById(type + 'Message');
+        
+        if (titleElement) titleElement.textContent = title;
+        if (messageElement) messageElement.textContent = message;
+        
+        // Handle special options
+        if (options.details && type === 'error') {
+            const detailsElement = document.getElementById('errorDetails');
+            const detailsText = document.getElementById('errorDetailsText');
+            if (detailsElement && detailsText) {
+                detailsText.textContent = options.details;
+                detailsElement.style.display = 'block';
+            }
+        }
+        
+        if (options.expectedRelease && type === 'comingSoon') {
+            const releaseElement = document.getElementById('expectedRelease');
+            if (releaseElement) releaseElement.textContent = options.expectedRelease;
+        }
+        
+        // CLEAN MODAL SYSTEM - NO SHADOW/BACKDROP
+        // Clean up any existing modals first
+        this.hideAll();
+        
+        // NO BACKDROP - Clean popup without shadow
+        
+        // Configure modal - CLEAN POPUP WITHOUT SHADOW
+        modal.style.cssText = `
+            display: flex !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            z-index: 1050 !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            visibility: visible !important;
+            background: transparent !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 1rem !important;
+        `;
+        
+        // Clean modal dialog styling
+        const modalDialog = modal.querySelector('.modal-dialog');
+        if (modalDialog) {
+            modalDialog.style.cssText = `
+                z-index: 1055 !important;
+                position: relative !important;
+                background: transparent !important;
+                margin: 0 !important;
+                max-width: 500px !important;
+                width: auto !important;
+            `;
+        }
+        
+        // Clean modal content - no shadow
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.style.cssText += `
+                z-index: 1060 !important;
+                position: relative !important;
+                background: white !important;
+                border: 1px solid #dee2e6 !important;
+                box-shadow: none !important;
+                border-radius: 0.5rem !important;
+            `;
+        }
+        
+        modal.classList.add('show');
+        this.activeModals.add(modal);
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+        
+        // Return modal instance
+        return {
+            hide: () => this.hideModal(modal)
+        };
+    }
+    
+    static success(title, message) {
+        return this.show('success', title, message);
+    }
+    
+    static error(title, message, details = null) {
+        return this.show('error', title, message, { details });
+    }
+    
+    static info(title, message) {
+        return this.show('info', title, message);
+    }
+    
+    static comingSoon(title, message, expectedRelease = 'Next update') {
+        return this.show('comingSoon', title, message, { expectedRelease });
+    }
+    
+    static securityWarning(title, message, callback) {
+        const modal = this.show('securityWarning', title, message);
+        
+        // Set up confirmation callback
+        const confirmBtn = document.getElementById('securityConfirm');
+        if (confirmBtn && callback) {
+            confirmBtn.onclick = () => {
+                callback();
+                bootstrap.Modal.getInstance(document.getElementById('securityWarningModal')).hide();
+            };
+        }
+        
+        return modal;
+    }
+    
+    static confirm(title, message, callback) {
+        const modal = this.show('confirm', title, message);
+        
+        // Set up confirmation callback
+        const confirmBtn = document.getElementById('confirmAction');
+        if (confirmBtn && callback) {
+            confirmBtn.onclick = () => {
+                callback();
+                bootstrap.Modal.getInstance(document.getElementById('confirmModal')).hide();
+            };
+        }
+        
+        return modal;
+    }
+    
+    static loading(title, message) {
+        const modal = this.show('loading', title, message);
+        
+        // Auto-hide loading modal after 5 seconds to prevent stuck modals
+        setTimeout(() => {
+            this.hideLoading();
+        }, 5000);
+        
+        return modal;
+    }
+    
+    static hideLoading() {
+        const loadingModal = bootstrap.Modal.getInstance(document.getElementById('loadingModal'));
+        if (loadingModal) {
+            loadingModal.hide();
+        }
+        
+        // Enhanced cleanup of any stuck backdrop
+        this.forceCleanup();
+    }
+    
+    static showBackdrop() {
+        // NO BACKDROP - Clean popups without shadow
+        return;
+    }
+    
+    static hideBackdrop() {
+        // NO BACKDROP - Clean popups without shadow
+        return;
+    }
+    
+    static hideModal(modal) {
+        if (modal && this.activeModals.has(modal)) {
+            modal.classList.remove('show');
+            modal.style.display = 'none';
+            this.activeModals.delete(modal);
+            
+            if (this.activeModals.size === 0) {
+                this.hideBackdrop();
+                document.body.style.overflow = '';
+            }
+        }
+    }
+    
+    static hideAll() {
+        this.activeModals.forEach(modal => {
+            modal.classList.remove('show');
+            modal.style.display = 'none';
+        });
+        this.activeModals.clear();
+        document.body.style.overflow = '';
+        
+        // Clean up ANY backdrops/shadows
+        document.querySelectorAll('.modal-backdrop, .universal-modal-backdrop').forEach(b => b.remove());
+        document.body.classList.remove('modal-open');
+        document.body.style.paddingRight = '';
+    }
+    
+    static forceCleanup() {
+        this.hideAll();
+    }
+}
+
+// Global functions for backward compatibility
+function showSuccess(title, message) {
+    UniversalModal.success(title, message);
+}
+
+function showError(title, message, details = null) {
+    UniversalModal.error(title, message, details);
+}
+
+function showInfo(title, message) {
+    UniversalModal.info(title, message);
+}
+
+function showComingSoon(title, message, expectedRelease) {
+    UniversalModal.comingSoon(title, message, expectedRelease);
+}
+
+function showConfirm(title, message, callback) {
+    UniversalModal.confirm(title, message, callback);
+}
+
+function showSecurityWarning(title, message, callback) {
+    UniversalModal.securityWarning(title, message, callback);
+}
+
+function showLoading(title, message) {
+    return UniversalModal.loading(title, message);
+}
+
+function hideLoading() {
+    UniversalModal.hideLoading();
+}
+
+// Global cleanup function
+function cleanupModals() {
+    UniversalModal.forceCleanup();
+}
+
+// PROFESSIONAL MODAL BRIDGE SYSTEM - Senior Developer Implementation
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the universal modal system
+    UniversalModal.init();
+    
+    // BRIDGE SYSTEM: Make all Bootstrap modals use Universal backdrop
+    initializeBootstrapModalBridge();
+    
+    // Watch for dynamically added modals
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === 1 && node.classList && node.classList.contains('modal')) {
+                    UniversalModal.protectModal(node);
+                }
+            });
+        });
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+    
+    // PROFESSIONAL CLEANUP SYSTEM - Maintain modal integrity
+    setInterval(() => {
+        // Only clean up orphaned Bootstrap backdrops (not our universal backdrop)
+        document.querySelectorAll('.modal-backdrop:not(.universal-modal-backdrop)').forEach(b => {
+            // Only remove if no active Bootstrap modals
+            const activeBootstrapModals = document.querySelectorAll('.modal.show:not([data-universal])');
+            if (activeBootstrapModals.length === 0) {
+                b.remove();
+            }
+        });
+        
+        // Ensure body classes are correct
+        if (UniversalModal.activeModals.size === 0) {
+            document.body.classList.remove('modal-open');
+            if (!document.querySelector('.modal.show')) {
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+            }
+        }
+    }, 2000); // Clean every 2 seconds
+});
+
+// Replace all alert() calls
+window.alert = function(message) {
+    UniversalModal.info('Information', message);
+};
+
+// Replace all confirm() calls
+window.confirm = function(message) {
+    return new Promise((resolve) => {
+        UniversalModal.confirm('Confirmation', message, () => resolve(true));
+        // Add cancel handler
+        document.getElementById('confirmModal').addEventListener('hidden.bs.modal', () => resolve(false), { once: true });
+    });
+};
+
+// Retry functionality
+let lastFailedAction = null;
+
+function setRetryAction(action) {
+    lastFailedAction = action;
+}
+
+function retryLastAction() {
+    if (lastFailedAction && typeof lastFailedAction === 'function') {
+        bootstrap.Modal.getInstance(document.getElementById('errorModal')).hide();
+        lastFailedAction();
+    }
+}
+
+// BOOTSTRAP MODAL BRIDGE SYSTEM - Professional Implementation
+function initializeBootstrapModalBridge() {
+    // Override Bootstrap Modal show method to use Universal backdrop
+    const originalBootstrapModal = window.bootstrap?.Modal;
+    
+    if (originalBootstrapModal) {
+        // Store original methods
+        const originalShow = originalBootstrapModal.prototype.show;
+        const originalHide = originalBootstrapModal.prototype.hide;
+        
+        // Override show method - NO BACKDROP/SHADOW
+        originalBootstrapModal.prototype.show = function() {
+            // Clean any existing backdrops first
+            UniversalModal.forceCleanup();
+            
+            // NO BACKDROP - Clean popup without shadow
+            
+            // Show modal without Bootstrap backdrop
+            this._config.backdrop = false;
+            this._config.keyboard = false; // We handle ESC ourselves
+            
+            // Call original show
+            originalShow.call(this);
+            
+            // Add to active modals
+            UniversalModal.activeModals.add(this._element);
+            
+            // Clean styling - no shadows
+            if (this._element) {
+                const content = this._element.querySelector('.modal-content');
+                if (content) {
+                    content.style.boxShadow = 'none';
+                    content.style.border = '1px solid #dee2e6';
+                }
+            }
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        };
+        
+        // Override hide method
+        originalBootstrapModal.prototype.hide = function() {
+            // Remove from active modals
+            UniversalModal.activeModals.delete(this._element);
+            
+            // Call original hide
+            originalHide.call(this);
+            
+            // Hide Universal backdrop if no more modals
+            if (UniversalModal.activeModals.size === 0) {
+                UniversalModal.hideBackdrop();
+                document.body.style.overflow = '';
+            }
+        };
+    }
+    
+    // Handle all data-bs-toggle="modal" triggers
+    document.addEventListener('click', function(e) {
+        const trigger = e.target.closest('[data-bs-toggle="modal"]');
+        if (trigger) {
+            e.preventDefault();
+            const targetSelector = trigger.getAttribute('data-bs-target');
+            const targetModal = document.querySelector(targetSelector);
+            
+            if (targetModal) {
+                // Clean any existing modals first
+                UniversalModal.forceCleanup();
+                
+                // Show using Bootstrap but with Universal backdrop
+                const modalInstance = bootstrap.Modal.getOrCreateInstance(targetModal, {
+                    backdrop: false,
+                    keyboard: false
+                });
+                modalInstance.show();
+            }
+        }
+    });
+    
+    // Handle modal close buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('[data-bs-dismiss="modal"]')) {
+            const modal = e.target.closest('.modal');
+            if (modal) {
+                const modalInstance = bootstrap.Modal.getInstance(modal);
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+            }
+        }
+    });
+}
+
+// UNIVERSAL MODAL REPLACEMENT FUNCTIONS
+// Replace all Bootstrap modal calls with Universal system
+window.showBootstrapModal = function(modalId, title, content) {
+    // Convert Bootstrap modal to Universal modal
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        // Update content if provided
+        if (title) {
+            const titleElement = modal.querySelector('.modal-title');
+            if (titleElement) titleElement.textContent = title;
+        }
+        if (content) {
+            const bodyElement = modal.querySelector('.modal-body');
+            if (bodyElement) bodyElement.innerHTML = content;
+        }
+        
+        // Show using Universal system
+        UniversalModal.forceCleanup();
+        UniversalModal.showBackdrop();
+        
+        modal.style.display = 'block';
+        modal.classList.add('show');
+        UniversalModal.activeModals.add(modal);
+        document.body.style.overflow = 'hidden';
+        
+        return {
+            hide: () => UniversalModal.hideModal(modal)
+        };
+    }
+};
+
+// Enhanced success message function for contact forms
+window.showSuccessMessage = function(message) {
+    UniversalModal.success('Success', message);
+};
+</script>
+
+<style>
+/* PROFESSIONAL MODAL SYSTEM - Senior Developer Implementation */
+
+/* NO BACKDROP SYSTEM - Clean popups without shadow */
+
+/* Clean modal content styling - NO SHADOWS */
+.modal-content {
+    border-radius: 0.5rem !important;
+    box-shadow: none !important;
+    border: 1px solid #dee2e6 !important;
+    position: relative;
+    z-index: 1051;
+    background: white !important;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Modal positioning fix - ENSURE PROPER LAYERING */
+.modal {
+    z-index: 1050 !important;
+    background: transparent !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.modal.show {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 1rem !important;
+    z-index: 1050 !important;
+}
+
+.modal-dialog {
+    margin: 0 !important;
+    max-width: 90vw !important;
+    width: auto !important;
+    position: relative !important;
+    z-index: 1055 !important;
+    background: transparent !important;
+}
+
+/* Modal header styling */
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+    padding: 1.25rem 1.5rem;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+/* Modal body styling */
+.modal-body {
+    padding: 1.5rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* Modal footer styling */
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+    padding: 1rem 1.5rem;
+    border-radius: 0 0 0.75rem 0.75rem;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+    animation: spin 1s linear infinite;
+}
+
+/* Icon pulse animation */
+@keyframes modalIconPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.modal-body i[style*="font-size: 4rem"] {
+    animation: modalIconPulse 2s infinite;
+}
+
+/* Modal type borders */
+.border-success { border-color: #28a745; border-width: 3px; }
+.border-danger { border-color: #dc3545; border-width: 3px; }
+.border-warning { border-color: #ffc107; border-width: 3px; }
+.border-info { border-color: #17a2b8; border-width: 3px; }
+.border-primary { border-color: #007bff; border-width: 3px; }
+</style>

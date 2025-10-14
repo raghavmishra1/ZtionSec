@@ -1,0 +1,415 @@
+{% extends 'scanner/base.html' %}
+
+{% block title %}Advanced Security Report - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-lg">
+                <div class="card-body text-center">
+                    <h1 class="display-4 mb-3">
+                        <i class="fas fa-file-alt"></i> Advanced Security Report
+                    </h1>
+                    <h3 class="mb-3 text-primary">{{ scan.url }}</h3>
+                    <p class="text-muted">Generated on {{ report.generated_date|date:"F d, Y H:i" }}</p>
+                    
+                    <div class="mt-4">
+                        <button class="btn btn-primary btn-lg me-2" onclick="downloadPDF()">
+                            <i class="fas fa-download"></i> Download PDF
+                        </button>
+                        <button class="btn btn-outline-secondary btn-lg me-2" onclick="printReport()">
+                            <i class="fas fa-print"></i> Print Report
+                        </button>
+                        <a href="{% url 'advanced_scan_results' scan.id %}" class="btn btn-outline-info btn-lg">
+                            <i class="fas fa-arrow-left"></i> Back to Results
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Executive Summary -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-chart-line"></i> Executive Summary
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            <div class="summary-metric">
+                                <div class="metric-value text-primary">{{ report_data.executive_summary.security_score }}/100</div>
+                                <div class="metric-label">Security Score</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="summary-metric">
+                                <div class="metric-value text-{{ report_data.executive_summary.overall_risk|default:'secondary' }}">
+                                    {{ report_data.executive_summary.overall_risk|title }}
+                                </div>
+                                <div class="metric-label">Risk Level</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="summary-metric">
+                                <div class="metric-value text-danger">{{ report_data.executive_summary.critical_issues }}</div>
+                                <div class="metric-label">Critical Issues</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="summary-metric">
+                                <div class="metric-value text-warning">{{ report_data.executive_summary.high_issues }}</div>
+                                <div class="metric-label">High Priority</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vulnerability Analysis -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bug"></i> Vulnerability Analysis
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <h6>Findings by Category</h6>
+                    {% if report_data.vulnerability_analysis.by_category %}
+                        {% for category, findings in report_data.vulnerability_analysis.by_category.items %}
+                        <div class="category-section mb-3">
+                            <h6 class="text-primary">{{ category|title }} ({{ findings|length }})</h6>
+                            {% for finding in findings|slice:":3" %}
+                            <div class="finding-item">
+                                <span class="badge 
+                                    {% if finding.severity == 'critical' %}bg-danger
+                                    {% elif finding.severity == 'high' %}bg-warning
+                                    {% elif finding.severity == 'medium' %}bg-info
+                                    {% else %}bg-secondary{% endif %}">
+                                    {{ finding.severity|title }}
+                                </span>
+                                <strong>{{ finding.title }}</strong>
+                                <p class="text-muted small">{{ finding.description|truncatechars:100 }}</p>
+                            </div>
+                            {% endfor %}
+                            {% if findings|length > 3 %}
+                            <small class="text-muted">... and {{ findings|length|add:"-3" }} more</small>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i>
+                            No vulnerabilities detected in this scan.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-pie"></i> Severity Distribution
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if report_data.vulnerability_analysis.severity_distribution %}
+                        {% for severity, count in report_data.vulnerability_analysis.severity_distribution.items %}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-capitalize">{{ severity }}</span>
+                            <span class="badge 
+                                {% if severity == 'critical' %}bg-danger
+                                {% elif severity == 'high' %}bg-warning
+                                {% elif severity == 'medium' %}bg-info
+                                {% else %}bg-secondary{% endif %}">
+                                {{ count }}
+                            </span>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No vulnerability data available</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Risk Assessment -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-exclamation-triangle"></i> Risk Assessment
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Identified Risk Factors</h6>
+                            {% if report_data.risk_assessment.risk_factors %}
+                                {% for factor in report_data.risk_assessment.risk_factors %}
+                                <div class="risk-factor mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>{{ factor.factor }}</strong>
+                                        <span class="badge 
+                                            {% if factor.impact == 'High' %}bg-danger
+                                            {% elif factor.impact == 'Medium' %}bg-warning
+                                            {% else %}bg-info{% endif %}">
+                                            {{ factor.impact }}
+                                        </span>
+                                    </div>
+                                    <p class="text-muted small">{{ factor.description }}</p>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="alert alert-success">
+                                    <i class="fas fa-shield-alt"></i>
+                                    No significant risk factors identified.
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Compliance Status</h6>
+                            <div class="compliance-grid">
+                                <div class="compliance-item">
+                                    <strong>OWASP Top 10:</strong>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" style="width: 75%">75%</div>
+                                    </div>
+                                </div>
+                                <div class="compliance-item">
+                                    <strong>NIST Framework:</strong>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" style="width: {{ report_data.risk_assessment.compliance.nist_framework.score }}%">
+                                            {{ report_data.risk_assessment.compliance.nist_framework.score }}%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="compliance-item">
+                                    <strong>ISO 27001:</strong>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" style="width: {{ report_data.risk_assessment.compliance.iso_27001.score }}%">
+                                            {{ report_data.risk_assessment.compliance.iso_27001.score }}%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Recommendations -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-lightbulb"></i> Security Recommendations
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if report_data.recommendations %}
+                        <div class="recommendations-grid">
+                            {% for recommendation in report_data.recommendations %}
+                            <div class="recommendation-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="mb-0">{{ recommendation.title }}</h6>
+                                    <span class="badge 
+                                        {% if recommendation.priority == 'Critical' %}bg-danger
+                                        {% elif recommendation.priority == 'High' %}bg-warning
+                                        {% elif recommendation.priority == 'Medium' %}bg-info
+                                        {% else %}bg-secondary{% endif %}">
+                                        {{ recommendation.priority }}
+                                    </span>
+                                </div>
+                                <p class="text-muted">{{ recommendation.description }}</p>
+                                <div class="recommendation-details">
+                                    <strong>Recommendation:</strong> {{ recommendation.recommendation }}<br>
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock"></i> Timeline: {{ recommendation.timeline }} |
+                                        <i class="fas fa-wrench"></i> Effort: {{ recommendation.effort }}
+                                    </small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            No specific recommendations at this time. Continue monitoring for new threats.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technical Details -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cogs"></i> Technical Scan Details
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Scan Configuration</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Target URL:</strong></td>
+                                    <td>{{ scan.url }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Scan Date:</strong></td>
+                                    <td>{{ scan.scan_date|date:"F d, Y H:i" }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Duration:</strong></td>
+                                    <td>{{ scan.scan_duration|floatformat:1 }} seconds</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>IP Address:</strong></td>
+                                    <td>{{ scan.ip_address|default:"N/A" }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Scan Coverage</h6>
+                            <div class="coverage-items">
+                                <div class="coverage-item">
+                                    <i class="fas fa-check text-success"></i> SSL/TLS Analysis
+                                </div>
+                                <div class="coverage-item">
+                                    <i class="fas fa-check text-success"></i> Security Headers
+                                </div>
+                                <div class="coverage-item">
+                                    <i class="fas fa-check text-success"></i> Port Scanning
+                                </div>
+                                <div class="coverage-item">
+                                    <i class="fas fa-check text-success"></i> Vulnerability Assessment
+                                </div>
+                                <div class="coverage-item">
+                                    <i class="fas fa-check text-success"></i> Technology Detection
+                                </div>
+                                <div class="coverage-item">
+                                    <i class="fas fa-check text-success"></i> Threat Intelligence
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <p class="text-muted mb-0">
+                        This report was generated by ZtionSec Advanced Security Platform<br>
+                        <small>Report ID: {{ report.id }} | Generated: {{ report.generated_date|date:"F d, Y H:i" }}</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.summary-metric {
+    padding: 20px 0;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.finding-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.finding-item:last-child {
+    border-bottom: none;
+}
+
+.risk-factor {
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.compliance-item {
+    margin-bottom: 15px;
+}
+
+.recommendation-item {
+    background-color: #f8f9fa;
+}
+
+.coverage-item {
+    padding: 5px 0;
+}
+
+@media print {
+    .btn {
+        display: none !important;
+    }
+    
+    .card {
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function downloadPDF() {
+    // Create a more comprehensive PDF download
+    window.location.href = '{% url "generate_advanced_report" scan.id %}?format=pdf';
+}
+
+function printReport() {
+    window.print();
+}
+
+// Auto-generate charts if data is available
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Advanced report loaded successfully');
+});
+</script>
+{% endblock %}

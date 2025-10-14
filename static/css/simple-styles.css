@@ -1,0 +1,138 @@
+/* SIMPLE STYLES - No Animations, Basic Functionality */
+
+/* Simple Z-Index Management */
+:root {
+    --z-navbar: 1030;
+    --z-dropdown: 1035;
+    --z-popup: 9999;
+}
+
+/* Remove Bootstrap Modal Backdrops */
+.modal-backdrop {
+    display: none !important;
+}
+
+/* Simple Modal Content */
+.modal-content {
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+    background: white !important;
+}
+
+/* Simple Navbar */
+.navbar {
+    z-index: var(--z-navbar) !important;
+}
+
+/* Simple Dropdown */
+.dropdown-menu {
+    z-index: var(--z-dropdown) !important;
+    background: white !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* Simple Cards */
+.card {
+    border: 1px solid #dee2e6 !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+}
+
+/* Simple Buttons */
+.btn {
+    border-radius: 4px !important;
+    transition: none !important;
+}
+
+.btn:hover {
+    transform: none !important;
+}
+
+/* Remove All Animations */
+* {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Simple Form Controls */
+.form-control {
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+}
+
+.form-control:focus {
+    border-color: #007bff !important;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25) !important;
+}
+
+/* Simple Tables */
+.table {
+    border: 1px solid #dee2e6 !important;
+}
+
+.table th {
+    background-color: #f8f9fa !important;
+    border-bottom: 2px solid #dee2e6 !important;
+}
+
+/* Simple Alerts */
+.alert {
+    border-radius: 4px !important;
+    border: 1px solid transparent !important;
+}
+
+/* Simple Progress Bars */
+.progress {
+    background-color: #e9ecef !important;
+    border-radius: 4px !important;
+}
+
+/* Simple Badges */
+.badge {
+    border-radius: 4px !important;
+}
+
+/* Remove Complex Hover Effects */
+.security-card:hover,
+.modern-card:hover,
+.feature-icon:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Simple Footer */
+.footer {
+    background: #343a40 !important;
+    color: white !important;
+    padding: 2rem 0 !important;
+}
+
+/* Simple Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    padding: 4rem 0 !important;
+}
+
+/* Remove All Fancy Effects */
+.logo-img:hover,
+.nav-link:hover,
+.footer-logo:hover {
+    transform: none !important;
+    animation: none !important;
+}
+
+/* Simple Responsive Design */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 0 15px !important;
+    }
+    
+    .card {
+        margin-bottom: 1rem !important;
+    }
+}

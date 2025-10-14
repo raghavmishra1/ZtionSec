@@ -1,0 +1,19 @@
+{% if show_ads and slot_id %}
+<div class="adsense-unit {{ css_class }}">
+    <ins class="adsbygoogle"
+         {% if width and height %}
+         style="display:inline-block;width:{{ width }}px;height:{{ height }}px"
+         {% else %}
+         style="display:block"
+         {% endif %}
+         data-ad-client="ca-{{ publisher_id }}"
+         data-ad-slot="{{ slot_id }}"
+         {% if not width or not height %}
+         data-ad-format="auto"
+         data-full-width-responsive="true"
+         {% endif %}></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+{% endif %}

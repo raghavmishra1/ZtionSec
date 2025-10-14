@@ -1,0 +1,184 @@
+{% extends 'scanner/base.html' %}
+
+{% block title %}Data Breach Check Results - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h1 class="display-4 mb-3">
+                        <i class="fas fa-database"></i> Data Breach Check Results
+                    </h1>
+                    <h3 class="mb-3">{{ breach_check.email }}</h3>
+                    <div class="d-flex justify-content-center align-items-center gap-4">
+                        <div class="text-center">
+                            {% if breach_check.breaches_found > 0 %}
+                                <div class="alert alert-danger d-inline-block">
+                                    <i class="fas fa-exclamation-triangle fa-2x"></i>
+                                    <h4 class="mt-2">{{ breach_check.breaches_found }} Breach{{ breach_check.breaches_found|pluralize:"es" }} Found</h4>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-success d-inline-block">
+                                    <i class="fas fa-check-circle fa-2x"></i>
+                                    <h4 class="mt-2">No Breaches Found</h4>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <a href="{% url 'home' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-arrow-left"></i> Check Another Email
+                        </a>
+                        <a href="{% url 'breach_history' %}" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-history"></i> View History
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header {% if breach_check.breaches_found > 0 %}bg-danger{% else %}bg-success{% endif %} text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-search"></i> Breach Analysis Details
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Email Address:</strong></td>
+                                    <td>{{ breach_check.email }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Check Date:</strong></td>
+                                    <td>{{ breach_check.check_date|date:"F d, Y H:i" }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Breaches Found:</strong></td>
+                                    <td>
+                                        <span class="badge {% if breach_check.breaches_found > 0 %}bg-danger{% else %}bg-success{% endif %} fs-6">
+                                            {{ breach_check.breaches_found }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            {% if breach_check.breaches_found > 0 %}
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-info-circle"></i>
+                                    <strong>What this means:</strong> Your email address was found in {{ breach_check.breaches_found }} known data breach{{ breach_check.breaches_found|pluralize:"es" }}.
+                                </div>
+                            {% else %}
+                                <div class="alert alert-info">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <strong>Good news:</strong> Your email address was not found in any known data breaches in our database.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breach Details Section -->
+    {% if breach_check.breaches_found > 0 and results.breach_details %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">
+                        <i class="fas fa-list"></i> Affected Services
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for breach in results.breach_details %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-warning">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-exclamation-triangle text-warning fa-2x mb-2"></i>
+                                    <h6 class="card-title">{{ breach }}</h6>
+                                    <small class="text-muted">Data breach detected</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Recommendations Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-lightbulb"></i> Security Recommendations
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% if breach_check.breaches_found > 0 %}
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-triangle"></i> Immediate Actions Required</h5>
+                            <ul class="mb-0">
+                                <li>Change passwords for all accounts associated with this email address</li>
+                                <li>Enable two-factor authentication (2FA) wherever possible</li>
+                                <li>Monitor your accounts for suspicious activity</li>
+                                <li>Consider using a password manager to generate unique passwords</li>
+                                <li>Check your credit reports for unauthorized accounts</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="alert alert-warning">
+                            <h5><i class="fas fa-shield-alt"></i> Long-term Security Measures</h5>
+                            <ul class="mb-0">
+                                <li>Use unique, strong passwords for each account</li>
+                                <li>Regularly update passwords, especially for sensitive accounts</li>
+                                <li>Be cautious about sharing personal information online</li>
+                                <li>Keep software and security tools up to date</li>
+                                <li>Consider identity monitoring services</li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success">
+                            <h5><i class="fas fa-check-circle"></i> Preventive Security Measures</h5>
+                            <ul class="mb-0">
+                                <li>Continue using strong, unique passwords for each account</li>
+                                <li>Enable two-factor authentication (2FA) for important accounts</li>
+                                <li>Regularly monitor your accounts for suspicious activity</li>
+                                <li>Keep your software and security tools updated</li>
+                                <li>Be cautious about sharing personal information online</li>
+                                <li>Periodically check for new breaches using this tool</li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="alert alert-info">
+                        <h5><i class="fas fa-info-circle"></i> About This Check</h5>
+                        <p class="mb-0">
+                            This check uses publicly available breach databases to determine if your email address 
+                            has been compromised. The absence of your email in these databases doesn't guarantee 
+                            complete security, as new breaches are discovered regularly. We recommend checking 
+                            periodically and following security best practices.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

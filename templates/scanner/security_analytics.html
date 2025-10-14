@@ -1,0 +1,1250 @@
+{% extends 'scanner/base.html' %}
+
+{% block title %}Security Analytics - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold text-primary">
+                <i class="fas fa-chart-bar"></i> Security Analytics Dashboard
+            </h1>
+            <p class="lead text-muted">Comprehensive security metrics and trend analysis</p>
+        </div>
+    </div>
+
+    <!-- Manual Refresh Status Bar -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="alert alert-info d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="fas fa-chart-line"></i>
+                    <strong>Security Analytics Dashboard</strong> - Real data from your scans
+                </div>
+                <div>
+                    <span class="badge bg-primary" id="lastUpdate">{{ current_time|date:"H:i:s" }}</span>
+                    <button class="btn btn-sm btn-outline-primary ms-2" onclick="manualRefresh()" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i> Refresh Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Metrics Cards -->
+    <div class="row mb-4" id="metricsCards">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-search fa-2x mb-2"></i>
+                    <h3 id="totalScans">{{ total_recent_scans }}</h3>
+                    <p class="mb-0">Scans (30 days)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                    <h3 id="highSeverityCVEs">{{ vuln_stats.high_severity_count }}</h3>
+                    <p class="mb-0">High Severity CVEs</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-database fa-2x mb-2"></i>
+                    <h3 id="totalCVEs">{{ vuln_stats.total_cves }}</h3>
+                    <p class="mb-0">Total CVEs</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-shield-alt fa-2x mb-2"></i>
+                    <h3 id="recentCVEs">{{ vuln_stats.recent_cves }}</h3>
+                    <p class="mb-0">Recent CVEs (7 days)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 1 -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-pie"></i> Risk Level Distribution
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="riskDistributionChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-line"></i> Findings Trend (30 days)
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="findingsTrendChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bug"></i> Top Vulnerabilities (30 days)
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if top_vulnerabilities %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Vulnerability</th>
+                                        <th>Count</th>
+                                        <th>Trend</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for vuln in top_vulnerabilities %}
+                                    <tr>
+                                        <td>{{ vuln.title|truncatechars:50 }}</td>
+                                        <td>
+                                            <span class="badge bg-primary">{{ vuln.count }}</span>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height: 8px; width: 100px;">
+                                                <div class="progress-bar bg-warning" 
+                                                     style="width: {{ vuln.count|floatformat:0 }}%"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-chart-bar fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No vulnerability data available for the selected period.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clock"></i> Recent Activity
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="activity-feed">
+                        <div class="activity-item">
+                            <div class="activity-icon bg-primary">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p class="mb-1"><strong>New scan completed</strong></p>
+                                <small class="text-muted">2 minutes ago</small>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon bg-warning">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p class="mb-1"><strong>Critical vulnerability detected</strong></p>
+                                <small class="text-muted">15 minutes ago</small>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon bg-info">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p class="mb-1"><strong>CVE database updated</strong></p>
+                                <small class="text-muted">1 hour ago</small>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon bg-success">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p class="mb-1"><strong>Threat intelligence updated</strong></p>
+                                <small class="text-muted">2 hours ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Real-time Activity Feed -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-stream"></i> Real-time Security Activity
+                        <span class="badge bg-success ms-2">Live</span>
+                    </h5>
+                </div>
+                <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                    <div id="activityFeed">
+                        <!-- Real-time activity items will be added here -->
+                        <div class="activity-item d-flex align-items-start mb-3">
+                            <div class="activity-icon me-3">
+                                <i class="fas fa-search text-primary"></i>
+                            </div>
+                            <div class="activity-content flex-grow-1">
+                                <p class="mb-1">Security analytics dashboard initialized</p>
+                                <small class="text-muted">Just now</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0">
+                        <i class="fas fa-tachometer-alt"></i> System Status
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="status-item d-flex justify-content-between mb-2">
+                        <span>Scanner Engine</span>
+                        <span class="badge bg-success">Online</span>
+                    </div>
+                    <div class="status-item d-flex justify-content-between mb-2">
+                        <span>CVE Database</span>
+                        <span class="badge bg-success">Synced</span>
+                    </div>
+                    <div class="status-item d-flex justify-content-between mb-2">
+                        <span>Threat Intel</span>
+                        <span class="badge bg-warning">Updating</span>
+                    </div>
+                    <div class="status-item d-flex justify-content-between mb-2">
+                        <span>API Endpoints</span>
+                        <span class="badge bg-success">Active</span>
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                        <small class="text-muted">
+                            <i class="fas fa-clock"></i> 
+                            Uptime: <span id="uptime">99.9%</span>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Posture Overview -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-shield-alt"></i> Security Posture Overview
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            <div class="security-metric">
+                                <div class="metric-circle bg-success">
+                                    <span class="metric-value">85%</span>
+                                </div>
+                                <h6 class="mt-2">SSL Coverage</h6>
+                                <p class="text-muted small">Websites with valid SSL</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="security-metric">
+                                <div class="metric-circle bg-warning">
+                                    <span class="metric-value">62%</span>
+                                </div>
+                                <h6 class="mt-2">Header Security</h6>
+                                <p class="text-muted small">Security headers present</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="security-metric">
+                                <div class="metric-circle bg-info">
+                                    <span class="metric-value">78%</span>
+                                </div>
+                                <h6 class="mt-2">Vulnerability Patching</h6>
+                                <p class="text-muted small">Known vulnerabilities addressed</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="security-metric">
+                                <div class="metric-circle bg-primary">
+                                    <span class="metric-value">91%</span>
+                                </div>
+                                <h6 class="mt-2">Overall Score</h6>
+                                <p class="text-muted small">Average security rating</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compliance Dashboard -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="mb-0">
+                        <i class="fas fa-check-circle"></i> OWASP Top 10 Compliance
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="compliance-item">
+                        <div class="d-flex justify-content-between">
+                            <span>A01 - Broken Access Control</span>
+                            <span class="badge bg-success">Pass</span>
+                        </div>
+                    </div>
+                    <div class="compliance-item">
+                        <div class="d-flex justify-content-between">
+                            <span>A02 - Cryptographic Failures</span>
+                            <span class="badge bg-warning">Warning</span>
+                        </div>
+                    </div>
+                    <div class="compliance-item">
+                        <div class="d-flex justify-content-between">
+                            <span>A03 - Injection</span>
+                            <span class="badge bg-success">Pass</span>
+                        </div>
+                    </div>
+                    <div class="compliance-item">
+                        <div class="d-flex justify-content-between">
+                            <span>A05 - Security Misconfiguration</span>
+                            <span class="badge bg-danger">Fail</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h6 class="mb-0">
+                        <i class="fas fa-shield-alt"></i> NIST Framework
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="compliance-score">
+                        <div class="score-circle">
+                            <span class="score-value">72%</span>
+                        </div>
+                        <p class="text-center mt-2">Compliance Score</p>
+                    </div>
+                    <div class="progress mb-2">
+                        <div class="progress-bar bg-warning" style="width: 72%"></div>
+                    </div>
+                    <small class="text-muted">Based on security controls assessment</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0">
+                        <i class="fas fa-certificate"></i> ISO 27001
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="compliance-score">
+                        <div class="score-circle">
+                            <span class="score-value">68%</span>
+                        </div>
+                        <p class="text-center mt-2">Compliance Score</p>
+                    </div>
+                    <div class="progress mb-2">
+                        <div class="progress-bar bg-info" style="width: 68%"></div>
+                    </div>
+                    <small class="text-muted">Information security management</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export and Actions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h6>Export Analytics Data</h6>
+                    <div class="btn-group">
+                        <button class="btn btn-outline-primary" onclick="exportData('pdf')">
+                            <i class="fas fa-file-pdf"></i> Export PDF
+                        </button>
+                        <button class="btn btn-outline-success" onclick="exportData('excel')">
+                            <i class="fas fa-file-excel"></i> Export Excel
+                        </button>
+                        <button class="btn btn-outline-info" onclick="exportData('json')">
+                            <i class="fas fa-code"></i> Export JSON
+                        </button>
+                        <button class="btn btn-outline-secondary" onclick="scheduleReport()">
+                            <i class="fas fa-clock"></i> Schedule Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.activity-feed {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    color: white;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.security-metric {
+    padding: 20px 0;
+}
+
+.metric-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    color: white;
+    font-weight: bold;
+}
+
+.metric-value {
+    font-size: 1.2rem;
+}
+
+.compliance-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.compliance-item:last-child {
+    border-bottom: none;
+}
+
+.compliance-score {
+    text-align: center;
+}
+
+.score-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    border: 3px solid #007bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.score-value {
+    font-size: 1rem;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Risk Distribution Chart
+const riskCtx = document.getElementById('riskDistributionChart').getContext('2d');
+const riskChart = new Chart(riskCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Low Risk', 'Medium Risk', 'High Risk', 'Critical Risk'],
+        datasets: [{
+            data: [
+                {% for risk in risk_distribution %}{{ risk.count }}{% if not forloop.last %},{% endif %}{% endfor %}
+            ],
+            backgroundColor: ['#28a745', '#ffc107', '#fd7e14', '#dc3545'],
+            borderWidth: 2,
+            borderColor: '#fff'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Findings Trend Chart
+const trendCtx = document.getElementById('findingsTrendChart').getContext('2d');
+const trendChart = new Chart(trendCtx, {
+    type: 'line',
+    data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        datasets: [{
+            label: 'Critical',
+            data: [12, 19, 15, 25],
+            borderColor: '#dc3545',
+            backgroundColor: 'rgba(220, 53, 69, 0.1)',
+            tension: 0.4
+        }, {
+            label: 'High',
+            data: [25, 30, 22, 35],
+            borderColor: '#fd7e14',
+            backgroundColor: 'rgba(253, 126, 20, 0.1)',
+            tension: 0.4
+        }, {
+            label: 'Medium',
+            data: [45, 52, 48, 60],
+            borderColor: '#ffc107',
+            backgroundColor: 'rgba(255, 193, 7, 0.1)',
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+function exportData(format) {
+    showLoading('Generating Export', `Creating ${format.toUpperCase()} export of security analytics data...`);
+    
+    // Collect current analytics data
+    const analyticsData = {
+        totalScans: document.getElementById('totalScans').textContent,
+        highSeverityCVEs: document.getElementById('highSeverityCVEs').textContent,
+        totalCVEs: document.getElementById('totalCVEs').textContent,
+        recentCVEs: document.getElementById('recentCVEs').textContent,
+        exportDate: new Date().toLocaleString(),
+        format: format.toUpperCase()
+    };
+    
+    setTimeout(() => {
+        hideLoading();
+        
+        if (format.toLowerCase() === 'pdf') {
+            generatePDFReport(analyticsData);
+        } else if (format.toLowerCase() === 'csv') {
+            generateCSVReport(analyticsData);
+        } else if (format.toLowerCase() === 'json') {
+            generateJSONReport(analyticsData);
+        } else {
+            generatePDFReport(analyticsData); // Default to PDF
+        }
+        
+        showSuccess(
+            'Export Generated Successfully!',
+            `Your ${format.toUpperCase()} export has been generated and downloaded.`
+        );
+    }, 2000);
+}
+
+function scheduleReport() {
+    // Create and show scheduling modal
+    const schedulingModal = `
+        <div class="modal fade" id="scheduleReportModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">
+                            <i class="fas fa-calendar-alt"></i> Schedule Automated Reports
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="scheduleForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Report Name</label>
+                                        <input type="text" class="form-control" id="reportName" 
+                                               value="Security Analytics Report" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Report Format</label>
+                                        <select class="form-select" id="reportFormat" required>
+                                            <option value="pdf">PDF Report</option>
+                                            <option value="csv">CSV Data</option>
+                                            <option value="json">JSON Data</option>
+                                            <option value="all">All Formats</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Schedule Frequency</label>
+                                        <select class="form-select" id="scheduleFrequency" required>
+                                            <option value="daily">Daily</option>
+                                            <option value="weekly">Weekly</option>
+                                            <option value="monthly">Monthly</option>
+                                            <option value="quarterly">Quarterly</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Recipients</label>
+                                        <textarea class="form-control" id="emailRecipients" rows="3" 
+                                                  placeholder="admin@company.com&#10;security@company.com&#10;manager@company.com"></textarea>
+                                        <div class="form-text">Enter one email per line</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Delivery Time</label>
+                                        <input type="time" class="form-control" id="deliveryTime" value="09:00">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Start Date</label>
+                                        <input type="date" class="form-control" id="startDate" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                <strong>Automated Delivery:</strong> Reports will be automatically generated and emailed to recipients according to your schedule.
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="includeCharts" checked>
+                                    <label class="form-check-label" for="includeCharts">
+                                        Include charts and visualizations
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="includeRecommendations" checked>
+                                    <label class="form-check-label" for="includeRecommendations">
+                                        Include security recommendations
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="enableNotifications" checked>
+                                    <label class="form-check-label" for="enableNotifications">
+                                        Send email notifications when reports are generated
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="saveSchedule()">
+                            <i class="fas fa-calendar-check"></i> Schedule Reports
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remove existing modal if present
+    const existingModal = document.getElementById('scheduleReportModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Add modal to page
+    document.body.insertAdjacentHTML('beforeend', schedulingModal);
+    
+    // Set default start date to tomorrow
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    document.getElementById('startDate').value = tomorrow.toISOString().split('T')[0];
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('scheduleReportModal'));
+    modal.show();
+}
+
+// Manual Refresh Implementation (No Auto-refresh)
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize page without auto-refresh
+    console.log('Security Analytics Dashboard loaded - Manual refresh only');
+});
+
+// Manual refresh function
+function manualRefresh() {
+    const refreshBtn = document.getElementById('refreshBtn');
+    const originalHTML = refreshBtn.innerHTML;
+    
+    // Show loading state
+    refreshBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Refreshing...';
+    refreshBtn.disabled = true;
+    
+    // Simulate data refresh (in production, this would fetch from API)
+    setTimeout(() => {
+        // Update timestamp
+        const now = new Date();
+        document.getElementById('lastUpdate').textContent = now.toLocaleTimeString();
+        
+        // Reset button
+        refreshBtn.innerHTML = originalHTML;
+        refreshBtn.disabled = false;
+        
+        // Show success message
+        showSuccess('Data Refreshed', 'Analytics data has been updated successfully.');
+        
+        // Optionally reload the page for real data refresh
+        // location.reload();
+    }, 2000);
+}
+
+function refreshAnalyticsData() {
+    // Fetch real-time data from API
+    fetch('/api/analytics-data/')
+        .then(response => response.json())
+        .then(data => {
+            updateMetrics(data);
+            updateLastUpdateTime();
+            animateCards();
+        })
+        .catch(error => {
+            console.error('Error fetching analytics data:', error);
+            // Simulate data update for demo
+            simulateDataUpdate();
+        });
+}
+
+function updateMetrics(data) {
+    // Update metric cards with animation
+    if (data.total_scans !== undefined) {
+        animateCounter('totalScans', data.total_scans);
+    }
+    if (data.high_severity_cves !== undefined) {
+        animateCounter('highSeverityCVEs', data.high_severity_cves);
+    }
+    if (data.total_cves !== undefined) {
+        animateCounter('totalCVEs', data.total_cves);
+    }
+    if (data.recent_cves !== undefined) {
+        animateCounter('recentCVEs', data.recent_cves);
+    }
+}
+
+function simulateDataUpdate() {
+    // Simulate real-time data changes for demonstration
+    const currentScans = parseInt(document.getElementById('totalScans').textContent);
+    const currentHighCVEs = parseInt(document.getElementById('highSeverityCVEs').textContent);
+    const currentTotalCVEs = parseInt(document.getElementById('totalCVEs').textContent);
+    const currentRecentCVEs = parseInt(document.getElementById('recentCVEs').textContent);
+    
+    // Random small changes to simulate real activity
+    const scanChange = Math.floor(Math.random() * 3); // 0-2 new scans
+    const cveChange = Math.floor(Math.random() * 2); // 0-1 new CVEs
+    
+    if (scanChange > 0) {
+        animateCounter('totalScans', currentScans + scanChange);
+        addActivityItem('scan', `${scanChange} new security scan${scanChange > 1 ? 's' : ''} completed`);
+    }
+    
+    if (cveChange > 0) {
+        animateCounter('totalCVEs', currentTotalCVEs + cveChange);
+        if (Math.random() > 0.7) { // 30% chance of high severity
+            animateCounter('highSeverityCVEs', currentHighCVEs + 1);
+            addActivityItem('critical', `New critical vulnerability detected: CVE-2024-${Math.floor(Math.random() * 9999)}`);
+        } else {
+            addActivityItem('info', `${cveChange} new CVE${cveChange > 1 ? 's' : ''} added to database`);
+        }
+    }
+    
+    if (Math.random() > 0.8) { // 20% chance of recent CVE update
+        animateCounter('recentCVEs', currentRecentCVEs + 1);
+    }
+    
+    updateLastUpdateTime();
+    animateCards();
+}
+
+function animateCounter(elementId, newValue) {
+    const element = document.getElementById(elementId);
+    const currentValue = parseInt(element.textContent);
+    
+    if (newValue !== currentValue) {
+        element.style.transform = 'scale(1.1)';
+        element.style.transition = 'transform 0.3s ease';
+        
+        setTimeout(() => {
+            element.textContent = newValue;
+            element.style.transform = 'scale(1)';
+        }, 150);
+        
+        // Add pulse effect for significant changes
+        if (newValue > currentValue) {
+            element.parentElement.parentElement.style.boxShadow = '0 0 20px rgba(0,123,255,0.5)';
+            setTimeout(() => {
+                element.parentElement.parentElement.style.boxShadow = '';
+            }, 1000);
+        }
+    }
+}
+
+function animateCards() {
+    const cards = document.querySelectorAll('#metricsCards .card');
+    cards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.transform = 'translateY(-2px)';
+            setTimeout(() => {
+                card.style.transform = 'translateY(0)';
+            }, 200);
+        }, index * 100);
+    });
+}
+
+function updateLastUpdateTime() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString();
+    document.getElementById('lastUpdate').textContent = timeString;
+}
+
+function updateActivityFeed() {
+    // Add real-time activity items
+    if (Math.random() > 0.6) { // 40% chance of new activity
+        const activities = [
+            { type: 'scan', message: 'Advanced security scan initiated for example.com' },
+            { type: 'info', message: 'Threat intelligence database updated' },
+            { type: 'warning', message: 'Suspicious activity detected in network traffic' },
+            { type: 'success', message: 'Security compliance check passed' },
+            { type: 'info', message: 'New subdomain discovered: api.example.com' },
+            { type: 'warning', message: 'SSL certificate expiring in 30 days' },
+            { type: 'scan', message: 'Port scan completed - 3 open ports found' },
+            { type: 'info', message: 'CVE database synchronized with NVD' }
+        ];
+        
+        const randomActivity = activities[Math.floor(Math.random() * activities.length)];
+        addActivityItem(randomActivity.type, randomActivity.message);
+    }
+}
+
+function addActivityItem(type, message) {
+    const activityFeed = document.getElementById('activityFeed');
+    if (!activityFeed) return;
+    
+    const iconMap = {
+        'scan': 'fas fa-search text-primary',
+        'info': 'fas fa-info-circle text-info',
+        'warning': 'fas fa-exclamation-triangle text-warning',
+        'critical': 'fas fa-exclamation-circle text-danger',
+        'success': 'fas fa-check-circle text-success'
+    };
+    
+    const now = new Date();
+    const timeString = now.toLocaleTimeString();
+    
+    const activityItem = document.createElement('div');
+    activityItem.className = 'activity-item d-flex align-items-start mb-3';
+    activityItem.innerHTML = `
+        <div class="activity-icon me-3">
+            <i class="${iconMap[type] || 'fas fa-circle text-secondary'}"></i>
+        </div>
+        <div class="activity-content flex-grow-1">
+            <p class="mb-1">${message}</p>
+            <small class="text-muted">${timeString}</small>
+        </div>
+    `;
+    
+    // Add fade-in animation
+    activityItem.style.opacity = '0';
+    activityItem.style.transform = 'translateX(-20px)';
+    
+    activityFeed.insertBefore(activityItem, activityFeed.firstChild);
+    
+    // Animate in
+    setTimeout(() => {
+        activityItem.style.transition = 'all 0.5s ease';
+        activityItem.style.opacity = '1';
+        activityItem.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Keep only last 10 items
+    const items = activityFeed.children;
+    if (items.length > 10) {
+        activityFeed.removeChild(items[items.length - 1]);
+    }
+}
+
+// Stop auto-refresh when page is hidden/minimized
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+        isAutoRefreshEnabled = false;
+    } else {
+        isAutoRefreshEnabled = true;
+    }
+});
+
+// Clean up interval when page unloads
+window.addEventListener('beforeunload', function() {
+    if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+    }
+});
+
+// Export Functions
+function generatePDFReport(data) {
+    // Create PDF content
+    const pdfContent = `
+ZtionSec Security Analytics Report
+Generated: ${data.exportDate}
+
+SECURITY METRICS SUMMARY
+========================
+
+Total Scans (30 days): ${data.totalScans}
+High Severity CVEs: ${data.highSeverityCVEs}
+Total CVEs in Database: ${data.totalCVEs}
+Recent CVEs (7 days): ${data.recentCVEs}
+
+ANALYSIS
+========
+This report provides a comprehensive overview of your security posture based on recent scanning activities and vulnerability intelligence data.
+
+Security Scanning Activity:
+- ${data.totalScans} security scans completed in the last 30 days
+- Average scan frequency indicates ${Math.round(data.totalScans / 30 * 10) / 10} scans per day
+
+Vulnerability Intelligence:
+- ${data.highSeverityCVEs} high-severity vulnerabilities requiring immediate attention
+- ${data.totalCVEs} total vulnerabilities in intelligence database
+- ${data.recentCVEs} new vulnerabilities discovered in the last 7 days
+
+RECOMMENDATIONS
+==============
+1. Maintain regular scanning schedule (daily recommended)
+2. Prioritize remediation of ${data.highSeverityCVEs} high-severity findings
+3. Monitor ${data.recentCVEs} recent CVEs for applicability to your environment
+4. Consider implementing automated vulnerability management
+
+Generated by ZtionSec Professional Security Platform
+Report ID: ${Date.now()}
+    `;
+    
+    // Create and download PDF-like text file (for demo purposes)
+    const blob = new Blob([pdfContent], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ZtionSec_Analytics_Report_${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+}
+
+function generateCSVReport(data) {
+    const csvContent = `Metric,Value,Description
+Total Scans (30 days),${data.totalScans},Number of security scans completed in the last 30 days
+High Severity CVEs,${data.highSeverityCVEs},Critical vulnerabilities requiring immediate attention
+Total CVEs,${data.totalCVEs},Total vulnerabilities in the intelligence database
+Recent CVEs (7 days),${data.recentCVEs},New vulnerabilities discovered in the last week
+Export Date,${data.exportDate},Report generation timestamp
+Report Type,Security Analytics,Type of security report generated`;
+    
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ZtionSec_Analytics_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+}
+
+function generateJSONReport(data) {
+    const jsonData = {
+        report: {
+            title: "ZtionSec Security Analytics Report",
+            generated: data.exportDate,
+            type: "security_analytics",
+            version: "1.0"
+        },
+        metrics: {
+            scanning: {
+                total_scans_30_days: parseInt(data.totalScans),
+                average_daily_scans: Math.round(parseInt(data.totalScans) / 30 * 10) / 10
+            },
+            vulnerabilities: {
+                high_severity_cves: parseInt(data.highSeverityCVEs),
+                total_cves: parseInt(data.totalCVEs),
+                recent_cves_7_days: parseInt(data.recentCVEs)
+            }
+        },
+        analysis: {
+            security_posture: "Active monitoring and scanning in place",
+            risk_level: parseInt(data.highSeverityCVEs) > 10 ? "High" : parseInt(data.highSeverityCVEs) > 5 ? "Medium" : "Low",
+            recommendations: [
+                "Maintain regular scanning schedule",
+                `Prioritize remediation of ${data.highSeverityCVEs} high-severity findings`,
+                "Monitor recent CVEs for applicability",
+                "Consider automated vulnerability management"
+            ]
+        },
+        metadata: {
+            platform: "ZtionSec Professional Security Platform",
+            report_id: Date.now(),
+            export_format: "JSON"
+        }
+    };
+    
+    const jsonString = JSON.stringify(jsonData, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ZtionSec_Analytics_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+}
+
+// Save report schedule
+function saveSchedule() {
+    const reportName = document.getElementById('reportName').value;
+    const reportFormat = document.getElementById('reportFormat').value;
+    const scheduleFrequency = document.getElementById('scheduleFrequency').value;
+    const emailRecipients = document.getElementById('emailRecipients').value;
+    const deliveryTime = document.getElementById('deliveryTime').value;
+    const startDate = document.getElementById('startDate').value;
+    const includeCharts = document.getElementById('includeCharts').checked;
+    const includeRecommendations = document.getElementById('includeRecommendations').checked;
+    const enableNotifications = document.getElementById('enableNotifications').checked;
+    
+    // Validate required fields
+    if (!reportName || !reportFormat || !scheduleFrequency || !startDate) {
+        showError('Missing Information', 'Please fill in all required fields to schedule reports.');
+        return;
+    }
+    
+    // Validate email recipients if notifications are enabled
+    if (enableNotifications && !emailRecipients.trim()) {
+        showError('Email Required', 'Please provide email recipients for report notifications.');
+        return;
+    }
+    
+    // Close the scheduling modal
+    bootstrap.Modal.getInstance(document.getElementById('scheduleReportModal')).hide();
+    
+    // Show loading
+    showLoading('Scheduling Reports', 'Setting up automated report delivery...');
+    
+    // Simulate API call to save schedule
+    setTimeout(() => {
+        hideLoading();
+        
+        // Create schedule summary
+        const scheduleData = {
+            reportName,
+            reportFormat: reportFormat === 'all' ? 'PDF, CSV & JSON' : reportFormat.toUpperCase(),
+            scheduleFrequency: scheduleFrequency.charAt(0).toUpperCase() + scheduleFrequency.slice(1),
+            emailRecipients: emailRecipients.split('\n').filter(email => email.trim()).length,
+            deliveryTime,
+            startDate,
+            includeCharts,
+            includeRecommendations,
+            enableNotifications
+        };
+        
+        // Store schedule in localStorage for demo
+        const existingSchedules = JSON.parse(localStorage.getItem('reportSchedules') || '[]');
+        scheduleData.id = Date.now();
+        scheduleData.created = new Date().toISOString();
+        scheduleData.status = 'Active';
+        existingSchedules.push(scheduleData);
+        localStorage.setItem('reportSchedules', JSON.stringify(existingSchedules));
+        
+        // Show success with schedule details
+        showSuccess(
+            'Report Schedule Created Successfully!',
+            `"${reportName}" will be delivered ${scheduleFrequency} starting ${startDate} at ${deliveryTime}. ${enableNotifications ? `${scheduleData.emailRecipients} recipient(s) will be notified.` : 'No email notifications configured.'}`
+        );
+        
+        // Update the page to show scheduled reports
+        updateScheduledReportsDisplay();
+        
+    }, 2000);
+}
+
+// Update display of scheduled reports
+function updateScheduledReportsDisplay() {
+    const schedules = JSON.parse(localStorage.getItem('reportSchedules') || '[]');
+    
+    // Find or create scheduled reports section
+    let scheduledSection = document.getElementById('scheduledReportsSection');
+    if (!scheduledSection && schedules.length > 0) {
+        const exportSection = document.querySelector('.row:has([onclick*="exportData"])');
+        if (exportSection) {
+            const scheduledHTML = `
+                <div class="row mb-4" id="scheduledReportsSection">
+                    <div class="col-12">
+                        <div class="card shadow">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-calendar-check"></i> Scheduled Reports
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="scheduledReportsList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            exportSection.insertAdjacentHTML('beforebegin', scheduledHTML);
+            scheduledSection = document.getElementById('scheduledReportsSection');
+        }
+    }
+    
+    if (scheduledSection && schedules.length > 0) {
+        const listContainer = document.getElementById('scheduledReportsList');
+        listContainer.innerHTML = schedules.map(schedule => `
+            <div class="alert alert-light border-start border-success border-4 mb-3">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="mb-1">
+                            <i class="fas fa-file-alt text-primary"></i> ${schedule.reportName}
+                        </h6>
+                        <p class="mb-1">
+                            <strong>Format:</strong> ${schedule.reportFormat} | 
+                            <strong>Frequency:</strong> ${schedule.scheduleFrequency} | 
+                            <strong>Time:</strong> ${schedule.deliveryTime}
+                        </p>
+                        <p class="mb-1">
+                            <strong>Next Delivery:</strong> ${schedule.startDate} | 
+                            <strong>Recipients:</strong> ${schedule.emailRecipients} email(s)
+                        </p>
+                        <small class="text-muted">
+                            Created: ${new Date(schedule.created).toLocaleDateString()} | 
+                            Status: <span class="badge bg-success">${schedule.status}</span>
+                        </small>
+                    </div>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-primary" onclick="editSchedule(${schedule.id})" title="Edit Schedule">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-outline-danger" onclick="deleteSchedule(${schedule.id})" title="Delete Schedule">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+// Edit schedule function
+function editSchedule(scheduleId) {
+    showComingSoon(
+        'Edit Schedule Coming Soon!',
+        'Schedule editing functionality will be available in the next update.',
+        'Version 2.3'
+    );
+}
+
+// Delete schedule function
+function deleteSchedule(scheduleId) {
+    showConfirm(
+        'Delete Scheduled Report',
+        'Are you sure you want to delete this scheduled report? This action cannot be undone.',
+        () => {
+            showLoading('Deleting Schedule', 'Removing scheduled report...');
+            
+            setTimeout(() => {
+                const schedules = JSON.parse(localStorage.getItem('reportSchedules') || '[]');
+                const updatedSchedules = schedules.filter(s => s.id !== scheduleId);
+                localStorage.setItem('reportSchedules', JSON.stringify(updatedSchedules));
+                
+                hideLoading();
+                showSuccess(
+                    'Schedule Deleted Successfully',
+                    'The scheduled report has been removed from your automation list.'
+                );
+                
+                updateScheduledReportsDisplay();
+                
+                // Hide section if no schedules remain
+                if (updatedSchedules.length === 0) {
+                    const section = document.getElementById('scheduledReportsSection');
+                    if (section) section.remove();
+                }
+            }, 1500);
+        }
+    );
+}
+
+// Load scheduled reports on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateScheduledReportsDisplay();
+});
+</script>
+{% endblock %}

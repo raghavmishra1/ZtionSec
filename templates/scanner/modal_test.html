@@ -1,0 +1,222 @@
+{% extends 'scanner/base.html' %}
+
+{% block title %}Modal System Test - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-center mb-5">
+                <i class="fas fa-vial"></i> Modal System Test
+            </h1>
+            <p class="lead text-center text-muted mb-5">
+                Test all modal and popup functionality to ensure they work correctly
+            </p>
+        </div>
+    </div>
+
+    <!-- Universal Modal Tests -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-window-maximize"></i> Universal Modal System Tests</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <button class="btn btn-success w-100" onclick="showSuccess('Test Success', 'This is a success modal test!')">
+                                <i class="fas fa-check-circle"></i> Success Modal
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-danger w-100" onclick="showError('Test Error', 'This is an error modal test!', 'Error details: Test error message')">
+                                <i class="fas fa-exclamation-triangle"></i> Error Modal
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-info w-100" onclick="showInfo('Test Info', 'This is an info modal test!')">
+                                <i class="fas fa-info-circle"></i> Info Modal
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-warning w-100" onclick="showConfirm('Test Confirm', 'Do you want to proceed with this test?', () => alert('Confirmed!'))">
+                                <i class="fas fa-question-circle"></i> Confirm Modal
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-4">
+                            <button class="btn btn-secondary w-100" onclick="showComingSoon('Test Feature', 'This feature is coming soon!', 'Next week')">
+                                <i class="fas fa-rocket"></i> Coming Soon
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-dark w-100" onclick="showSecurityWarning('Security Test', 'This is a security warning test!', () => alert('Security confirmed!'))">
+                                <i class="fas fa-shield-alt"></i> Security Warning
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary w-100" onclick="testLoading()">
+                                <i class="fas fa-spinner"></i> Loading Modal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern Popup Tests -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0"><i class="fas fa-window-restore"></i> Modern Popup System Tests</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-primary w-100" onclick="testModernPopup()">
+                                <i class="fas fa-external-link-alt"></i> Modern Popup
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-success w-100" onclick="testToast()">
+                                <i class="fas fa-bell"></i> Toast Notification
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Modal Tests -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="fas fa-bootstrap"></i> Bootstrap Modal Tests</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-info w-100" data-bs-toggle="modal" data-bs-target="#testBootstrapModal">
+                                <i class="fas fa-modal"></i> Bootstrap Modal
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-success w-100" onclick="testLayering()">
+                                <i class="fas fa-check-circle"></i> No Shadow Test
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Controls -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Emergency Controls</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-danger w-100" onclick="UniversalModal.forceCleanup()">
+                                <i class="fas fa-broom"></i> Force Cleanup
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-warning w-100" onclick="UniversalModal.hideAll()">
+                                <i class="fas fa-times-circle"></i> Hide All Modals
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="alert alert-info mb-0 p-2">
+                                <small><strong>Tip:</strong> Press <kbd>Ctrl+Esc</kbd> for emergency cleanup</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Test Modal -->
+<div class="modal fade" id="testBootstrapModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Bootstrap Modal Test</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>This is a standard Bootstrap modal to test compatibility with the Universal Modal System.</p>
+                <p>The backdrop should appear consistently and the modal should close properly.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Test Action</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function testLoading() {
+    const loadingModal = showLoading('Testing Loading', 'Please wait while we test the loading modal...');
+    setTimeout(() => {
+        hideLoading();
+        showSuccess('Loading Test Complete', 'The loading modal test was successful!');
+    }, 3000);
+}
+
+function testModernPopup() {
+    showModernPopup('Modern Popup Test', `
+        <p>This is a modern popup test!</p>
+        <p>Features:</p>
+        <ul>
+            <li>Click outside to close</li>
+            <li>ESC key to close</li>
+            <li>Smooth animations</li>
+            <li>Proper z-index layering</li>
+        </ul>
+        <button class="btn btn-primary" onclick="closeModernPopup(this)">Close Popup</button>
+    `);
+}
+
+function testToast() {
+    showToast('This is a success toast!', 'success');
+    setTimeout(() => showToast('This is an error toast!', 'error'), 1000);
+    setTimeout(() => showToast('This is a warning toast!', 'warning'), 2000);
+}
+
+function testLayering() {
+    showSimpleSuccess('Simple Popup Test', 'Perfect! This is a simple, basic popup with no animations or fancy effects.');
+}
+
+function testMultipleModals() {
+    showInfo('First Modal', 'This is the first modal. Click OK to see the second one.');
+    setTimeout(() => {
+        showSuccess('Second Modal', 'This is the second modal. The system should handle multiple modals gracefully.');
+    }, 1000);
+}
+
+// Test automatic initialization
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Modal Test Page Loaded');
+    console.log('UniversalModal available:', typeof UniversalModal !== 'undefined');
+    
+    // Show welcome message
+    setTimeout(() => {
+        showInfo('Modal Test Ready', 'All modal systems are loaded and ready for testing!');
+    }, 1000);
+});
+</script>
+{% endblock %}

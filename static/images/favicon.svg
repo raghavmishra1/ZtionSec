@@ -1,0 +1,11 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- White circular background -->
+  <circle cx="16" cy="16" r="16" fill="white"/>
+  
+  <!-- Simplified Z for favicon - maintaining same proportions -->
+  <g transform="translate(6, 9)">
+    <!-- Z shape scaled for favicon -->
+    <path d="M0 0 L12 0 L12 2 L3 12 L12 12 L12 14 L0 14 L0 12 L9 2 L0 2 Z" 
+          fill="#6B9BD2" stroke="none"/>
+  </g>
+</svg>
