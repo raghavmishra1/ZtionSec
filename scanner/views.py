@@ -223,8 +223,17 @@ def budget_scanner(request):
     """Budget scanner page for P4 vulnerabilities"""
     # Get some sample recent scans for display
     recent_scans = []  # Placeholder for now
+    
+    # Check if there are scan results to display
+    results = request.session.get('budget_scan_results')
+    
+    # Clear results from session after displaying to avoid showing old results
+    if results:
+        del request.session['budget_scan_results']
+    
     return render(request, 'scanner/budget_scanner.html', {
-        'recent_scans': recent_scans
+        'recent_scans': recent_scans,
+        'scan_results': results
     })
 
 def budget_scan(request):
@@ -301,10 +310,11 @@ def budget_scan(request):
                 'scan_types': scan_types
             }
             
-            print("Results stored in session, redirecting to budget_results")  # Debug
+            print("Results stored in session, redirecting to budget_scanner with results")  # Debug
             
             messages.success(request, f'Budget scan completed! Found {len(findings)} potential P4 vulnerabilities.')
-            return redirect('budget_results')
+            # Redirect to budget scanner with results flag
+            return redirect('budget_scanner')
             
         except Exception as e:
             error_msg = f'Error during budget scan: {str(e)}'
