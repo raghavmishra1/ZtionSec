@@ -600,31 +600,281 @@
     }
 }
 
-/* Mobile-specific improvements */
+/* Comprehensive Mobile Improvements for Home Page */
 @media (max-width: 768px) {
-    .hero-visual {
-        display: none; /* Hide complex visuals on mobile for better performance */
+    /* Hero Section Mobile Optimization */
+    .hero-section {
+        padding: 2rem 0 !important;
+        min-height: auto !important;
     }
     
+    .hero-content {
+        text-align: center !important;
+        padding: 1rem !important;
+    }
+    
+    .hero-section .display-3 {
+        font-size: 2rem !important;
+        line-height: 1.2 !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .hero-section .lead {
+        font-size: 1.125rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .hero-logo {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    
+    .hero-visual {
+        display: none !important; /* Hide complex visuals on mobile */
+    }
+    
+    /* Hero Stats Mobile Layout */
+    .hero-stats {
+        margin-top: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .hero-stats .col-4 {
+        margin-bottom: 1rem !important;
+        text-align: center !important;
+    }
+    
+    .hero-stats h3 {
+        font-size: 1.5rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    .hero-stats small {
+        font-size: 0.875rem !important;
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    /* Button Group Mobile Layout */
+    .d-flex.gap-3 {
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        align-items: stretch !important;
+    }
+    
+    .d-flex.gap-3 .btn {
+        width: 100% !important;
+        margin-bottom: 0.5rem !important;
+        padding: 1rem 1.5rem !important;
+        font-size: 16px !important;
+        border-radius: 8px !important;
+    }
+    
+    /* Security Cards Mobile Layout */
     .security-card {
-        text-align: center;
-        padding: 1.5rem;
+        text-align: center !important;
+        padding: 2rem 1rem !important;
+        margin-bottom: 1rem !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
     }
     
     .feature-icon {
-        font-size: 2.5rem !important;
-        margin-bottom: 1rem;
+        font-size: 3rem !important;
+        margin-bottom: 1rem !important;
+        color: #0d6efd !important;
     }
     
-    /* Ensure forms work well on mobile */
+    .security-card .card-title {
+        font-size: 1.25rem !important;
+        margin-bottom: 0.75rem !important;
+        font-weight: 600 !important;
+    }
+    
+    .security-card .card-text {
+        font-size: 1rem !important;
+        line-height: 1.5 !important;
+        color: #6c757d !important;
+    }
+    
+    /* Scanner Form Mobile Optimization */
+    #websiteScanForm {
+        padding: 0 !important;
+    }
+    
+    #websiteScanForm .form-label {
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        margin-bottom: 0.75rem !important;
+        color: #212529 !important;
+    }
+    
+    #websiteScanForm .form-text {
+        font-size: 14px !important;
+        color: #6c757d !important;
+        margin-top: 0.5rem !important;
+    }
+    
+    /* Form Controls Enhanced */
+    .form-control {
+        font-size: 16px !important;
+        padding: 1rem !important;
+        border-radius: 8px !important;
+        border: 2px solid #e9ecef !important;
+        background-color: #fff !important;
+        transition: all 0.3s ease !important;
+    }
+    
     .form-control:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+        outline: none !important;
+    }
+    
+    /* Input Group Mobile Stack */
+    .input-group {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+    
+    .input-group-text {
+        width: 100% !important;
+        text-align: center !important;
+        padding: 1rem !important;
+        font-size: 16px !important;
+        border-radius: 8px !important;
+        background-color: #f8f9fa !important;
+        border: 2px solid #e9ecef !important;
+    }
+    
+    /* Checkbox Improvements */
+    .form-check {
+        margin-bottom: 1rem !important;
+        padding: 0.75rem !important;
+        background-color: #f8f9fa !important;
+        border-radius: 8px !important;
+        border: 1px solid #e9ecef !important;
+    }
+    
+    .form-check-input {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+        margin-top: 0.125rem !important;
+        border: 2px solid #dee2e6 !important;
+        border-radius: 4px !important;
     }
     
     .form-check-input:checked {
-        background-color: #667eea;
-        border-color: #667eea;
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+    }
+    
+    .form-check-label {
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+        margin-left: 0.5rem !important;
+        color: #212529 !important;
+    }
+    
+    /* Scan Button Mobile Enhancement */
+    #scanButton {
+        width: 100% !important;
+        padding: 1.25rem 2rem !important;
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        min-height: 60px !important;
+        margin-top: 1rem !important;
+        box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    #scanButton:hover:not(:disabled) {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4) !important;
+    }
+    
+    #debugButton {
+        margin-top: 0.5rem !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 14px !important;
+    }
+    
+    /* Section Spacing Mobile */
+    section {
+        padding: 2rem 0 !important;
+    }
+    
+    .py-5 {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+    
+    /* Typography Mobile Adjustments */
+    .display-5 {
+        font-size: 1.75rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    .display-4 {
+        font-size: 2rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    /* Card Mobile Enhancements */
+    .card {
+        border-radius: 12px !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .card-header {
+        padding: 1rem 1.5rem !important;
+        border-radius: 12px 12px 0 0 !important;
+        font-size: 18px !important;
+    }
+    
+    .card-body {
+        padding: 1.5rem !important;
+    }
+    
+    /* Ad Container Mobile */
+    .ad-container {
+        margin: 1rem 0.5rem !important;
+        padding: 1rem !important;
+        border-radius: 8px !important;
+    }
+    
+    /* Remove horizontal scroll */
+    body {
+        overflow-x: hidden !important;
+    }
+    
+    .container {
+        max-width: 100% !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+    
+    /* Fix any layout issues */
+    * {
+        box-sizing: border-box !important;
+    }
+    
+    .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    
+    .col-lg-8,
+    .col-lg-6,
+    .col-lg-4,
+    .col-md-6,
+    .col-md-4 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+        margin-bottom: 1rem !important;
     }
 }
 
