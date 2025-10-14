@@ -1,0 +1,190 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block title %}Stay Updated - ZtionSec{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold">Stay Updated</h1>
+                <p class="lead">Get the latest security alerts, vulnerability updates, and cybersecurity insights delivered to your inbox.</p>
+            </div>
+            <div class="col-lg-6">
+                <div class="text-center">
+                    <i class="fas fa-bell display-1 opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Signup -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-envelope-open fa-3x text-primary mb-3"></i>
+                            <h3>Security Newsletter</h3>
+                            <p class="text-muted">Join thousands of security professionals who trust ZtionSec for the latest cybersecurity updates.</p>
+                        </div>
+                        
+                        <form method="post" action="{% url 'newsletter_subscribe' %}">
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" name="first_name" class="form-control" placeholder="Enter your first name">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" name="last_name" class="form-control" placeholder="Enter your last name">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Email Address *</label>
+                                    <input type="email" name="email" class="form-control" placeholder="Enter your email address" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Interests (Optional)</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="interests" value="vulnerabilities">
+                                                <label class="form-check-label">Vulnerability Alerts</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="interests" value="threat_intel">
+                                                <label class="form-check-label">Threat Intelligence</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="interests" value="security_tips">
+                                                <label class="form-check-label">Security Tips</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="interests" value="product_updates">
+                                                <label class="form-check-label">Product Updates</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="interests" value="industry_news">
+                                                <label class="form-check-label">Industry News</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="interests" value="webinars">
+                                                <label class="form-check-label">Webinars & Events</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" required>
+                                        <label class="form-check-label">
+                                            I agree to receive security updates and newsletters from ZtionSec. I can unsubscribe at any time.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                                        <i class="fas fa-paper-plane me-2"></i>Subscribe Now
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2>What You'll Get</h2>
+                <p class="lead">Stay ahead of cyber threats with our comprehensive security updates</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-exclamation-triangle fa-2x"></i>
+                    </div>
+                    <h5>Critical Alerts</h5>
+                    <p class="text-muted">Immediate notifications about critical vulnerabilities and zero-day exploits.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chart-line fa-2x"></i>
+                    </div>
+                    <h5>Threat Trends</h5>
+                    <p class="text-muted">Weekly analysis of emerging threats and attack patterns in the cybersecurity landscape.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <div class="bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-lightbulb fa-2x"></i>
+                    </div>
+                    <h5>Security Tips</h5>
+                    <p class="text-muted">Practical security advice and best practices from our expert team.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-rocket fa-2x"></i>
+                    </div>
+                    <h5>Product Updates</h5>
+                    <p class="text-muted">Be the first to know about new features and platform improvements.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Privacy Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h3><i class="fas fa-shield-alt text-success me-2"></i>Your Privacy is Protected</h3>
+                <p class="lead text-muted">We respect your privacy and will never share your information with third parties. You can unsubscribe at any time with a single click.</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <i class="fas fa-lock fa-2x text-primary mb-2"></i>
+                        <h6>SSL Secured</h6>
+                        <small class="text-muted">All data encrypted in transit</small>
+                    </div>
+                    <div class="col-md-4">
+                        <i class="fas fa-user-shield fa-2x text-primary mb-2"></i>
+                        <h6>GDPR Compliant</h6>
+                        <small class="text-muted">Full compliance with privacy regulations</small>
+                    </div>
+                    <div class="col-md-4">
+                        <i class="fas fa-times-circle fa-2x text-primary mb-2"></i>
+                        <h6>Easy Unsubscribe</h6>
+                        <small class="text-muted">One-click unsubscribe anytime</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

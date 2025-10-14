@@ -26,12 +26,28 @@ urlpatterns = [
     path('configurations/', advanced_views.scan_configurations, name='scan_configurations'),
     path('p4-scanner/', advanced_views.p4_security_scan, name='p4_security_scan'),
     
-    # New pages
+    # Resource pages
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
+    path('documentation/', views.documentation, name='documentation'),
+    path('tutorials/', views.tutorials, name='tutorials'),
+    path('faq/', views.faq, name='faq'),
+    
+    # Enterprise pages
+    path('enterprise/', views.enterprise, name='enterprise'),
+    path('api-access/', views.api_access, name='api_access'),
+    path('team-plans/', views.team_plans, name='team_plans'),
+    path('partnerships/', views.partnerships, name='partnerships'),
+    
+    # Scanner pages
     path('budget-scanner/', views.budget_scanner, name='budget_scanner'),
     path('budget-scan/', views.budget_scan, name='budget_scan'),
-    path('budget-results/', views.budget_results, name='budget_results'),
+    path('breach-check/', views.breach_check_page, name='breach_check'),
+    path('cve-database/', views.cve_database, name='cve_database'),
+    
+    # Newsletter and updates
+    path('newsletter/', views.newsletter_signup, name='newsletter_signup'),
+    path('newsletter/subscribe/', views.newsletter_subscribe, name='newsletter_subscribe'),
     
     # Test pages
     path('modal-test/', views.modal_test, name='modal_test'),

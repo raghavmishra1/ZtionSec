@@ -1,0 +1,203 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block title %}API Access - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1><i class="fas fa-code"></i> API Access</h1>
+        <p class="lead">Integrate ZtionSec into your applications and workflows</p>
+    </div>
+
+    <!-- API Overview -->
+    <section class="mb-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-4">
+                        <h3>RESTful API</h3>
+                        <p>ZtionSec provides a comprehensive REST API that allows you to integrate security scanning into your applications, CI/CD pipelines, and automated workflows.</p>
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-4 text-center">
+                                <i class="fas fa-bolt fa-2x text-primary mb-2"></i>
+                                <h6>Fast & Reliable</h6>
+                                <small class="text-muted">99.9% uptime SLA</small>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <i class="fas fa-shield-alt fa-2x text-success mb-2"></i>
+                                <h6>Secure</h6>
+                                <small class="text-muted">API key authentication</small>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <i class="fas fa-chart-line fa-2x text-info mb-2"></i>
+                                <h6>Scalable</h6>
+                                <small class="text-muted">High rate limits</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Endpoints -->
+    <section class="mb-5">
+        <h2>API Endpoints</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Endpoint</th>
+                        <th>Method</th>
+                        <th>Description</th>
+                        <th>Rate Limit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>/api/v1/scan/</code></td>
+                        <td><span class="badge bg-success">POST</span></td>
+                        <td>Start basic security scan</td>
+                        <td>100/hour</td>
+                    </tr>
+                    <tr>
+                        <td><code>/api/v1/advanced-scan/</code></td>
+                        <td><span class="badge bg-success">POST</span></td>
+                        <td>Start advanced security scan</td>
+                        <td>50/hour</td>
+                    </tr>
+                    <tr>
+                        <td><code>/api/v1/budget-scan/</code></td>
+                        <td><span class="badge bg-success">POST</span></td>
+                        <td>Start budget security scan</td>
+                        <td>200/hour</td>
+                    </tr>
+                    <tr>
+                        <td><code>/api/v1/results/{id}/</code></td>
+                        <td><span class="badge bg-primary">GET</span></td>
+                        <td>Get scan results</td>
+                        <td>1000/hour</td>
+                    </tr>
+                    <tr>
+                        <td><code>/api/v1/vulnerabilities/</code></td>
+                        <td><span class="badge bg-primary">GET</span></td>
+                        <td>Get vulnerability database</td>
+                        <td>500/hour</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Code Examples -->
+    <section class="mb-5">
+        <h2>Code Examples</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fab fa-python"></i> Python</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre><code>import requests
+
+url = "https://ztionsec-security-platform.onrender.com/api/v1/scan/"
+headers = {
+    "Authorization": "Bearer YOUR_API_KEY",
+    "Content-Type": "application/json"
+}
+data = {
+    "url": "https://example.com"
+}
+
+response = requests.post(url, headers=headers, json=data)
+result = response.json()
+print(result)</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fab fa-js"></i> JavaScript</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre><code>const response = await fetch('/api/v1/scan/', {
+    method: 'POST',
+    headers: {
+        'Authorization': 'Bearer YOUR_API_KEY',
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        url: 'https://example.com'
+    })
+});
+
+const result = await response.json();
+console.log(result);</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="py-5 bg-light rounded">
+        <div class="container">
+            <h2 class="text-center mb-4">API Pricing</h2>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow">
+                        <div class="card-body text-center p-4">
+                            <h4>Free</h4>
+                            <h2>$0<small>/month</small></h2>
+                            <ul class="list-unstyled mt-3">
+                                <li>100 API calls/month</li>
+                                <li>Basic endpoints only</li>
+                                <li>Community support</li>
+                            </ul>
+                            <button class="btn btn-outline-primary w-100">Get Started</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card border-0 shadow border-primary">
+                        <div class="card-body text-center p-4">
+                            <h4>Pro</h4>
+                            <h2>$49<small>/month</small></h2>
+                            <ul class="list-unstyled mt-3">
+                                <li>10,000 API calls/month</li>
+                                <li>All endpoints</li>
+                                <li>Priority support</li>
+                                <li>Webhooks</li>
+                            </ul>
+                            <button class="btn btn-primary w-100">Upgrade</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card border-0 shadow">
+                        <div class="card-body text-center p-4">
+                            <h4>Enterprise</h4>
+                            <h2>Custom</h2>
+                            <ul class="list-unstyled mt-3">
+                                <li>Unlimited API calls</li>
+                                <li>Custom endpoints</li>
+                                <li>Dedicated support</li>
+                                <li>SLA guarantee</li>
+                            </ul>
+                            <button class="btn btn-dark w-100">Contact Sales</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

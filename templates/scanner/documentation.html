@@ -1,0 +1,128 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block title %}Documentation - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-list"></i> Documentation</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="#getting-started" class="list-group-item list-group-item-action">Getting Started</a>
+                    <a href="#website-scanner" class="list-group-item list-group-item-action">Website Scanner</a>
+                    <a href="#advanced-scan" class="list-group-item list-group-item-action">Advanced Scanning</a>
+                    <a href="#budget-scanner" class="list-group-item list-group-item-action">Budget Scanner</a>
+                    <a href="#api-reference" class="list-group-item list-group-item-action">API Reference</a>
+                    <a href="#enterprise" class="list-group-item list-group-item-action">Enterprise Features</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <h1><i class="fas fa-file-alt"></i> ZtionSec Documentation</h1>
+            <p class="lead">Complete guide to using ZtionSec security analysis platform</p>
+
+            <section id="getting-started" class="mb-5">
+                <h2>Getting Started</h2>
+                <p>ZtionSec is a comprehensive security analysis platform that helps you identify vulnerabilities and security issues in websites and web applications.</p>
+                
+                <h3>Quick Start</h3>
+                <ol>
+                    <li>Enter a website URL in the scanner</li>
+                    <li>Choose your scan type (Basic, Advanced, or Budget)</li>
+                    <li>Review the security report</li>
+                    <li>Follow remediation recommendations</li>
+                </ol>
+            </section>
+
+            <section id="website-scanner" class="mb-5">
+                <h2>Website Scanner</h2>
+                <p>The basic website scanner performs comprehensive security analysis including:</p>
+                <ul>
+                    <li><strong>SSL/TLS Analysis</strong> - Certificate validation and grading</li>
+                    <li><strong>Security Headers</strong> - HSTS, CSP, X-Frame-Options, etc.</li>
+                    <li><strong>Performance Testing</strong> - Response time analysis</li>
+                    <li><strong>Technology Detection</strong> - CMS and framework identification</li>
+                </ul>
+            </section>
+
+            <section id="advanced-scan" class="mb-5">
+                <h2>Advanced Scanning</h2>
+                <p>Advanced scanning provides enterprise-grade security analysis:</p>
+                <ul>
+                    <li><strong>Vulnerability Assessment</strong> - OWASP Top 10 and beyond</li>
+                    <li><strong>Network Analysis</strong> - Port scanning and service detection</li>
+                    <li><strong>DNS Intelligence</strong> - Subdomain enumeration and DNS analysis</li>
+                    <li><strong>Threat Intelligence</strong> - CVE correlation and threat analysis</li>
+                </ul>
+            </section>
+
+            <section id="budget-scanner" class="mb-5">
+                <h2>Budget Scanner (P4 Vulnerabilities)</h2>
+                <p>Focused on easy-to-find, low-severity vulnerabilities perfect for bug bounty hunters:</p>
+                <ul>
+                    <li><strong>Information Disclosure</strong> - Config files, backups, debug info</li>
+                    <li><strong>Misconfigurations</strong> - Directory listings, exposed files</li>
+                    <li><strong>Low-Hanging Fruit</strong> - Quick wins with minimal effort</li>
+                    <li><strong>Bounty Potential</strong> - Estimated reward ranges</li>
+                </ul>
+            </section>
+
+            <section id="api-reference" class="mb-5">
+                <h2>API Reference</h2>
+                <p>ZtionSec provides RESTful APIs for integration:</p>
+                
+                <h3>Endpoints</h3>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Endpoint</th>
+                                <th>Method</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>/api/v1/scan/</code></td>
+                                <td>POST</td>
+                                <td>Start basic security scan</td>
+                            </tr>
+                            <tr>
+                                <td><code>/api/v1/advanced-scan/</code></td>
+                                <td>POST</td>
+                                <td>Start advanced security scan</td>
+                            </tr>
+                            <tr>
+                                <td><code>/api/v1/budget-scan/</code></td>
+                                <td>POST</td>
+                                <td>Start budget security scan</td>
+                            </tr>
+                            <tr>
+                                <td><code>/api/v1/vulnerabilities/</code></td>
+                                <td>GET</td>
+                                <td>Get vulnerability database</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="enterprise" class="mb-5">
+                <h2>Enterprise Features</h2>
+                <p>Enterprise customers get additional features:</p>
+                <ul>
+                    <li><strong>Team Management</strong> - Multi-user access and permissions</li>
+                    <li><strong>Custom Reports</strong> - Branded PDF reports and dashboards</li>
+                    <li><strong>API Access</strong> - Full API access with higher rate limits</li>
+                    <li><strong>Priority Support</strong> - Dedicated support and SLA</li>
+                    <li><strong>Compliance Reporting</strong> - OWASP, NIST, ISO 27001 reports</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

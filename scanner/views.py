@@ -313,3 +313,68 @@ def security_info(request):
 def modal_test(request):
     """Modal system test page"""
     return render(request, 'scanner/modal_test.html')
+
+# Resource Pages
+def documentation(request):
+    """Documentation page"""
+    return render(request, 'scanner/documentation.html')
+
+def tutorials(request):
+    """Tutorials page"""
+    return render(request, 'scanner/tutorials.html')
+
+def faq(request):
+    """FAQ page"""
+    return render(request, 'scanner/faq.html')
+
+# Enterprise Pages
+def enterprise(request):
+    """Enterprise solutions page"""
+    return render(request, 'scanner/enterprise.html')
+
+def api_access(request):
+    """API access page"""
+    return render(request, 'scanner/api_access.html')
+
+def team_plans(request):
+    """Team plans page"""
+    return render(request, 'scanner/team_plans.html')
+
+def partnerships(request):
+    """Partnerships page"""
+    return render(request, 'scanner/partnerships.html')
+
+# Scanner Pages
+def breach_check_page(request):
+    """Breach check page"""
+    return render(request, 'scanner/breach_check.html')
+
+def cve_database(request):
+    """CVE database page"""
+    from .models import VulnerabilityDatabase
+    
+    # Get recent CVEs
+    recent_cves = VulnerabilityDatabase.objects.all()[:20]
+    
+    context = {
+        'recent_cves': recent_cves,
+        'total_cves': VulnerabilityDatabase.objects.count(),
+    }
+    return render(request, 'scanner/cve_database.html', context)
+
+# Newsletter
+def newsletter_signup(request):
+    """Newsletter signup page"""
+    return render(request, 'scanner/newsletter.html')
+
+def newsletter_subscribe(request):
+    """Handle newsletter subscription"""
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if email:
+            # Here you would typically save to database or send to email service
+            messages.success(request, 'Successfully subscribed to security updates!')
+        else:
+            messages.error(request, 'Please provide a valid email address.')
+    
+    return redirect('newsletter_signup')

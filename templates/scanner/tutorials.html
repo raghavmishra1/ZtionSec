@@ -1,0 +1,174 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block title %}Tutorials - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1><i class="fas fa-graduation-cap"></i> Security Tutorials</h1>
+        <p class="lead">Learn how to use ZtionSec effectively and improve your security knowledge</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Getting Started -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <h5 class="mb-0">Getting Started</h5>
+                    </div>
+                    <p class="text-muted">Learn the basics of using ZtionSec for your first security scan.</p>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-check text-success me-2"></i>Creating your first scan</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Understanding results</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Generating reports</li>
+                    </ul>
+                    <button class="btn btn-outline-primary btn-sm">Start Tutorial</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Scanning -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <i class="fas fa-microscope"></i>
+                        </div>
+                        <h5 class="mb-0">Advanced Scanning</h5>
+                    </div>
+                    <p class="text-muted">Master advanced scanning techniques for comprehensive security analysis.</p>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-check text-success me-2"></i>Configuring scan parameters</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Custom vulnerability checks</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Interpreting detailed results</li>
+                    </ul>
+                    <button class="btn btn-outline-success btn-sm">Start Tutorial</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bug Bounty Hunting -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <h5 class="mb-0">Bug Bounty Hunting</h5>
+                    </div>
+                    <p class="text-muted">Use the Budget Scanner to find P4 vulnerabilities for bug bounty programs.</p>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-check text-success me-2"></i>Finding low-hanging fruit</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Information disclosure</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Bounty potential estimation</li>
+                    </ul>
+                    <button class="btn btn-outline-warning btn-sm">Start Tutorial</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Integration -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h5 class="mb-0">API Integration</h5>
+                    </div>
+                    <p class="text-muted">Integrate ZtionSec into your workflow using our REST API.</p>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-check text-success me-2"></i>API authentication</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Automated scanning</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Webhook integration</li>
+                    </ul>
+                    <button class="btn btn-outline-info btn-sm">Start Tutorial</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Best Practices -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5 class="mb-0">Security Best Practices</h5>
+                    </div>
+                    <p class="text-muted">Learn security best practices and how to fix common vulnerabilities.</p>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-check text-success me-2"></i>OWASP Top 10 prevention</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Security headers setup</li>
+                        <li><i class="fas fa-check text-success me-2"></i>SSL/TLS configuration</li>
+                    </ul>
+                    <button class="btn btn-outline-danger btn-sm">Start Tutorial</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enterprise Features -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h5 class="mb-0">Enterprise Features</h5>
+                    </div>
+                    <p class="text-muted">Maximize your team's security operations with enterprise features.</p>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-check text-success me-2"></i>Team management</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Custom reports</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Compliance mapping</li>
+                    </ul>
+                    <button class="btn btn-outline-dark btn-sm">Start Tutorial</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Tutorials Section -->
+    <section class="mt-5">
+        <h2 class="mb-4">Video Tutorials</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="ratio ratio-16x9 mb-3">
+                            <div class="bg-light d-flex align-items-center justify-content-center">
+                                <i class="fas fa-play-circle fa-3x text-primary"></i>
+                            </div>
+                        </div>
+                        <h5>ZtionSec Overview (5:30)</h5>
+                        <p class="text-muted small">Complete overview of ZtionSec features and capabilities.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="ratio ratio-16x9 mb-3">
+                            <div class="bg-light d-flex align-items-center justify-content-center">
+                                <i class="fas fa-play-circle fa-3x text-primary"></i>
+                            </div>
+                        </div>
+                        <h5>Advanced Scanning Demo (8:45)</h5>
+                        <p class="text-muted small">Step-by-step guide to performing advanced security scans.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

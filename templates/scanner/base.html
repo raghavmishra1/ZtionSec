@@ -685,30 +685,60 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{% url 'home' %}">
-                                <i class="fas fa-bolt"></i> Quick Scan
+                                <i class="fas fa-bolt"></i> Website Scanner
                             </a></li>
                             <li><a class="dropdown-item" href="{% url 'advanced_dashboard' %}">
                                 <i class="fas fa-microscope"></i> Advanced Scan
                             </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'scan_history' %}">
-                                <i class="fas fa-history"></i> Basic History
+                            <li><a class="dropdown-item" href="{% url 'budget_scanner' %}">
+                                <i class="fas fa-dollar-sign"></i> Budget Scanner
                             </a></li>
-                            <li><a class="dropdown-item" href="{% url 'advanced_scan_history' %}">
-                                <i class="fas fa-chart-line"></i> Advanced History
+                            <li><a class="dropdown-item" href="{% url 'breach_check' %}">
+                                <i class="fas fa-database"></i> Breach Check
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'cve_database' %}">
+                                <i class="fas fa-bug"></i> CVE Database
                             </a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="intelligenceDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-brain"></i> Intelligence
+                        <a class="nav-link dropdown-toggle" href="#" id="resourcesDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-book"></i> Resources
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'vulnerability_database' %}">
-                                <i class="fas fa-bug"></i> Vulnerabilities
+                            <li><a class="dropdown-item" href="{% url 'about' %}">
+                                <i class="fas fa-info-circle"></i> About Us
                             </a></li>
-                            <li><a class="dropdown-item" href="{% url 'threat_intelligence' %}">
-                                <i class="fas fa-shield-alt"></i> Threat Intel
+                            <li><a class="dropdown-item" href="{% url 'contact' %}">
+                                <i class="fas fa-envelope"></i> Contact
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'documentation' %}">
+                                <i class="fas fa-file-alt"></i> Documentation
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'tutorials' %}">
+                                <i class="fas fa-graduation-cap"></i> Tutorials
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'faq' %}">
+                                <i class="fas fa-question-circle"></i> FAQ
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="enterpriseDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-building"></i> Enterprise
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'enterprise' %}">
+                                <i class="fas fa-briefcase"></i> Enterprise
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'api_access' %}">
+                                <i class="fas fa-code"></i> API Access
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'team_plans' %}">
+                                <i class="fas fa-users"></i> Team Plans
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'partnerships' %}">
+                                <i class="fas fa-handshake"></i> Partnerships
                             </a></li>
                             <li><a class="dropdown-item" href="{% url 'security_analytics' %}">
                                 <i class="fas fa-chart-bar"></i> Analytics
@@ -716,34 +746,9 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'breach_history' %}">
-                            <i class="fas fa-database"></i> Breach Check
+                        <a class="nav-link" href="{% url 'newsletter_signup' %}">
+                            <i class="fas fa-bell"></i> Stay Updated
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'scan_configurations' %}">
-                            <i class="fas fa-cog"></i> Config
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-ellipsis-h"></i> More
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'about' %}">
-                                <i class="fas fa-info-circle"></i> About ZtionSec
-                            </a></li>
-                            <li><a class="dropdown-item" href="{% url 'contact' %}">
-                                <i class="fas fa-envelope"></i> Contact & Support
-                            </a></li>
-                            <li><a class="dropdown-item" href="{% url 'budget_scanner' %}">
-                                <i class="fas fa-dollar-sign"></i> Budget Scanner (P4)
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="https://github.com/ztionsec/ztionsec" target="_blank">
-                                <i class="fab fa-github"></i> GitHub Repository
-                            </a></li>
-                        </ul>
                     </li>
                 </ul>
             </div>

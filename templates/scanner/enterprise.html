@@ -1,0 +1,226 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block title %}Enterprise Solutions - ZtionSec{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold">Enterprise Security Solutions</h1>
+                <p class="lead">Scale your security operations with ZtionSec's enterprise-grade platform</p>
+                <div class="mt-4">
+                    <a href="#contact-sales" class="btn btn-light btn-lg me-3">Contact Sales</a>
+                    <a href="#features" class="btn btn-outline-light btn-lg">View Features</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="text-center">
+                    <i class="fas fa-building display-1 opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2>Enterprise Features</h2>
+                <p class="lead">Everything you need for enterprise-scale security operations</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                        <h5>Team Management</h5>
+                        <p>Multi-user access with role-based permissions and team collaboration tools.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                        <h5>Advanced Analytics</h5>
+                        <p>Comprehensive dashboards with security metrics and trend analysis.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-code fa-3x text-primary mb-3"></i>
+                        <h5>API Integration</h5>
+                        <p>Full REST API access with higher rate limits and webhook support.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-file-pdf fa-3x text-primary mb-3"></i>
+                        <h5>Custom Reports</h5>
+                        <p>Branded PDF reports with executive summaries and compliance mapping.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                        <h5>Priority Support</h5>
+                        <p>Dedicated support team with SLA guarantees and 24/7 availability.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-cloud fa-3x text-primary mb-3"></i>
+                        <h5>Private Cloud</h5>
+                        <p>Dedicated infrastructure with enhanced security and compliance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2>Enterprise Plans</h2>
+                <p class="lead">Choose the plan that fits your organization's needs</p>
+            </div>
+        </div>
+        
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-4">
+                <div class="card border-0 shadow">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h4>Professional</h4>
+                        <h2>$99<small>/month</small></h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i> Up to 10 team members</li>
+                            <li><i class="fas fa-check text-success me-2"></i> 1,000 scans/month</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Basic API access</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Standard reports</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Email support</li>
+                        </ul>
+                        <button class="btn btn-primary w-100">Get Started</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card border-0 shadow border-primary">
+                    <div class="card-header bg-success text-white text-center">
+                        <h4>Enterprise</h4>
+                        <h2>$299<small>/month</small></h2>
+                        <span class="badge bg-warning">Most Popular</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i> Unlimited team members</li>
+                            <li><i class="fas fa-check text-success me-2"></i> 10,000 scans/month</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Full API access</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Custom branded reports</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Priority support</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Compliance reporting</li>
+                        </ul>
+                        <button class="btn btn-success w-100">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card border-0 shadow">
+                    <div class="card-header bg-dark text-white text-center">
+                        <h4>Custom</h4>
+                        <h2>Contact Us</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i> Custom team size</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Unlimited scans</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Private cloud deployment</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Custom integrations</li>
+                            <li><i class="fas fa-check text-success me-2"></i> 24/7 dedicated support</li>
+                            <li><i class="fas fa-check text-success me-2"></i> On-premise option</li>
+                        </ul>
+                        <button class="btn btn-dark w-100">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact-sales" class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-5">
+                        <h3 class="text-center mb-4">Contact Our Sales Team</h3>
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Company</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Team Size</label>
+                                    <select class="form-select">
+                                        <option>1-10 people</option>
+                                        <option>11-50 people</option>
+                                        <option>51-200 people</option>
+                                        <option>200+ people</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Message</label>
+                                    <textarea class="form-control" rows="4" placeholder="Tell us about your security needs..."></textarea>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

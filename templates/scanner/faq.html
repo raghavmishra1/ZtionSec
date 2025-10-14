@@ -1,0 +1,160 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block title %}FAQ - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="text-center mb-5">
+                <h1><i class="fas fa-question-circle"></i> Frequently Asked Questions</h1>
+                <p class="lead">Find answers to common questions about ZtionSec</p>
+            </div>
+
+            <div class="accordion" id="faqAccordion">
+                <!-- General Questions -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            What is ZtionSec?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            ZtionSec is a comprehensive security analysis platform that helps identify vulnerabilities and security issues in websites and web applications. We provide basic scanning, advanced vulnerability assessment, and budget-friendly P4 vulnerability detection.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            How accurate are the security scans?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Our scans use industry-standard tools and methodologies with over 95% accuracy. We continuously update our vulnerability database and scanning engines to ensure the most current threat detection.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            What types of vulnerabilities can ZtionSec detect?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            ZtionSec can detect OWASP Top 10 vulnerabilities, SSL/TLS issues, security header misconfigurations, information disclosure, directory traversal, XSS, SQL injection, and many more. Our advanced scanner covers over 200 vulnerability types.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing Questions -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            Is ZtionSec free to use?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes! ZtionSec offers free basic scanning with limited features. For advanced scanning, enterprise features, and higher scan limits, we offer paid plans starting at $99/month.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                            What's included in the Budget Scanner?
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            The Budget Scanner focuses on P4 (low-severity) vulnerabilities that are easy to find and perfect for bug bounty hunters. It includes information disclosure scanning, misconfiguration detection, and bounty potential estimation.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Questions -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                            How long does a scan take?
+                        </button>
+                    </h2>
+                    <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Basic scans typically complete in 30-60 seconds. Advanced scans can take 5-15 minutes depending on the target's complexity. Budget scans are usually completed within 2-3 minutes.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                            Do you store scan results?
+                        </button>
+                    </h2>
+                    <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, we store scan results for your convenience and to track security improvements over time. All data is encrypted and stored securely. You can delete your scan history at any time.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq8">
+                            Is there an API available?
+                        </button>
+                    </h2>
+                    <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes! We provide a comprehensive REST API for all scanning functions. Free users get limited API access, while paid plans include full API access with higher rate limits.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Privacy & Security -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq9">
+                            Is my data secure?
+                        </button>
+                    </h2>
+                    <div id="faq9" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Absolutely. We use industry-standard encryption, secure data centers, and follow GDPR compliance. All scans are performed securely and your data is never shared with third parties.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq10">
+                            Can I scan websites I don't own?
+                        </button>
+                    </h2>
+                    <div id="faq10" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            You should only scan websites you own or have explicit permission to test. Unauthorized scanning may violate terms of service or laws. Always ensure you have proper authorization before scanning any target.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="text-center mt-5">
+                <h3>Still have questions?</h3>
+                <p class="text-muted">Can't find what you're looking for? Our support team is here to help.</p>
+                <a href="{% url 'contact' %}" class="btn btn-primary">Contact Support</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
