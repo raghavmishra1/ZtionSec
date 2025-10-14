@@ -231,7 +231,7 @@ function showSimpleError(title, message) {
 
 function showSimpleInfo(title, message) {
     document.getElementById('simpleInfoTitle').textContent = title || 'Information';
-    document.getElementById('simpleInfoMessage').textContent = message || 'Here is some information.';
+    document.getElementById('simpleInfoMessage').innerHTML = message || 'Here is some information.';
     document.getElementById('simpleInfoPopup').style.display = 'flex';
 }
 
