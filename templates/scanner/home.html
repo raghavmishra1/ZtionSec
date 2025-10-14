@@ -332,70 +332,6 @@
 </section>
 
 <!-- Breach Checker Section -->
-<section id="breach-checker" class="py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card shadow">
-                    <div class="card-header bg-danger text-white">
-                        <h4 class="mb-0">
-                            <i class="fas fa-envelope"></i> Data Breach Checker
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" action="{% url 'check_breach' %}" id="breachCheckForm" novalidate>
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email Address *</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-at"></i>
-                                    </span>
-                                    <input type="email" class="form-control" id="email" name="email" 
-                                           placeholder="your.email@example.com" required
-                                           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                                           title="Please enter a valid email address">
-                                    <div class="invalid-feedback">
-                                        Please enter a valid email address
-                                    </div>
-                                </div>
-                                <div class="form-text">
-                                    We'll check {{ breach_databases|default:"15+" }} major breach databases for your email
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <div class="alert alert-info">
-                                    <i class="fas fa-info-circle"></i>
-                                    <strong>Privacy Notice:</strong> Your email is only used for the search and is not stored or shared.
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="includeDetails" name="include_details" checked>
-                                    <label class="form-check-label" for="includeDetails">
-                                        Include breach details and recommendations
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="checkVariations" name="check_variations">
-                                    <label class="form-check-label" for="checkVariations">
-                                        Check email variations (with dots, plus signs)
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-danger btn-lg w-100" id="breachButton">
-                                <i class="fas fa-search"></i> Check for Data Breaches
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <!-- Recent Scans Section -->
 {% if recent_scans %}
@@ -696,35 +632,6 @@ function validateURL(input) {
     return true;
 }
 
-// Email Validation Function
-function validateEmail(input) {
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const value = input.value.trim();
-    
-    if (!value) {
-        setFieldError(input, 'Email address is required');
-        return false;
-    }
-    
-    if (!emailPattern.test(value)) {
-        setFieldError(input, 'Please enter a valid email address');
-        return false;
-    }
-    
-    // Check for common email issues
-    if (value.includes('..')) {
-        setFieldError(input, 'Email cannot contain consecutive dots');
-        return false;
-    }
-    
-    if (value.startsWith('.') || value.endsWith('.')) {
-        setFieldError(input, 'Email cannot start or end with a dot');
-        return false;
-    }
-    
-    setFieldValid(input);
-    return true;
-}
 
 // Set field error state
 function setFieldError(input, message) {
@@ -821,41 +728,82 @@ document.addEventListener('DOMContentLoaded', function() {
         statsObserver.observe(heroStats);
     }
     
-    // Add demo popup for scan button
+    // Real scan functionality
     const scanButton = document.querySelector('a[href="#website-scanner"]');
     if (scanButton) {
         scanButton.addEventListener('click', function(e) {
             e.preventDefault();
-            showModernPopup(
-                'Security Scan Demo',
-                `
-                <div class="text-center">
-                    <div class="loading-spinner mx-auto mb-3"></div>
-                    <p>Initializing security scan...</p>
-                    <div class="progress mb-3">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
-                             style="width: 0%; background: var(--primary-gradient);" 
-                             id="demo-progress"></div>
-                    </div>
-                    <small class="text-muted">This is a demo. Real scanning functionality is available in the full version.</small>
-                </div>
-                `
-            );
+            // Scroll to the website scanner section
+            const scannerSection = document.getElementById('website-scanner');
+            if (scannerSection) {
+                scannerSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+    
+    // Handle scan form submission
+    const scanForm = document.getElementById('scanForm');
+    if (scanForm) {
+        scanForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const urlInput = document.getElementById('url');
+            const url = urlInput.value.trim();
             
-            // Simulate progress
-            let progress = 0;
-            const progressBar = document.getElementById('demo-progress');
-            const interval = setInterval(() => {
-                progress += Math.random() * 15;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        showToast('Demo scan completed! 🎉', 'success');
-                    }, 500);
-                }
-                progressBar.style.width = progress + '%';
-            }, 200);
+            if (!url) {
+                showToast('Please enter a website URL', 'error');
+                return;
+            }
+            
+            if (!validateUrl(urlInput)) {
+                return;
+            }
+            
+            // Start real scan
+            startSecurityScan(url);
+        });
+    }
+    
+    // Real security scan function
+    function startSecurityScan(url) {
+        showModernPopup(
+            'Security Scan in Progress',
+            `
+            <div class="text-center">
+                <div class="loading-spinner mx-auto mb-3"></div>
+                <p>Scanning <strong>${url}</strong></p>
+                <div class="progress mb-3">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                         style="width: 0%; background: var(--primary-gradient);" 
+                         id="scan-progress"></div>
+                </div>
+                <small class="text-muted">Analyzing SSL, headers, and security configurations...</small>
+            </div>
+            `
+        );
+        
+        // Submit to backend for real scanning
+        fetch('/api/scan/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify({ url: url })
+        })
+        .then(response => response.json())
+        .then(data => {
+            closeModernPopup();
+            if (data.success) {
+                showToast('Security scan completed successfully!', 'success');
+                // Redirect to results or show results
+                window.location.href = '/scan-history/';
+            } else {
+                showToast('Scan failed: ' + (data.error || 'Unknown error'), 'error');
+            }
+        })
+        .catch(error => {
+            closeModernPopup();
+            showToast('Network error during scan', 'error');
         });
     }
 });
