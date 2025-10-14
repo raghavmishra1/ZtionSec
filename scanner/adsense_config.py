@@ -77,23 +77,38 @@ class AdSenseConfig:
         if settings.DEBUG and not getattr(settings, 'ADSENSE_DEBUG', False):
             return False
         
-        # Don't show ads to admin users (optional)
-        if hasattr(request, 'user') and request.user.is_staff:
-            return getattr(settings, 'ADSENSE_SHOW_TO_STAFF', True)
+        # Don't show ads to admin users (optional) - with error handling
+        try:
+            if hasattr(request, 'user') and request.user.is_staff:
+                return getattr(settings, 'ADSENSE_SHOW_TO_STAFF', True)
+        except Exception:
+            # If user check fails, just continue
+            pass
         
         return cls.is_enabled()
 
 # Template context processor to make AdSense available in templates
 def adsense_context(request):
     """Add AdSense configuration to template context"""
-    return {
-        'adsense': {
-            'enabled': AdSenseConfig.should_show_ads(request),
-            'publisher_id': AdSenseConfig.PUBLISHER_ID,
-            'script_url': AdSenseConfig.ADSENSE_SCRIPT_URL,
-            'slots': AdSenseConfig.AD_SLOTS,
+    try:
+        return {
+            'adsense': {
+                'enabled': AdSenseConfig.should_show_ads(request),
+                'publisher_id': AdSenseConfig.PUBLISHER_ID,
+                'script_url': AdSenseConfig.ADSENSE_SCRIPT_URL,
+                'slots': AdSenseConfig.AD_SLOTS,
+            }
         }
-    }
+    except Exception:
+        # Return safe defaults if anything fails
+        return {
+            'adsense': {
+                'enabled': False,
+                'publisher_id': '',
+                'script_url': '',
+                'slots': {},
+            }
+        }
 
 # Pre-defined ad units for easy use
 HEADER_BANNER_AD = AdSenseConfig.get_ad_code('header_banner', 728, 90)

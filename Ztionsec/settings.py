@@ -141,38 +141,26 @@ SILKY_PYTHON_PROFILER_BINARY = False
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 2621440  # 2.5MB
 
-# Cache Configuration for Performance with Fallback
+# Cache Configuration - Use Memory Cache for Stability
 import os
 
-if os.environ.get('USE_MEMORY_CACHE', 'false').lower() == 'true':
-    # Use memory cache for development or when DB cache fails
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-            'LOCATION': 'ztionsec-cache',
-            'TIMEOUT': 300,  # 5 minutes
-            'OPTIONS': {
-                'MAX_ENTRIES': 1000,
-            }
+# Always use memory cache to avoid database cache issues
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'ztionsec-cache',
+        'TIMEOUT': 300,  # 5 minutes
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000,
         }
     }
-else:
-    # Use database cache for production
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-            'LOCATION': 'cache_table',
-            'TIMEOUT': 300,  # 5 minutes
-            'OPTIONS': {
-                'MAX_ENTRIES': 1000,
-            }
-        }
-    }
+}
 
-# Session Configuration
-SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
-SESSION_CACHE_ALIAS = 'default'
+# Session Configuration - Use database only to avoid cache issues
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 3600  # 1 hour
+SESSION_COOKIE_SECURE = True  # Use secure cookies in production
+SESSION_COOKIE_HTTPONLY = True
 
 # Logging Configuration for Production
 LOGGING = {
