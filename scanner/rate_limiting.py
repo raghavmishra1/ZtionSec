@@ -35,6 +35,10 @@ class RateLimitMiddleware:
         # Get client IP
         client_ip = self.get_client_ip(request)
         
+        # Skip rate limiting for Render health checks and other exempt sources
+        if self.is_exempt_from_rate_limiting(request, client_ip):
+            return self.get_response(request)
+        
         # Determine rate limit type based on path
         rate_limit_type = self.get_rate_limit_type(request.path)
         
@@ -61,6 +65,45 @@ class RateLimitMiddleware:
         else:
             ip = request.META.get('REMOTE_ADDR')
         return ip
+    
+    def is_exempt_from_rate_limiting(self, request, client_ip):
+        """Check if request should be exempt from rate limiting"""
+        # Render health check IPs and patterns
+        render_ips = [
+            '10.228.25.145',  # Render health check IP from logs
+            '127.0.0.1',      # Localhost
+            '::1',            # IPv6 localhost
+        ]
+        
+        # Render health check user agents
+        exempt_user_agents = [
+            'Render/1.0',           # Render health checks
+            'Mediapartners-Google', # Google AdSense crawler
+            'GoogleBot',            # Google crawler
+            'bingbot',              # Bing crawler
+            'facebookexternalhit',  # Facebook crawler
+            'Twitterbot',           # Twitter crawler
+        ]
+        
+        # Check if IP is exempt
+        if client_ip in render_ips:
+            return True
+        
+        # Check if IP is in Render's IP range (10.x.x.x for internal services)
+        if client_ip and client_ip.startswith('10.'):
+            return True
+        
+        # Check user agent
+        user_agent = request.META.get('HTTP_USER_AGENT', '')
+        for exempt_agent in exempt_user_agents:
+            if exempt_agent in user_agent:
+                return True
+        
+        # Check if it's a health check endpoint
+        if request.path in ['/api/v1/health/', '/health/', '/ping/', '/status/']:
+            return True
+        
+        return False
     
     def get_rate_limit_type(self, path):
         """Determine rate limit type based on request path"""
