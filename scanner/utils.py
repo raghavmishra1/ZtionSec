@@ -51,20 +51,38 @@ class SecurityScanner:
         """Check SSL certificate validity and details"""
         try:
             if self.parsed_url.scheme == 'https':
-                # Test SSL connection
-                response = self.session.get(self.url, verify=True)
+                # Test SSL connection with simple method first
+                try:
+                    response = self.session.get(self.url, verify=True, timeout=10)
+                    ssl_valid = True
+                    ssl_grade = 'A'  # Default good grade for valid SSL
+                except requests.exceptions.SSLError:
+                    ssl_valid = False
+                    ssl_grade = 'F'
+                except:
+                    ssl_valid = False
+                    ssl_grade = 'F'
                 
-                # Get certificate details
-                cert_pem = ssl.get_server_certificate((self.domain, 443))
-                cert_der = ssl.PEM_cert_to_DER_cert(cert_pem)
-                cert = x509.load_der_x509_certificate(cert_der, default_backend())
-                
-                return {
-                    'ssl_valid': True,
-                    'ssl_issuer': cert.issuer.rfc4514_string(),
-                    'ssl_expiry': cert.not_valid_after,
-                    'ssl_grade': self._calculate_ssl_grade(cert)
-                }
+                # Try to get detailed certificate info
+                try:
+                    cert_pem = ssl.get_server_certificate((self.domain, 443))
+                    cert_der = ssl.PEM_cert_to_DER_cert(cert_pem)
+                    cert = x509.load_der_x509_certificate(cert_der, default_backend())
+                    
+                    return {
+                        'ssl_valid': ssl_valid,
+                        'ssl_issuer': cert.issuer.rfc4514_string(),
+                        'ssl_expiry': cert.not_valid_after,
+                        'ssl_grade': ssl_grade
+                    }
+                except:
+                    # Fallback to basic SSL check
+                    return {
+                        'ssl_valid': ssl_valid,
+                        'ssl_issuer': 'Unknown',
+                        'ssl_expiry': None,
+                        'ssl_grade': ssl_grade
+                    }
             else:
                 return {
                     'ssl_valid': False,
@@ -249,51 +267,72 @@ class SecurityScanner:
             self.results['performance_error'] = str(e)
     
     def calculate_security_score(self, results=None):
-        """Calculate overall security score"""
+        """Calculate overall security score with improved algorithm"""
         if results is None:
             results = self.results
             
         score = 0
         
-        # SSL Score (40 points)
+        # Base score for successful scan
+        if results.get('status_code') == 200:
+            score += 10
+        
+        # SSL Score (35 points)
         if results.get('ssl_valid', False):
             ssl_grade = results.get('ssl_grade', 'F')
             if ssl_grade in ['A+']:
-                score += 40
-            elif ssl_grade in ['A']:
                 score += 35
-            elif ssl_grade in ['A-', 'B+']:
+            elif ssl_grade in ['A']:
                 score += 30
-            elif ssl_grade in ['B']:
+            elif ssl_grade in ['A-']:
                 score += 25
-            elif ssl_grade in ['B-', 'C']:
+            elif ssl_grade in ['B+']:
+                score += 20
+            elif ssl_grade in ['B']:
                 score += 15
+            elif ssl_grade in ['B-']:
+                score += 10
+            elif ssl_grade in ['C']:
+                score += 5
+        else:
+            # Even if SSL is not valid, give some points for HTTPS attempt
+            if self.url.startswith('https://'):
+                score += 5
         
-        # Security Headers (50 points - 10 each)
+        # Security Headers (40 points - 8 each)
         headers_score = 0
         if results.get('has_hsts', False):
-            headers_score += 10
+            headers_score += 8
         if results.get('has_csp', False):
-            headers_score += 10
+            headers_score += 8
         if results.get('has_xframe', False):
-            headers_score += 10
+            headers_score += 8
         if results.get('has_xss_protection', False):
-            headers_score += 10
+            headers_score += 8
         if results.get('has_content_type', False):
-            headers_score += 10
+            headers_score += 8
         
         score += headers_score
         
-        # Performance (20 points)
+        # Performance (15 points)
         response_time = results.get('response_time', 10000)
-        if response_time < 1000:  # Less than 1 second
-            score += 20
-        elif response_time < 3000:  # Less than 3 seconds
-            score += 15
-        elif response_time < 5000:  # Less than 5 seconds
-            score += 10
-        elif response_time < 10000:  # Less than 10 seconds
-            score += 5
+        if response_time and response_time > 0:
+            if response_time < 500:  # Very fast
+                score += 15
+            elif response_time < 1000:  # Fast
+                score += 12
+            elif response_time < 2000:  # Good
+                score += 10
+            elif response_time < 3000:  # Acceptable
+                score += 8
+            elif response_time < 5000:  # Slow
+                score += 5
+            elif response_time < 10000:  # Very slow
+                score += 2
+        
+        # Ensure minimum score for working websites
+        if score < 20 and results.get('status_code') == 200:
+            score = 20
         
         # Assign grade
         if score >= 95:
