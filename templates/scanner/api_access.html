@@ -16,24 +16,34 @@
             <div class="col-lg-8 mx-auto">
                 <div class="card border-0 shadow">
                     <div class="card-body p-4">
+                        <div class="alert alert-success border-0 mb-4">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-gift fa-2x me-3 text-success"></i>
+                                <div>
+                                    <h6 class="mb-1"><strong>FREE API Access</strong></h6>
+                                    <p class="mb-0 small">Complete API access is free for everyone! No authentication required, no rate limits, no pricing plans.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <h3>RESTful API</h3>
-                        <p>ZtionSec provides a comprehensive REST API that allows you to integrate security scanning into your applications, CI/CD pipelines, and automated workflows.</p>
+                        <p>ZtionSec provides a comprehensive REST API that allows you to integrate security scanning into your applications, CI/CD pipelines, and automated workflows - completely free!</p>
                         
                         <div class="row mt-4">
                             <div class="col-md-4 text-center">
                                 <i class="fas fa-bolt fa-2x text-primary mb-2"></i>
                                 <h6>Fast & Reliable</h6>
-                                <small class="text-muted">99.9% uptime SLA</small>
+                                <small class="text-muted">High performance scanning</small>
                             </div>
                             <div class="col-md-4 text-center">
-                                <i class="fas fa-shield-alt fa-2x text-success mb-2"></i>
-                                <h6>Secure</h6>
-                                <small class="text-muted">API key authentication</small>
+                                <i class="fas fa-unlock fa-2x text-success mb-2"></i>
+                                <h6>No Authentication</h6>
+                                <small class="text-muted">Direct API access</small>
                             </div>
                             <div class="col-md-4 text-center">
-                                <i class="fas fa-chart-line fa-2x text-info mb-2"></i>
-                                <h6>Scalable</h6>
-                                <small class="text-muted">High rate limits</small>
+                                <i class="fas fa-infinity fa-2x text-info mb-2"></i>
+                                <h6>Unlimited Usage</h6>
+                                <small class="text-muted">No rate limits</small>
                             </div>
                         </div>
                     </div>
@@ -45,6 +55,10 @@
     <!-- API Endpoints -->
     <section class="mb-5">
         <h2>API Endpoints</h2>
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Base URL:</strong> <code>https://ztionsec-security-platform.onrender.com</code>
+        </div>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead class="table-dark">
@@ -52,39 +66,39 @@
                         <th>Endpoint</th>
                         <th>Method</th>
                         <th>Description</th>
-                        <th>Rate Limit</th>
+                        <th>Authentication</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>/api/v1/scan/</code></td>
+                        <td><code>/api/scan/</code></td>
                         <td><span class="badge bg-success">POST</span></td>
                         <td>Start basic security scan</td>
-                        <td>100/hour</td>
+                        <td><span class="badge bg-success">None Required</span></td>
                     </tr>
                     <tr>
-                        <td><code>/api/v1/advanced-scan/</code></td>
+                        <td><code>/api/advanced-scan/</code></td>
                         <td><span class="badge bg-success">POST</span></td>
                         <td>Start advanced security scan</td>
-                        <td>50/hour</td>
+                        <td><span class="badge bg-success">None Required</span></td>
                     </tr>
                     <tr>
-                        <td><code>/api/v1/budget-scan/</code></td>
+                        <td><code>/api/budget-scan/</code></td>
                         <td><span class="badge bg-success">POST</span></td>
-                        <td>Start budget security scan</td>
-                        <td>200/hour</td>
+                        <td>Start budget security scan (P4 vulnerabilities)</td>
+                        <td><span class="badge bg-success">None Required</span></td>
                     </tr>
                     <tr>
-                        <td><code>/api/v1/results/{id}/</code></td>
+                        <td><code>/api/v1/health/</code></td>
                         <td><span class="badge bg-primary">GET</span></td>
-                        <td>Get scan results</td>
-                        <td>1000/hour</td>
+                        <td>API health check</td>
+                        <td><span class="badge bg-success">None Required</span></td>
                     </tr>
                     <tr>
-                        <td><code>/api/v1/vulnerabilities/</code></td>
+                        <td><code>/api/v1/stats/</code></td>
                         <td><span class="badge bg-primary">GET</span></td>
-                        <td>Get vulnerability database</td>
-                        <td>500/hour</td>
+                        <td>Platform statistics</td>
+                        <td><span class="badge bg-success">None Required</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -93,29 +107,54 @@
 
     <!-- Code Examples -->
     <section class="mb-5">
-        <h2>Code Examples</h2>
+        <h2>Complete Integration Examples</h2>
+        <p class="text-muted mb-4">Ready-to-use code examples for integrating ZtionSec API into your tools and applications</p>
         
         <div class="row g-4">
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h5><i class="fab fa-python"></i> Python</h5>
+                        <h5><i class="fab fa-python"></i> Python - Basic Scan</h5>
                     </div>
                     <div class="card-body">
                         <pre><code>import requests
+import json
 
-url = "https://ztionsec-security-platform.onrender.com/api/v1/scan/"
-headers = {
-    "Authorization": "Bearer YOUR_API_KEY",
-    "Content-Type": "application/json"
-}
-data = {
-    "url": "https://example.com"
-}
+# Basic Security Scan
+def scan_website(target_url):
+    api_url = "https://ztionsec-security-platform.onrender.com/api/scan/"
+    
+    # No authentication required!
+    headers = {
+        "Content-Type": "application/json"
+    }
+    
+    data = {
+        "url": target_url
+    }
+    
+    try:
+        response = requests.post(api_url, headers=headers, json=data)
+        result = response.json()
+        
+        if result.get('success'):
+            print(f"✅ Scan completed for {target_url}")
+            print(f"Security Score: {result.get('security_score', 'N/A')}/100")
+            print(f"Grade: {result.get('grade', 'N/A')}")
+            return result
+        else:
+            print(f"❌ Scan failed: {result.get('error', 'Unknown error')}")
+            return None
+            
+    except Exception as e:
+        print(f"❌ Request failed: {e}")
+        return None
 
-response = requests.post(url, headers=headers, json=data)
-result = response.json()
-print(result)</code></pre>
+# Example usage
+if __name__ == "__main__":
+    result = scan_website("https://example.com")
+    if result:
+        print(json.dumps(result, indent=2))</code></pre>
                     </div>
                 </div>
             </div>
@@ -123,76 +162,329 @@ print(result)</code></pre>
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h5><i class="fab fa-js"></i> JavaScript</h5>
+                        <h5><i class="fab fa-js"></i> JavaScript/Node.js</h5>
                     </div>
                     <div class="card-body">
-                        <pre><code>const response = await fetch('/api/v1/scan/', {
-    method: 'POST',
-    headers: {
-        'Authorization': 'Bearer YOUR_API_KEY',
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        url: 'https://example.com'
-    })
-});
+                        <pre><code>// ZtionSec API Integration
+async function scanWebsite(targetUrl) {
+    const apiUrl = 'https://ztionsec-security-platform.onrender.com/api/scan/';
+    
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                // No authentication required!
+            },
+            body: JSON.stringify({
+                url: targetUrl
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            console.log(`✅ Scan completed for ${targetUrl}`);
+            console.log(`Security Score: ${result.security_score || 'N/A'}/100`);
+            console.log(`Grade: ${result.grade || 'N/A'}`);
+            return result;
+        } else {
+            console.log(`❌ Scan failed: ${result.error || 'Unknown error'}`);
+            return null;
+        }
+        
+    } catch (error) {
+        console.log(`❌ Request failed: ${error.message}`);
+        return null;
+    }
+}
 
-const result = await response.json();
-console.log(result);</code></pre>
+// Example usage
+scanWebsite('https://example.com')
+    .then(result => {
+        if (result) {
+            console.log('Full result:', JSON.stringify(result, null, 2));
+        }
+    });</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Examples -->
+        <div class="row g-4 mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fab fa-php"></i> PHP</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre><code><?php
+// ZtionSec API Integration in PHP
+function scanWebsite($targetUrl) {
+    $apiUrl = 'https://ztionsec-security-platform.onrender.com/api/scan/';
+    
+    $data = json_encode(['url' => $targetUrl]);
+    
+    $options = [
+        'http' => [
+            'header' => "Content-Type: application/json\r\n",
+            'method' => 'POST',
+            'content' => $data
+        ]
+    ];
+    
+    $context = stream_context_create($options);
+    $result = file_get_contents($apiUrl, false, $context);
+    
+    if ($result !== FALSE) {
+        $response = json_decode($result, true);
+        
+        if ($response['success']) {
+            echo "✅ Scan completed for $targetUrl\n";
+            echo "Security Score: " . ($response['security_score'] ?? 'N/A') . "/100\n";
+            echo "Grade: " . ($response['grade'] ?? 'N/A') . "\n";
+            return $response;
+        } else {
+            echo "❌ Scan failed: " . ($response['error'] ?? 'Unknown error') . "\n";
+            return null;
+        }
+    } else {
+        echo "❌ Request failed\n";
+        return null;
+    }
+}
+
+// Example usage
+$result = scanWebsite('https://example.com');
+if ($result) {
+    echo "Full result: " . json_encode($result, JSON_PRETTY_PRINT) . "\n";
+}
+?></code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-terminal"></i> cURL</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre><code># Basic Security Scan
+curl -X POST \
+  https://ztionsec-security-platform.onrender.com/api/scan/ \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "url": "https://example.com"
+  }'
+
+# Advanced Security Scan
+curl -X POST \
+  https://ztionsec-security-platform.onrender.com/api/advanced-scan/ \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "url": "https://example.com"
+  }'
+
+# Budget Scanner (P4 Vulnerabilities)
+curl -X POST \
+  https://ztionsec-security-platform.onrender.com/api/budget-scan/ \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "url": "https://example.com"
+  }'
+
+# Health Check
+curl -X GET \
+  https://ztionsec-security-platform.onrender.com/api/v1/health/
+
+# Platform Statistics
+curl -X GET \
+  https://ztionsec-security-platform.onrender.com/api/v1/stats/</code></pre>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Pricing -->
+    <!-- Integration Use Cases -->
     <section class="py-5 bg-light rounded">
         <div class="container">
-            <h2 class="text-center mb-4">API Pricing</h2>
-            <div class="row g-4 justify-content-center">
-                <div class="col-md-4">
-                    <div class="card border-0 shadow">
+            <h2 class="text-center mb-4">Integration Use Cases</h2>
+            <p class="text-center text-muted mb-5">See how developers are using ZtionSec API in their projects</p>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
                         <div class="card-body text-center p-4">
-                            <h4>Free</h4>
-                            <h2>$0<small>/month</small></h2>
-                            <ul class="list-unstyled mt-3">
-                                <li>100 API calls/month</li>
-                                <li>Basic endpoints only</li>
-                                <li>Community support</li>
-                            </ul>
-                            <button class="btn btn-outline-primary w-100">Get Started</button>
+                            <i class="fas fa-cogs fa-3x text-primary mb-3"></i>
+                            <h5>CI/CD Pipelines</h5>
+                            <p class="text-muted">Integrate security scanning into your deployment pipeline to catch vulnerabilities before production.</p>
+                            <div class="mt-3">
+                                <span class="badge bg-primary me-1">GitHub Actions</span>
+                                <span class="badge bg-success me-1">Jenkins</span>
+                                <span class="badge bg-info">GitLab CI</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-md-4">
-                    <div class="card border-0 shadow border-primary">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
                         <div class="card-body text-center p-4">
-                            <h4>Pro</h4>
-                            <h2>$49<small>/month</small></h2>
-                            <ul class="list-unstyled mt-3">
-                                <li>10,000 API calls/month</li>
-                                <li>All endpoints</li>
-                                <li>Priority support</li>
-                                <li>Webhooks</li>
-                            </ul>
-                            <button class="btn btn-primary w-100">Upgrade</button>
+                            <i class="fas fa-robot fa-3x text-success mb-3"></i>
+                            <h5>Security Automation</h5>
+                            <p class="text-muted">Build automated security monitoring tools that scan your infrastructure regularly.</p>
+                            <div class="mt-3">
+                                <span class="badge bg-warning me-1">Cron Jobs</span>
+                                <span class="badge bg-danger me-1">Monitoring</span>
+                                <span class="badge bg-dark">Alerts</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-md-4">
-                    <div class="card border-0 shadow">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
                         <div class="card-body text-center p-4">
-                            <h4>Enterprise</h4>
-                            <h2>Custom</h2>
-                            <ul class="list-unstyled mt-3">
-                                <li>Unlimited API calls</li>
-                                <li>Custom endpoints</li>
-                                <li>Dedicated support</li>
-                                <li>SLA guarantee</li>
-                            </ul>
-                            <button class="btn btn-dark w-100">Contact Sales</button>
+                            <i class="fas fa-bug fa-3x text-warning mb-3"></i>
+                            <h5>Bug Bounty Tools</h5>
+                            <p class="text-muted">Create custom bug bounty hunting tools using our Budget Scanner for P4 vulnerability detection.</p>
+                            <div class="mt-3">
+                                <span class="badge bg-warning me-1">P4 Vulns</span>
+                                <span class="badge bg-info me-1">Recon</span>
+                                <span class="badge bg-success">Automation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-chart-bar fa-3x text-info mb-3"></i>
+                            <h5>Security Dashboards</h5>
+                            <p class="text-muted">Build custom security dashboards that aggregate scan results and display security metrics.</p>
+                            <div class="mt-3">
+                                <span class="badge bg-primary me-1">Analytics</span>
+                                <span class="badge bg-success me-1">Reporting</span>
+                                <span class="badge bg-info">Metrics</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-mobile-alt fa-3x text-danger mb-3"></i>
+                            <h5>Mobile Apps</h5>
+                            <p class="text-muted">Integrate security scanning into mobile applications for on-the-go security analysis.</p>
+                            <div class="mt-3">
+                                <span class="badge bg-primary me-1">React Native</span>
+                                <span class="badge bg-success me-1">Flutter</span>
+                                <span class="badge bg-warning">Ionic</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-server fa-3x text-dark mb-3"></i>
+                            <h5>Infrastructure Monitoring</h5>
+                            <p class="text-muted">Monitor your entire infrastructure by scanning multiple domains and services automatically.</p>
+                            <div class="mt-3">
+                                <span class="badge bg-dark me-1">DevOps</span>
+                                <span class="badge bg-primary me-1">Monitoring</span>
+                                <span class="badge bg-danger">Alerts</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Response Examples -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">API Response Examples</h2>
+            <p class="text-center text-muted mb-5">Understand the structure of API responses</p>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-check-circle text-success"></i> Successful Scan Response</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code>{
+  "success": true,
+  "scan_id": "12345",
+  "url": "https://example.com",
+  "security_score": 85,
+  "grade": "A-",
+  "ssl_valid": true,
+  "ssl_grade": "A",
+  "ssl_issuer": "Let's Encrypt Authority X3",
+  "has_hsts": true,
+  "has_csp": false,
+  "has_xframe": true,
+  "has_xss_protection": true,
+  "has_content_type": true,
+  "response_time": 245.67,
+  "status_code": 200,
+  "cms_detected": "WordPress",
+  "cms_version": "6.2",
+  "server_info": "nginx/1.18.0",
+  "scan_date": "2024-10-14T22:30:00Z",
+  "findings": [
+    {
+      "severity": "medium",
+      "title": "Missing Content Security Policy",
+      "description": "The website does not implement CSP headers",
+      "recommendation": "Implement Content-Security-Policy header"
+    }
+  ]
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-exclamation-triangle text-warning"></i> Error Response</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre><code>{
+  "success": false,
+  "error": "Invalid URL format",
+  "error_code": "INVALID_URL",
+  "message": "Please provide a valid HTTP or HTTPS URL",
+  "timestamp": "2024-10-14T22:30:00Z"
+}
+
+// Other possible errors:
+{
+  "success": false,
+  "error": "Target unreachable",
+  "error_code": "CONNECTION_TIMEOUT",
+  "message": "Could not connect to the target URL",
+  "timestamp": "2024-10-14T22:30:00Z"
+}
+
+{
+  "success": false,
+  "error": "Rate limit exceeded",
+  "error_code": "RATE_LIMIT",
+  "message": "Too many requests, please try again later",
+  "retry_after": 60,
+  "timestamp": "2024-10-14T22:30:00Z"
+}</code></pre>
                         </div>
                     </div>
                 </div>
