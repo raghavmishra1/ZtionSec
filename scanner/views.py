@@ -9,9 +9,12 @@ from datetime import datetime
 import logging
 
 from .models import SecurityScan, DataBreachCheck
-from .utils import SecurityScanner, HaveIBeenPwnedChecker
+from .utils import SecurityScanner
+try:
+    from .utils import HaveIBeenPwnedChecker
+except ImportError:
+    HaveIBeenPwnedChecker = None
 from .pdf_generator import generate_security_report
-from .budget_scanner import BudgetSecurityScanner, generate_budget_report
 import json
 
 # Security logger
@@ -151,6 +154,10 @@ def check_breach(request):
             return redirect('home')
         
         try:
+            if HaveIBeenPwnedChecker is None:
+                messages.error(request, 'Breach checking service is currently unavailable')
+                return redirect('home')
+            
             checker = HaveIBeenPwnedChecker()
             results = checker.check_email(email)
             
@@ -222,9 +229,13 @@ def budget_scanner(request):
 
 def budget_scan(request):
     """Perform budget security scan"""
+    if request.method == 'GET':
+        # If someone accesses /budget-scan/ directly, redirect to budget scanner
+        return redirect('budget_scanner')
+    
     if request.method == 'POST':
         target_url = request.POST.get('target_url')
-        scan_types = request.POST.getlist('scan_types')
+        scan_types = request.POST.getlist('scan_types') or ['basic']
         
         if not target_url:
             messages.error(request, 'Please provide a valid URL')
@@ -235,28 +246,59 @@ def budget_scan(request):
             target_url = 'https://' + target_url
         
         try:
-            # Initialize budget scanner
-            scanner = BudgetSecurityScanner(target_url)
+            # Simple budget scan using basic security scanner
+            scanner = SecurityScanner(target_url)
+            results = scanner.scan_all()
             
-            # Perform budget scan
-            findings = scanner.scan_all_budget_issues()
+            # Create budget-style findings from regular scan results
+            findings = []
             
-            # Generate budget report
-            report = generate_budget_report(findings)
+            # Check for common P4 issues
+            if not results.get('has_hsts', False):
+                findings.append({
+                    'severity': 'low',
+                    'category': 'security_headers',
+                    'title': 'Missing HSTS Header',
+                    'description': 'The website does not implement HTTP Strict Transport Security',
+                    'recommendation': 'Add HSTS header to prevent protocol downgrade attacks',
+                    'bounty_potential': '$50-$200'
+                })
+            
+            if not results.get('has_csp', False):
+                findings.append({
+                    'severity': 'low',
+                    'category': 'security_headers',
+                    'title': 'Missing Content Security Policy',
+                    'description': 'No CSP header found, potential XSS vulnerability',
+                    'recommendation': 'Implement a strict Content Security Policy',
+                    'bounty_potential': '$100-$500'
+                })
+            
+            if not results.get('has_xframe', False):
+                findings.append({
+                    'severity': 'low',
+                    'category': 'security_headers',
+                    'title': 'Missing X-Frame-Options',
+                    'description': 'Website may be vulnerable to clickjacking attacks',
+                    'recommendation': 'Add X-Frame-Options: DENY or SAMEORIGIN header',
+                    'bounty_potential': '$50-$300'
+                })
             
             # Store results in session for display
             request.session['budget_scan_results'] = {
                 'target_url': target_url,
-                'findings': [f.__dict__ for f in findings],
-                'report': report,
-                'scan_time': datetime.now().isoformat()
+                'findings': findings,
+                'scan_time': datetime.now().isoformat(),
+                'total_findings': len(findings),
+                'scan_types': scan_types
             }
             
-            messages.success(request, f'Budget scan completed! Found {len(findings)} P4 vulnerabilities.')
+            messages.success(request, f'Budget scan completed! Found {len(findings)} potential P4 vulnerabilities.')
             return redirect('budget_results')
             
         except Exception as e:
             messages.error(request, f'Error during budget scan: {str(e)}')
+            print(f"Budget scan error: {e}")
             return redirect('budget_scanner')
     
     return redirect('budget_scanner')
