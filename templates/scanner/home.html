@@ -3,8 +3,6 @@
 
 {% block content %}
 {% load adsense_tags %}
-<!-- Ztion AdSense Unit -->
-{% ztion_ad %}
 <!-- Hero Section -->
 <section class="hero-section bg-gradient-primary text-white py-5">
     <div class="container">
@@ -171,6 +169,20 @@
                         <h5 class="card-title">Security Analytics</h5>
                         <p class="card-text">Advanced security metrics and trend analysis for comprehensive insights.</p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Professional Ad Placement -->
+<section class="py-4 bg-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="ad-container p-3 border rounded bg-light">
+                    <small class="text-muted d-block mb-2">Advertisement</small>
+                    {% ztion_ad %}
                 </div>
             </div>
         </div>
@@ -553,6 +565,38 @@
         padding: 1rem 2rem;
         min-height: 50px;
         touch-action: manipulation;
+    }
+}
+
+/* Professional Ad Container Styling */
+.ad-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.ad-container:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.ad-container small {
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+/* Mobile ad container */
+@media (max-width: 768px) {
+    .ad-container {
+        margin: 1rem;
+        padding: 1rem !important;
     }
 }
 
