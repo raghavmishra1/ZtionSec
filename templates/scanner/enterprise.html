@@ -11,9 +11,21 @@
             <div class="col-lg-6">
                 <h1 class="display-4 fw-bold">Enterprise Security Solutions</h1>
                 <p class="lead">Scale your security operations with ZtionSec's enterprise-grade platform</p>
+                
+                <!-- Current Status Notice -->
+                <div class="alert alert-info bg-light text-dark border-0 mb-4">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle fa-2x me-3 text-primary"></i>
+                        <div>
+                            <h6 class="mb-1"><strong>Current Version: FREE Beta</strong></h6>
+                            <p class="mb-0 small">We're currently working on a more advanced and reliable paid version with enhanced enterprise features. The current platform is completely free to use!</p>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="mt-4">
-                    <a href="#contact-sales" class="btn btn-light btn-lg me-3">Contact Sales</a>
-                    <a href="#features" class="btn btn-outline-light btn-lg">View Features</a>
+                    <a href="{% url 'home' %}" class="btn btn-light btn-lg me-3">Try Free Version</a>
+                    <a href="#roadmap" class="btn btn-outline-light btn-lg">View Roadmap</a>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -99,73 +111,82 @@
     </div>
 </section>
 
-<!-- Pricing Section -->
+<!-- Current Status & Future Plans -->
 <section class="py-5 bg-light">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center mb-5">
-                <h2>Enterprise Plans</h2>
-                <p class="lead">Choose the plan that fits your organization's needs</p>
+                <h2>Current Status & Future Plans</h2>
+                <p class="lead">Enjoy our free beta while we develop the advanced paid version</p>
             </div>
         </div>
         
         <div class="row g-4 justify-content-center">
+            <!-- Current Free Version -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow border-success">
+                    <div class="card-header bg-success text-white text-center">
+                        <h4>Current Version</h4>
+                        <h2>FREE<small> Beta</small></h2>
+                        <span class="badge bg-warning">Available Now</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i> Unlimited scans</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Basic security analysis</li>
+                            <li><i class="fas fa-check text-success me-2"></i> SSL/TLS checking</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Security headers analysis</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Budget scanner (P4 vulns)</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Basic reports</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Community support</li>
+                        </ul>
+                        <a href="{% url 'home' %}" class="btn btn-success w-100">Start Scanning Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Future Professional Version -->
             <div class="col-lg-4">
                 <div class="card border-0 shadow">
                     <div class="card-header bg-primary text-white text-center">
                         <h4>Professional</h4>
                         <h2>$99<small>/month</small></h2>
+                        <span class="badge bg-info">Coming Soon</span>
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled">
-                            <li><i class="fas fa-check text-success me-2"></i> Up to 10 team members</li>
-                            <li><i class="fas fa-check text-success me-2"></i> 1,000 scans/month</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Basic API access</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Standard reports</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Email support</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> Enhanced reliability</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> Advanced vulnerability detection</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> Team collaboration</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> Priority scanning</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> Professional reports</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> API access</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> Email support</li>
                         </ul>
-                        <button class="btn btn-primary w-100">Get Started</button>
+                        <button class="btn btn-outline-primary w-100" disabled>In Development</button>
                     </div>
                 </div>
             </div>
             
-            <div class="col-lg-4">
-                <div class="card border-0 shadow border-primary">
-                    <div class="card-header bg-success text-white text-center">
-                        <h4>Enterprise</h4>
-                        <h2>$299<small>/month</small></h2>
-                        <span class="badge bg-warning">Most Popular</span>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            <li><i class="fas fa-check text-success me-2"></i> Unlimited team members</li>
-                            <li><i class="fas fa-check text-success me-2"></i> 10,000 scans/month</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Full API access</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Custom branded reports</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Priority support</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Compliance reporting</li>
-                        </ul>
-                        <button class="btn btn-success w-100">Contact Sales</button>
-                    </div>
-                </div>
-            </div>
-            
+            <!-- Future Enterprise Version -->
             <div class="col-lg-4">
                 <div class="card border-0 shadow">
                     <div class="card-header bg-dark text-white text-center">
-                        <h4>Custom</h4>
-                        <h2>Contact Us</h2>
+                        <h4>Enterprise</h4>
+                        <h2>$299<small>/month</small></h2>
+                        <span class="badge bg-info">Coming Soon</span>
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled">
-                            <li><i class="fas fa-check text-success me-2"></i> Custom team size</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Unlimited scans</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Private cloud deployment</li>
-                            <li><i class="fas fa-check text-success me-2"></i> Custom integrations</li>
-                            <li><i class="fas fa-check text-success me-2"></i> 24/7 dedicated support</li>
-                            <li><i class="fas fa-check text-success me-2"></i> On-premise option</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> Maximum reliability & uptime</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> Advanced threat intelligence</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> Unlimited team members</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> Custom integrations</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> Compliance reporting</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> Dedicated support</li>
+                            <li><i class="fas fa-clock text-warning me-2"></i> On-premise deployment</li>
                         </ul>
-                        <button class="btn btn-dark w-100">Contact Sales</button>
+                        <button class="btn btn-outline-dark w-100" disabled>In Development</button>
                     </div>
                 </div>
             </div>
@@ -173,14 +194,77 @@
     </div>
 </section>
 
-<!-- Contact Section -->
+<!-- Development Roadmap -->
+<section id="roadmap" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2>Development Roadmap</h2>
+                <p class="lead">Here's what we're working on for the advanced paid version</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-shield-alt fa-2x"></i>
+                    </div>
+                    <h5>Enhanced Security Engine</h5>
+                    <p class="text-muted">More accurate vulnerability detection with reduced false positives</p>
+                    <span class="badge bg-warning">Q1 2025</span>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                    <h5>Team Collaboration</h5>
+                    <p class="text-muted">Multi-user workspaces with role-based permissions and sharing</p>
+                    <span class="badge bg-warning">Q1 2025</span>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <div class="bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chart-line fa-2x"></i>
+                    </div>
+                    <h5>Advanced Analytics</h5>
+                    <p class="text-muted">Comprehensive dashboards with trend analysis and insights</p>
+                    <span class="badge bg-warning">Q2 2025</span>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <div class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-cloud fa-2x"></i>
+                    </div>
+                    <h5>Enterprise Infrastructure</h5>
+                    <p class="text-muted">Dedicated infrastructure with 99.9% uptime guarantee</p>
+                    <span class="badge bg-warning">Q2 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Interest & Updates Section -->
 <section id="contact-sales" class="py-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="card border-0 shadow">
                     <div class="card-body p-5">
-                        <h3 class="text-center mb-4">Contact Our Sales Team</h3>
+                        <div class="text-center mb-4">
+                            <i class="fas fa-bell fa-3x text-primary mb-3"></i>
+                            <h3>Get Notified About Our Paid Version</h3>
+                            <p class="text-muted">Be the first to know when our advanced, reliable paid version launches</p>
+                        </div>
+                        
                         <form>
                             <div class="row g-3">
                                 <div class="col-md-6">
@@ -196,24 +280,48 @@
                                     <input type="email" class="form-control" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Company</label>
-                                    <input type="text" class="form-control" required>
+                                    <label class="form-label">Company (Optional)</label>
+                                    <input type="text" class="form-control">
                                 </div>
                                 <div class="col-12">
-                                    <label class="form-label">Team Size</label>
-                                    <select class="form-select">
-                                        <option>1-10 people</option>
-                                        <option>11-50 people</option>
-                                        <option>51-200 people</option>
-                                        <option>200+ people</option>
-                                    </select>
+                                    <label class="form-label">Interested In</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="professional">
+                                                <label class="form-check-label">Professional Plan ($99/month)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="enterprise">
+                                                <label class="form-check-label">Enterprise Plan ($299/month)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="early_access">
+                                                <label class="form-check-label">Early Access Beta</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="updates">
+                                                <label class="form-check-label">Development Updates</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-12">
-                                    <label class="form-label">Message</label>
-                                    <textarea class="form-control" rows="4" placeholder="Tell us about your security needs..."></textarea>
+                                    <label class="form-label">Additional Comments</label>
+                                    <textarea class="form-control" rows="3" placeholder="What features are most important to you? Any specific requirements?"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <strong>Note:</strong> The current version is completely free. This form is only for getting updates about our future paid version with enhanced features.
+                                    </div>
                                 </div>
                                 <div class="col-12 text-center">
-                                    <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                                        <i class="fas fa-bell me-2"></i>Notify Me When Available
+                                    </button>
                                 </div>
                             </div>
                         </form>
