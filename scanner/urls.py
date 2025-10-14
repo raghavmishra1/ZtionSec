@@ -42,6 +42,7 @@ urlpatterns = [
     # Scanner pages
     path('budget-scanner/', views.budget_scanner, name='budget_scanner'),
     path('budget-scan/', views.budget_scan, name='budget_scan'),
+    path('budget-results/', views.budget_results, name='budget_results'),
     path('breach-check/', views.breach_check_page, name='breach_check'),
     path('cve-database/', views.cve_database, name='cve_database'),
     

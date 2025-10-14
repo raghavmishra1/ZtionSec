@@ -237,6 +237,8 @@ def budget_scan(request):
         target_url = request.POST.get('target_url')
         scan_types = request.POST.getlist('scan_types') or ['basic']
         
+        print(f"Budget scan request: URL={target_url}, Types={scan_types}")  # Debug
+        
         if not target_url:
             messages.error(request, 'Please provide a valid URL')
             return redirect('budget_scanner')
@@ -246,9 +248,13 @@ def budget_scan(request):
             target_url = 'https://' + target_url
         
         try:
+            print(f"Starting budget scan for: {target_url}")  # Debug
+            
             # Simple budget scan using basic security scanner
             scanner = SecurityScanner(target_url)
             results = scanner.scan_all()
+            
+            print(f"Scanner results: {results}")  # Debug
             
             # Create budget-style findings from regular scan results
             findings = []
@@ -284,6 +290,8 @@ def budget_scan(request):
                     'bounty_potential': '$50-$300'
                 })
             
+            print(f"Generated {len(findings)} findings")  # Debug
+            
             # Store results in session for display
             request.session['budget_scan_results'] = {
                 'target_url': target_url,
@@ -293,12 +301,17 @@ def budget_scan(request):
                 'scan_types': scan_types
             }
             
+            print("Results stored in session, redirecting to budget_results")  # Debug
+            
             messages.success(request, f'Budget scan completed! Found {len(findings)} potential P4 vulnerabilities.')
             return redirect('budget_results')
             
         except Exception as e:
-            messages.error(request, f'Error during budget scan: {str(e)}')
+            error_msg = f'Error during budget scan: {str(e)}'
+            messages.error(request, error_msg)
             print(f"Budget scan error: {e}")
+            import traceback
+            traceback.print_exc()  # Full error trace
             return redirect('budget_scanner')
     
     return redirect('budget_scanner')

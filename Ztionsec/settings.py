@@ -20,12 +20,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-qoh1uww1n-jrwint!gq)^k0%ezf@*75=swmoq(9=wk(@rlup)*'
+import os
+SECRET_KEY = os.environ.get('SECRET_KEY', 'ztionsec-prod-key-2024-secure-random-string-for-production-deployment-with-high-entropy-values-12345')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'ztionsec-security-platform.onrender.com',
+    'localhost',
+    '127.0.0.1',
+    '.onrender.com',
+]
 
 
 # Application definition
@@ -63,12 +69,7 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
-# HTTPS/SSL Configuration
-SECURE_SSL_REDIRECT = True  # Redirect HTTP to HTTPS
-SECURE_HSTS_SECONDS = 31536000  # 1 year HSTS
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# HTTPS/SSL Configuration - moved to consolidated security section below
 
 # Content Security Policy (CSP) - Handled by custom middleware
 # CSP_DEFAULT_SRC = ("'self'",)
@@ -128,8 +129,7 @@ ADMIN_FORCE_ALLAUTH = False
 USE_TZ = True
 APPEND_SLASH = True
 
-# Security Settings for Production
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# Legacy settings - moved to consolidated security section below
 USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
 
@@ -161,6 +161,24 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 3600  # 1 hour
 SESSION_COOKIE_SECURE = True  # Use secure cookies in production
 SESSION_COOKIE_HTTPONLY = True
+
+# Security Settings for Production Deployment
+SECURE_SSL_REDIRECT = not DEBUG  # Redirect HTTP to HTTPS in production
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+
+# CSRF Security
+CSRF_COOKIE_SECURE = True  # Use secure CSRF cookies
+CSRF_COOKIE_HTTPONLY = True
+CSRF_TRUSTED_ORIGINS = [
+    'https://ztionsec-security-platform.onrender.com',
+    'https://*.onrender.com',
+]
 
 # Logging Configuration for Production
 LOGGING = {
