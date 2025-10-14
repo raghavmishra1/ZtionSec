@@ -729,30 +729,90 @@
             overflow: hidden;
         }
 
-        /* Mobile Footer Fixes */
+        /* Mobile Footer Fixes - Professional Layout */
         @media (max-width: 768px) {
             .footer {
                 text-align: center;
+                padding: 3rem 0 2rem !important;
             }
             
             .footer .col-lg-2,
-            .footer .col-lg-4 {
-                margin-bottom: 2rem;
+            .footer .col-lg-4,
+            .footer .col-md-6 {
+                margin-bottom: 2.5rem;
+                width: 100% !important;
+                flex: 0 0 100% !important;
             }
             
             .footer .social-links {
                 justify-content: center;
-                margin-top: 1rem;
+                margin-top: 1.5rem;
+                display: flex;
+                gap: 1rem;
+            }
+            
+            .footer .social-links a {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             
             .footer .newsletter-form {
-                max-width: 300px;
+                max-width: 350px;
                 margin: 0 auto;
             }
             
             .footer .security-badges {
                 justify-content: center;
-                margin-top: 1rem;
+                margin-top: 1.5rem;
+                display: flex;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+            }
+            
+            .footer h5,
+            .footer h6 {
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .footer .list-unstyled {
+                margin-bottom: 1.5rem;
+            }
+            
+            .footer .list-unstyled li {
+                margin-bottom: 0.75rem;
+            }
+            
+            .footer .list-unstyled a {
+                font-size: 0.95rem;
+                padding: 0.5rem;
+                display: inline-block;
+                border-radius: 4px;
+                transition: all 0.3s ease;
+            }
+            
+            .footer .list-unstyled a:hover {
+                background: rgba(255, 255, 255, 0.1);
+                transform: none;
+            }
+        }
+
+        /* Tablet Footer Optimization */
+        @media (min-width: 769px) and (max-width: 991.98px) {
+            .footer .col-lg-2 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+            
+            .footer .col-lg-4 {
+                flex: 0 0 100%;
+                max-width: 100%;
+                text-align: center;
+                margin-bottom: 2rem;
             }
         }
 

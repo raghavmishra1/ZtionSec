@@ -245,13 +245,18 @@
                             </div>
                             
                             <button type="submit" class="btn btn-primary btn-lg w-100" id="scanButton">
-                                <i class="fas fa-search"></i> Start Security Scan
+                                <i class="fas fa-search me-2"></i>Start Security Scan
+                            </button>
+                            
+                            <!-- Debug button for testing -->
+                            <button type="button" class="btn btn-outline-secondary btn-sm mt-2 w-100" id="debugButton" onclick="testFormSubmission()">
+                                <i class="fas fa-bug me-2"></i>Test Form (Debug)
                             </button>
                             
                             <!-- Fallback button for when JavaScript fails -->
                             <noscript>
                                 <button type="submit" class="btn btn-success btn-lg w-100 mt-2">
-                                    <i class="fas fa-search"></i> Start Security Scan (No JS)
+                                    <i class="fas fa-search me-2"></i>Start Security Scan (No JS)
                                 </button>
                             </noscript>
                         </form>
@@ -500,11 +505,12 @@
     padding: 1rem;
 }
 
-/* Loading State Styles */
+/* Enhanced Loading State Styles */
 .btn-loading {
     position: relative;
     pointer-events: none;
-    opacity: 0.8;
+    opacity: 0.9;
+    cursor: not-allowed;
 }
 
 .btn-loading .fa-spinner {
@@ -514,6 +520,40 @@
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* Enhanced Scan Button Styles */
+#scanButton {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+#scanButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+#scanButton:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+#scanButton:disabled {
+    transform: none;
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.2);
+}
+
+/* Mobile scan button improvements */
+@media (max-width: 768px) {
+    #scanButton {
+        font-size: 1.1rem;
+        padding: 1rem 2rem;
+        min-height: 50px;
+        touch-action: manipulation;
+    }
 }
 
 /* Mobile-specific improvements */
@@ -612,40 +652,82 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Additional validation can be added here
     
-    // Website scanner form submission - Ultra-reliable version
-    if (websiteForm && scanButton) {
-        // Add click handler to button as backup
-        scanButton.addEventListener('click', function(e) {
+    // Ultra-Robust Scan Button Implementation
+    function initializeScanButton() {
+        console.log('Initializing scan button...');
+        
+        if (!websiteForm || !scanButton || !urlInput) {
+            console.error('Required elements not found:', {
+                websiteForm: !!websiteForm,
+                scanButton: !!scanButton,
+                urlInput: !!urlInput
+            });
+            return;
+        }
+        
+        // Remove any existing listeners
+        const newScanButton = scanButton.cloneNode(true);
+        scanButton.parentNode.replaceChild(newScanButton, scanButton);
+        
+        // Update reference
+        const finalScanButton = document.getElementById('scanButton');
+        
+        // Primary click handler
+        finalScanButton.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('Scan button clicked');
             
             const url = urlInput.value.trim();
+            console.log('URL entered:', url);
+            
             if (!url) {
-                alert('Please enter a website URL');
+                alert('Please enter a website URL to scan');
                 urlInput.focus();
-                return;
+                return false;
+            }
+            
+            // Validate URL format
+            if (!url.includes('.')) {
+                alert('Please enter a valid website URL (e.g., example.com)');
+                urlInput.focus();
+                return false;
             }
             
             // Add protocol if missing
+            let finalUrl = url;
             if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                urlInput.value = 'https://' + url;
+                finalUrl = 'https://' + url;
+                urlInput.value = finalUrl;
             }
             
-            // Show loading
-            this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
+            console.log('Final URL:', finalUrl);
             
-            // Submit form directly
-            websiteForm.submit();
+            // Show loading state
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Scanning Website...';
+            this.classList.add('btn-loading');
+            
+            // Submit form
+            console.log('Submitting form...');
+            setTimeout(() => {
+                websiteForm.submit();
+            }, 100);
+            
+            return false;
         });
         
-        // Form submit handler as backup
+        // Backup form submit handler
         websiteForm.addEventListener('submit', function(e) {
+            console.log('Form submit event triggered');
+            
             const url = urlInput.value.trim();
             if (!url) {
                 e.preventDefault();
-                alert('Please enter a website URL');
+                alert('Please enter a website URL to scan');
                 urlInput.focus();
-                return;
+                return false;
             }
             
             // Add protocol if missing
@@ -653,13 +735,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 urlInput.value = 'https://' + url;
             }
             
-            // Show loading
-            if (scanButton) {
-                scanButton.disabled = true;
-                scanButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
+            // Show loading on button
+            if (finalScanButton && !finalScanButton.disabled) {
+                finalScanButton.disabled = true;
+                finalScanButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Scanning Website...';
+                finalScanButton.classList.add('btn-loading');
             }
+            
+            console.log('Form submitting with URL:', urlInput.value);
         });
+        
+        console.log('Scan button initialized successfully');
     }
+    
+    // Initialize scan button
+    initializeScanButton();
     
     // Additional form handlers can be added here
 });
@@ -935,6 +1025,36 @@ function setFieldValid(input) {
     input.classList.remove('is-invalid');
     input.classList.add('is-valid');
     clearFieldError(input);
+}
+
+// Test function for debugging
+function testFormSubmission() {
+    console.log('=== FORM DEBUG TEST ===');
+    
+    const form = document.getElementById('websiteScanForm');
+    const button = document.getElementById('scanButton');
+    const input = document.getElementById('url');
+    
+    console.log('Form element:', form);
+    console.log('Button element:', button);
+    console.log('Input element:', input);
+    console.log('Form action:', form?.action);
+    console.log('Form method:', form?.method);
+    console.log('Current URL value:', input?.value);
+    
+    if (!input.value.trim()) {
+        input.value = 'https://example.com';
+        console.log('Set test URL: https://example.com');
+    }
+    
+    console.log('Attempting form submission...');
+    
+    if (form) {
+        form.submit();
+        console.log('Form.submit() called');
+    } else {
+        console.error('Form not found!');
+    }
 }
 
 // Track form focus events
