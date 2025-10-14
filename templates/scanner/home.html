@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 d-none d-lg-block">
                 <div class="hero-visual text-center">
                     <div class="security-dashboard-preview">
                         <div class="dashboard-mockup bg-white rounded-3 shadow-lg p-4">
@@ -487,15 +487,66 @@
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
+.adsense-banner-footer {
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1rem;
+}
+
+/* Loading State Styles */
+.btn-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.btn-loading .fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+    .hero-visual {
+        display: none; /* Hide complex visuals on mobile for better performance */
+    }
+    
+    .security-card {
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem !important;
+        margin-bottom: 1rem;
+    }
+    
+    /* Ensure forms work well on mobile */
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .form-check-input:checked {
+        background-color: #667eea;
+        border-color: #667eea;
+    }
+}
+
+section {
+    margin: 0;
+}
+
 /* Remove any potential blank spaces */
 body {
     margin: 0;
     padding: 0;
 }
 
-section {
-    margin: 0;
-}
 
 .container-fluid {
     padding: 0;
@@ -554,29 +605,60 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Additional validation can be added here
     
-    // Website scanner form submission
-    websiteForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        if (validateURL(urlInput)) {
-            // Check if at least one scan option is selected
-            const scanOptions = document.querySelectorAll('input[name^="check_"]:checked');
-            if (scanOptions.length === 0) {
-                showError('Scan Options Required', 'Please select at least one scan option to proceed.');
-                return;
+    // Website scanner form submission - Fixed for mobile and laptop
+    if (websiteForm) {
+        websiteForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (validateURL(urlInput)) {
+                // Check if at least one scan option is selected
+                const scanOptions = document.querySelectorAll('input[name^="check_"]:checked');
+                if (scanOptions.length === 0) {
+                    showError('Scan Options Required', 'Please select at least one scan option to proceed.');
+                    return;
+                }
+                
+                // Show loading state
+                showLoadingState(scanButton, 'Scanning Website...');
+                
+                // Submit form after validation - works on all devices
+                setTimeout(() => {
+                    // Create form data
+                    const formData = new FormData(this);
+                    
+                    // Submit via fetch for better mobile compatibility
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                        }
+                    })
+                    .then(response => {
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        } else {
+                            return response.text();
+                        }
+                    })
+                    .then(html => {
+                        if (html) {
+                            document.open();
+                            document.write(html);
+                            document.close();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Scan error:', error);
+                        showError('Scan Failed', 'Please try again or check your internet connection.');
+                        resetLoadingState(scanButton, '<i class="fas fa-search"></i> Start Security Scan');
+                    });
+                }, 500);
+            } else {
+                websiteForm.classList.add('was-validated');
             }
-            
-            // Show loading state
-            showLoadingState(scanButton, 'Initiating Security Scan...');
-            
-            // Submit form after validation
-            setTimeout(() => {
-                this.submit();
-            }, 1000);
-        } else {
-            websiteForm.classList.add('was-validated');
-        }
-    });
+        });
+    }
     
     // Additional form handlers can be added here
 });
@@ -805,6 +887,47 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 function trackFormInteraction(formType, action) {
     console.log(`Form Interaction: ${formType} - ${action}`);
     // In production, this would send to analytics service
+}
+
+// Helper Functions for Scan Functionality
+function showLoadingState(button, text) {
+    if (button) {
+        button.disabled = true;
+        button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${text}`;
+        button.classList.add('btn-loading');
+    }
+}
+
+function resetLoadingState(button, originalText) {
+    if (button) {
+        button.disabled = false;
+        button.innerHTML = originalText;
+        button.classList.remove('btn-loading');
+    }
+}
+
+function showError(title, message) {
+    // Create a simple alert for now - can be enhanced with modals later
+    alert(`${title}: ${message}`);
+}
+
+function setFieldError(input, message) {
+    input.classList.add('is-invalid');
+    let feedback = input.parentNode.querySelector('.invalid-feedback');
+    if (!feedback) {
+        feedback = document.createElement('div');
+        feedback.className = 'invalid-feedback';
+        input.parentNode.appendChild(feedback);
+    }
+    feedback.textContent = message;
+}
+
+function clearFieldError(input) {
+    input.classList.remove('is-invalid');
+    const feedback = input.parentNode.querySelector('.invalid-feedback');
+    if (feedback) {
+        feedback.textContent = '';
+    }
 }
 
 // Track form focus events
