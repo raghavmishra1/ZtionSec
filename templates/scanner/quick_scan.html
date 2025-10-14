@@ -1,0 +1,223 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block title %}Quick Security Scan - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-bold text-primary">
+                    <i class="fas fa-bolt me-3"></i>Quick Security Scan
+                </h1>
+                <p class="lead">Fast and comprehensive security analysis for your website</p>
+            </div>
+
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-shield-alt me-2"></i>Website Security Scanner
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" action="{% url 'scan_website' %}" id="quickScanForm">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label for="url" class="form-label fw-bold">Website URL *</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-link text-primary"></i>
+                                </span>
+                                <input type="url" class="form-control" id="url" name="url" 
+                                       placeholder="Enter website URL (e.g., example.com)" required
+                                       autocomplete="url">
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Enter the website URL you want to scan for security vulnerabilities
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Scan Options</label>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-check form-check-lg">
+                                        <input class="form-check-input" type="checkbox" id="checkSSL" name="check_ssl" checked>
+                                        <label class="form-check-label" for="checkSSL">
+                                            <i class="fas fa-lock me-2 text-success"></i>SSL Certificate Analysis
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-lg">
+                                        <input class="form-check-input" type="checkbox" id="checkHeaders" name="check_headers" checked>
+                                        <label class="form-check-label" for="checkHeaders">
+                                            <i class="fas fa-shield-alt me-2 text-info"></i>Security Headers Check
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check form-check-lg">
+                                        <input class="form-check-input" type="checkbox" id="checkCMS" name="check_cms" checked>
+                                        <label class="form-check-label" for="checkCMS">
+                                            <i class="fas fa-cogs me-2 text-warning"></i>CMS Detection
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-lg">
+                                        <input class="form-check-input" type="checkbox" id="checkPerformance" name="check_performance" checked>
+                                        <label class="form-check-label" for="checkPerformance">
+                                            <i class="fas fa-tachometer-alt me-2 text-primary"></i>Performance Analysis
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg" id="quickScanButton">
+                                <i class="fas fa-search me-2"></i>Start Quick Security Scan
+                            </button>
+                            <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Home
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Quick Info Cards -->
+            <div class="row mt-5">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-0 bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-bolt fa-2x text-warning mb-3"></i>
+                            <h6>Fast Scanning</h6>
+                            <p class="small text-muted">Complete scan in under 30 seconds</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-0 bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-shield-alt fa-2x text-success mb-3"></i>
+                            <h6>Comprehensive</h6>
+                            <p class="small text-muted">Checks SSL, headers, CMS, and more</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 border-0 bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-file-pdf fa-2x text-danger mb-3"></i>
+                            <h6>Detailed Reports</h6>
+                            <p class="small text-muted">Get PDF reports with recommendations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.form-check-lg .form-check-input {
+    width: 1.25em;
+    height: 1.25em;
+}
+
+.form-check-lg .form-check-label {
+    font-size: 1rem;
+    padding-left: 0.5rem;
+}
+
+.input-group-lg .input-group-text {
+    padding: 0.75rem 1rem;
+}
+
+#quickScanButton {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+}
+
+#quickScanButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+}
+
+#quickScanButton:disabled {
+    transform: none;
+    opacity: 0.8;
+}
+
+.btn-loading {
+    pointer-events: none;
+}
+
+.btn-loading .fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .card-body {
+        padding: 2rem 1.5rem;
+    }
+    
+    .input-group-lg .form-control {
+        font-size: 1rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('quickScanForm');
+    const button = document.getElementById('quickScanButton');
+    const urlInput = document.getElementById('url');
+    
+    if (form && button && urlInput) {
+        form.addEventListener('submit', function(e) {
+            const url = urlInput.value.trim();
+            
+            if (!url) {
+                e.preventDefault();
+                alert('Please enter a website URL to scan');
+                urlInput.focus();
+                return;
+            }
+            
+            // Add protocol if missing
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                urlInput.value = 'https://' + url;
+            }
+            
+            // Show loading state
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Scanning Website...';
+            button.classList.add('btn-loading');
+        });
+        
+        // Auto-focus URL input
+        urlInput.focus();
+    }
+});
+</script>
+{% endblock %}

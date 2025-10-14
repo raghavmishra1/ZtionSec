@@ -386,3 +386,11 @@ def newsletter_subscribe(request):
             messages.error(request, 'Please provide a valid email address.')
     
     return redirect('newsletter_signup')
+
+def quick_scan(request):
+    """Quick scan page with simplified interface"""
+    return render(request, 'scanner/quick_scan.html')
+
+def security_analytics(request):
+    """Security analytics page"""
+    return render(request, 'scanner/security_analytics.html')

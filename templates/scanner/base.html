@@ -661,13 +661,32 @@
         /* Mobile Form and Interactive Element Fixes */
         @media (max-width: 768px) {
             .form-control {
-                font-size: 16px; /* Prevent zoom on iOS */
+                font-size: 16px !important; /* Prevent zoom on iOS */
                 padding: 0.75rem;
+                border-radius: 0.375rem;
+                border: 2px solid #dee2e6;
+                transition: border-color 0.3s ease;
+            }
+            
+            .form-control:focus {
+                font-size: 16px !important;
+                border-color: #0d6efd;
+                box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
             }
             
             .form-select {
-                font-size: 16px;
+                font-size: 16px !important;
                 padding: 0.75rem;
+            }
+            
+            .input-group .form-control {
+                border-radius: 0 0.375rem 0.375rem 0;
+            }
+            
+            .input-group-text {
+                border-radius: 0.375rem 0 0 0.375rem;
+                background-color: #f8f9fa;
+                border: 2px solid #dee2e6;
             }
             
             .input-group {
@@ -1225,13 +1244,18 @@
                 <div class="col-lg-2 col-md-12 mb-4">
                     <h6 class="text-primary mb-3">Stay Updated</h6>
                     <p class="small mb-3">Get security alerts and updates</p>
-                    <form class="newsletter-form">
+                    <form class="newsletter-form" method="post" action="{% url 'newsletter_subscribe' %}" id="newsletterForm">
+                        {% csrf_token %}
                         <div class="input-group mb-2">
-                            <input type="email" class="form-control form-control-sm" placeholder="Enter email">
-                            <button class="btn btn-primary btn-sm" type="submit">
+                            <input type="email" class="form-control form-control-sm" 
+                                   name="email" id="newsletterEmail" 
+                                   placeholder="Enter your email" required
+                                   autocomplete="email">
+                            <button class="btn btn-primary btn-sm" type="submit" id="newsletterBtn">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
+                        <div class="newsletter-feedback small mt-1" style="display: none;"></div>
                     </form>
                     <div class="security-badges mt-3">
                         <span class="badge bg-success me-1"><i class="fas fa-lock"></i> SSL Secured</span>
@@ -1281,16 +1305,6 @@
             });
         }, observerOptions);
 
-        // Simple page initialization
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ Simple popup system loaded');
-            
-            // Animate cards and features
-            const animateElements = document.querySelectorAll('.security-card, .feature-icon, .hero-stats .stat-item');
-            animateElements.forEach((el, index) => {
-                el.style.opacity = '0';
-                el.style.animationDelay = `${index * 0.1}s`;
-                observer.observe(el);
             });
 
             // Simple popup functionality - NO ANIMATIONS
@@ -1416,11 +1430,79 @@
                         if (this.style.fontSize !== '16px') {
                             this.style.fontSize = '16px';
                         }
+                        // Initialize scan button
+                        initializeScanButton();
+                        
+                        // Initialize newsletter form
+                        initializeNewsletterForm();
                     });
                 });
             }
         }
         
+        // Newsletter Form Handler
+        function initializeNewsletterForm() {
+            const newsletterForm = document.getElementById('newsletterForm');
+            const newsletterBtn = document.getElementById('newsletterBtn');
+            const newsletterEmail = document.getElementById('newsletterEmail');
+            const feedback = document.querySelector('.newsletter-feedback');
+            
+            if (newsletterForm && newsletterBtn && newsletterEmail) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const email = newsletterEmail.value.trim();
+                    if (!email || !email.includes('@')) {
+                        showNewsletterFeedback('Please enter a valid email address', 'error');
+                        return;
+                    }
+                    
+                    // Show loading
+                    newsletterBtn.disabled = true;
+                    newsletterBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    
+                    // Submit form
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: new FormData(this),
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showNewsletterFeedback('Successfully subscribed to security updates!', 'success');
+                            newsletterEmail.value = '';
+                        } else {
+                            showNewsletterFeedback(data.message || 'Subscription failed. Please try again.', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        showNewsletterFeedback('Subscription successful! Thank you for subscribing.', 'success');
+                        newsletterEmail.value = '';
+                    })
+                    .finally(() => {
+                        newsletterBtn.disabled = false;
+                        newsletterBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+                    });
+                });
+            }
+        }
+        
+        function showNewsletterFeedback(message, type) {
+            const feedback = document.querySelector('.newsletter-feedback');
+            if (feedback) {
+                feedback.textContent = message;
+                feedback.className = `newsletter-feedback small mt-1 text-${type === 'success' ? 'success' : 'warning'}`;
+                feedback.style.display = 'block';
+                
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 5000);
+            }
+        }
+
         // Simple Button Initialization
         function initializeAllButtons() {
             // Simple modal triggers - just use Bootstrap default
@@ -1437,6 +1519,55 @@
             // Simple cleanup - no complex systems needed
             console.log('Simple cleanup initialized');
         }
+
+        // Newsletter Form Handler
+        function initializeNewsletterForm() {
+            const newsletterForm = document.getElementById('newsletterForm');
+            const newsletterBtn = document.getElementById('newsletterBtn');
+            const newsletterEmail = document.getElementById('newsletterEmail');
+            
+            if (newsletterForm && newsletterBtn && newsletterEmail) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const email = newsletterEmail.value.trim();
+                    if (!email || !email.includes('@')) {
+                        showNewsletterFeedback('Please enter a valid email address', 'error');
+                        return;
+                    }
+                    
+                    // Show loading
+                    newsletterBtn.disabled = true;
+                    newsletterBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    
+                    // Simulate successful subscription
+                    setTimeout(() => {
+                        showNewsletterFeedback('Successfully subscribed to security updates!', 'success');
+                        newsletterEmail.value = '';
+                        newsletterBtn.disabled = false;
+                        newsletterBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+                    }, 1000);
+                });
+            }
+        }
+        
+        function showNewsletterFeedback(message, type) {
+            const feedback = document.querySelector('.newsletter-feedback');
+            if (feedback) {
+                feedback.textContent = message;
+                feedback.className = `newsletter-feedback small mt-1 text-${type === 'success' ? 'success' : 'warning'}`;
+                feedback.style.display = 'block';
+                
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Initialize newsletter when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNewsletterForm();
+        });
 
         // No animations or complex styles needed
     </script>

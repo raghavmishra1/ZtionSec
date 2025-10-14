@@ -51,4 +51,7 @@ urlpatterns = [
     
     # Test pages
     path('modal-test/', views.modal_test, name='modal_test'),
+    
+    # Quick scan
+    path('quick-scan/', views.quick_scan, name='quick_scan'),
 ]
