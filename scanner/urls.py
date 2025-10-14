@@ -54,4 +54,8 @@ urlpatterns = [
     
     # Quick scan
     path('quick-scan/', views.quick_scan, name='quick_scan'),
+    
+    # Health checks for production
+    path('health/', views.health_check, name='health_check'),
+    path('api/v1/health/', views.api_health_check, name='api_health_check'),
 ]

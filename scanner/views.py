@@ -394,3 +394,33 @@ def quick_scan(request):
 def security_analytics(request):
     """Security analytics page"""
     return render(request, 'scanner/security_analytics.html')
+
+def advanced_dashboard(request):
+    """Advanced dashboard page"""
+    return render(request, 'scanner/advanced_dashboard.html')
+
+# Health Check Endpoints for Production
+from django.http import JsonResponse
+from django.views.decorators.cache import cache_page
+from django.views.decorators.http import require_http_methods
+import json
+
+@cache_page(60)  # Cache for 1 minute
+@require_http_methods(["GET"])
+def health_check(request):
+    """Lightweight health check for Render"""
+    return JsonResponse({
+        'status': 'healthy',
+        'service': 'ztionsec',
+        'version': '1.0.0'
+    }, status=200)
+
+@cache_page(60)  # Cache for 1 minute  
+@require_http_methods(["GET"])
+def api_health_check(request):
+    """API health check endpoint"""
+    return JsonResponse({
+        'status': 'ok',
+        'timestamp': '2025-10-15T00:00:00Z',
+        'service': 'ztionsec-api'
+    }, status=200)

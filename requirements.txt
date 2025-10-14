@@ -12,3 +12,10 @@ python-decouple>=3.8
 psycopg2-binary>=2.9.7
 djangorestframework>=3.14.0
 django-cors-headers>=4.3.0
+
+# Security Scanning Dependencies
+python-nmap>=0.7.1
+dnspython>=2.4.0
+python-whois>=0.8.0
+sslyze>=5.1.0
+validators>=0.22.0

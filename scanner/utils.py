@@ -10,6 +10,30 @@ from cryptography.hazmat.backends import default_backend
 import html
 import urllib.parse
 from django.conf import settings
+import gc
+import logging
+
+# Optional imports with fallbacks
+try:
+    import nmap
+    HAS_NMAP = True
+except ImportError:
+    HAS_NMAP = False
+    logging.warning("python-nmap not available - port scanning will be limited")
+
+try:
+    import dns.resolver
+    HAS_DNS = True
+except ImportError:
+    HAS_DNS = False
+    logging.warning("dnspython not available - DNS analysis will be limited")
+
+try:
+    import whois
+    HAS_WHOIS = True
+except ImportError:
+    HAS_WHOIS = False
+    logging.warning("python-whois not available - WHOIS lookup will be limited")
 
 class SecurityScanner:
     def __init__(self, url, timeout=10):
@@ -24,28 +48,59 @@ class SecurityScanner:
         })
         
     def scan_all(self):
-        """Perform comprehensive security scan"""
+        """Perform comprehensive security scan with memory optimization"""
         try:
+            # Initialize results
+            self.results = {}
+            
+            # Perform scans one by one and clean up memory
             ssl_results = self.check_ssl_certificate()
-            header_results = self.check_security_headers()
-            cms_results = self.detect_cms()
-            perf_results = self.check_performance()
-            
-            # Merge all results
             self.results.update(ssl_results)
+            del ssl_results
+            gc.collect()
+            
+            header_results = self.check_security_headers()
             self.results.update(header_results)
+            del header_results
+            gc.collect()
+            
+            cms_results = self.detect_cms()
             self.results.update(cms_results)
-            self.results.update(perf_results)
+            del cms_results
+            gc.collect()
             
-            # Calculate score and grade
-            score, grade = self.calculate_security_score(self.results)
-            self.results['security_score'] = score
-            self.results['grade'] = grade
+            performance_results = self.check_performance()
+            self.results.update(performance_results)
+            del performance_results
+            gc.collect()
+            
+            # Calculate overall security score
+            self.results['security_score'] = self.calculate_security_score()
+            self.results['grade'] = self.get_security_grade(self.results['security_score'])
             
             return self.results
+            
         except Exception as e:
-            self.results['error'] = str(e)
-            return self.results
+            logging.error(f"Security scan error for {self.url}: {str(e)}")
+            return {
+                'error': str(e),
+                'security_score': 0,
+                'grade': 'F',
+                'ssl_valid': False,
+                'has_hsts': False,
+                'has_csp': False,
+                'has_xframe': False,
+                'has_xss_protection': False,
+                'has_content_type': False,
+                'cms_detected': 'Unknown',
+                'response_time': 0,
+                'status_code': 0
+            }
+        finally:
+            # Clean up session
+            if hasattr(self, 'session'):
+                self.session.close()
+            gc.collect()
     
     def check_ssl_certificate(self):
         """Check SSL certificate validity and details"""
