@@ -1,0 +1,119 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block title %}Team Plans - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1><i class="fas fa-users"></i> Team Plans</h1>
+        <p class="lead">Collaborate securely with your team using ZtionSec's team features</p>
+    </div>
+
+    <!-- Team Features -->
+    <section class="mb-5">
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <i class="fas fa-user-shield fa-3x text-primary mb-3"></i>
+                    <h5>Role-Based Access</h5>
+                    <p class="text-muted">Admin, Analyst, and Viewer roles with granular permissions</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <i class="fas fa-share-alt fa-3x text-success mb-3"></i>
+                    <h5>Shared Workspaces</h5>
+                    <p class="text-muted">Collaborate on scans and share results across your team</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <i class="fas fa-bell fa-3x text-info mb-3"></i>
+                    <h5>Team Notifications</h5>
+                    <p class="text-muted">Real-time alerts and notifications for your entire team</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center">
+                    <i class="fas fa-chart-bar fa-3x text-warning mb-3"></i>
+                    <h5>Team Analytics</h5>
+                    <p class="text-muted">Track team performance and security metrics</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Plans -->
+    <section class="py-5">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h4>Small Team</h4>
+                        <h2>$199<small>/month</small></h2>
+                        <p class="mb-0">Perfect for small security teams</p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i> Up to 5 team members</li>
+                            <li><i class="fas fa-check text-success me-2"></i> 2,000 scans/month</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Shared workspaces</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Team notifications</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Basic team analytics</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Email support</li>
+                        </ul>
+                        <button class="btn btn-primary w-100 mt-3">Start Free Trial</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow border-success">
+                    <div class="card-header bg-success text-white text-center">
+                        <h4>Medium Team</h4>
+                        <h2>$499<small>/month</small></h2>
+                        <p class="mb-0">Great for growing security teams</p>
+                        <span class="badge bg-warning">Most Popular</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i> Up to 15 team members</li>
+                            <li><i class="fas fa-check text-success me-2"></i> 5,000 scans/month</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Advanced workspaces</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Custom notifications</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Advanced team analytics</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Priority support</li>
+                            <li><i class="fas fa-check text-success me-2"></i> API access</li>
+                        </ul>
+                        <button class="btn btn-success w-100 mt-3">Start Free Trial</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow">
+                    <div class="card-header bg-dark text-white text-center">
+                        <h4>Large Team</h4>
+                        <h2>$999<small>/month</small></h2>
+                        <p class="mb-0">For enterprise security teams</p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i> Unlimited team members</li>
+                            <li><i class="fas fa-check text-success me-2"></i> 15,000 scans/month</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Enterprise workspaces</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Advanced notifications</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Full team analytics</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Dedicated support</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Full API access</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Custom integrations</li>
+                        </ul>
+                        <button class="btn btn-dark w-100 mt-3">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

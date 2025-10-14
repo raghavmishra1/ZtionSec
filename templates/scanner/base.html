@@ -817,8 +817,8 @@
                         <li class="mb-2"><a href="{% url 'home' %}" class="text-light text-decoration-none"><i class="fas fa-globe"></i> Website Scanner</a></li>
                         <li class="mb-2"><a href="{% url 'advanced_dashboard' %}" class="text-light text-decoration-none"><i class="fas fa-microscope"></i> Advanced Scan</a></li>
                         <li class="mb-2"><a href="{% url 'budget_scanner' %}" class="text-light text-decoration-none"><i class="fas fa-dollar-sign"></i> Budget Scanner</a></li>
-                        <li class="mb-2"><a href="{% url 'breach_history' %}" class="text-light text-decoration-none"><i class="fas fa-database"></i> Breach Check</a></li>
-                        <li class="mb-2"><a href="{% url 'vulnerability_database' %}" class="text-light text-decoration-none"><i class="fas fa-bug"></i> CVE Database</a></li>
+                        <li class="mb-2"><a href="{% url 'breach_check' %}" class="text-light text-decoration-none"><i class="fas fa-database"></i> Breach Check</a></li>
+                        <li class="mb-2"><a href="{% url 'cve_database' %}" class="text-light text-decoration-none"><i class="fas fa-bug"></i> CVE Database</a></li>
                     </ul>
                 </div>
                 
@@ -828,9 +828,9 @@
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="{% url 'about' %}" class="text-light text-decoration-none"><i class="fas fa-info-circle"></i> About Us</a></li>
                         <li class="mb-2"><a href="{% url 'contact' %}" class="text-light text-decoration-none"><i class="fas fa-envelope"></i> Contact</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-book"></i> Documentation</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-graduation-cap"></i> Tutorials</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                        <li class="mb-2"><a href="{% url 'documentation' %}" class="text-light text-decoration-none"><i class="fas fa-book"></i> Documentation</a></li>
+                        <li class="mb-2"><a href="{% url 'tutorials' %}" class="text-light text-decoration-none"><i class="fas fa-graduation-cap"></i> Tutorials</a></li>
+                        <li class="mb-2"><a href="{% url 'faq' %}" class="text-light text-decoration-none"><i class="fas fa-question-circle"></i> FAQ</a></li>
                     </ul>
                 </div>
                 
@@ -838,11 +838,11 @@
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6 class="text-primary mb-3">Enterprise</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-building"></i> Enterprise</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-code"></i> API Access</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-users"></i> Team Plans</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-handshake"></i> Partnerships</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                        <li class="mb-2"><a href="{% url 'enterprise' %}" class="text-light text-decoration-none"><i class="fas fa-building"></i> Enterprise</a></li>
+                        <li class="mb-2"><a href="{% url 'api_access' %}" class="text-light text-decoration-none"><i class="fas fa-code"></i> API Access</a></li>
+                        <li class="mb-2"><a href="{% url 'team_plans' %}" class="text-light text-decoration-none"><i class="fas fa-users"></i> Team Plans</a></li>
+                        <li class="mb-2"><a href="{% url 'partnerships' %}" class="text-light text-decoration-none"><i class="fas fa-handshake"></i> Partnerships</a></li>
+                        <li class="mb-2"><a href="{% url 'security_analytics' %}" class="text-light text-decoration-none"><i class="fas fa-chart-line"></i> Analytics</a></li>
                     </ul>
                 </div>
                 

@@ -1,0 +1,198 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block title %}CVE Database - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1><i class="fas fa-bug"></i> CVE Database</h1>
+        <p class="lead">Comprehensive vulnerability database with real-time updates</p>
+    </div>
+
+    <!-- Stats Section -->
+    <section class="mb-5">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <i class="fas fa-database fa-2x text-primary mb-2"></i>
+                        <h4>{{ total_cves|default:"250,000+" }}</h4>
+                        <p class="text-muted mb-0">Total CVEs</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <i class="fas fa-exclamation-triangle fa-2x text-danger mb-2"></i>
+                        <h4>1,250+</h4>
+                        <p class="text-muted mb-0">Critical CVEs</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <i class="fas fa-clock fa-2x text-success mb-2"></i>
+                        <h4>Real-time</h4>
+                        <p class="text-muted mb-0">Updates</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <i class="fas fa-search fa-2x text-info mb-2"></i>
+                        <h4>Advanced</h4>
+                        <p class="text-muted mb-0">Search & Filter</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-4">
+                        <h4 class="mb-3">Search CVE Database</h4>
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" placeholder="Search CVE ID, vendor, product, or description...">
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-search me-2"></i>Search
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select">
+                                        <option>All Severities</option>
+                                        <option>Critical</option>
+                                        <option>High</option>
+                                        <option>Medium</option>
+                                        <option>Low</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select">
+                                        <option>All Years</option>
+                                        <option>2024</option>
+                                        <option>2023</option>
+                                        <option>2022</option>
+                                        <option>2021</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select">
+                                        <option>All Vendors</option>
+                                        <option>Microsoft</option>
+                                        <option>Apache</option>
+                                        <option>Google</option>
+                                        <option>Adobe</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent CVEs -->
+    <section class="mb-5">
+        <h2 class="mb-4">Recent Critical CVEs</h2>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>CVE ID</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Vendor/Product</th>
+                        <th>Published</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>CVE-2024-12345</code></td>
+                        <td><span class="badge bg-danger">Critical</span></td>
+                        <td>9.8</td>
+                        <td>Microsoft Windows</td>
+                        <td>2024-10-14</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>CVE-2024-12344</code></td>
+                        <td><span class="badge bg-warning">High</span></td>
+                        <td>8.5</td>
+                        <td>Apache HTTP Server</td>
+                        <td>2024-10-13</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>CVE-2024-12343</code></td>
+                        <td><span class="badge bg-danger">Critical</span></td>
+                        <td>9.1</td>
+                        <td>Google Chrome</td>
+                        <td>2024-10-12</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>CVE-2024-12342</code></td>
+                        <td><span class="badge bg-info">Medium</span></td>
+                        <td>6.8</td>
+                        <td>Adobe Acrobat</td>
+                        <td>2024-10-11</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>CVE-2024-12341</code></td>
+                        <td><span class="badge bg-warning">High</span></td>
+                        <td>7.9</td>
+                        <td>Oracle Database</td>
+                        <td>2024-10-10</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary">View Details</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-outline-primary">Load More CVEs</button>
+        </div>
+    </section>
+
+    <!-- API Access -->
+    <section class="py-5 bg-light rounded">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h3><i class="fas fa-code me-2"></i>CVE Database API</h3>
+                    <p class="text-muted mb-0">Access our comprehensive CVE database programmatically with our REST API. Perfect for automated vulnerability management and security tools integration.</p>
+                </div>
+                <div class="col-lg-4 text-end">
+                    <a href="{% url 'api_access' %}" class="btn btn-primary">
+                        <i class="fas fa-rocket me-2"></i>Get API Access
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

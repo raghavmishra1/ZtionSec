@@ -1,0 +1,152 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block title %}Breach Check - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1><i class="fas fa-database"></i> Data Breach Check</h1>
+        <p class="lead">Check if your email has been compromised in known data breaches</p>
+    </div>
+
+    <!-- Breach Check Form -->
+    <section class="mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-5">
+                        <form method="post" action="{% url 'check_breach' %}">
+                            {% csrf_token %}
+                            <div class="mb-4">
+                                <label for="email" class="form-label h5">Email Address</label>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                    <input type="email" class="form-control" id="email" name="email" 
+                                           placeholder="Enter your email address" required>
+                                </div>
+                                <div class="form-text">
+                                    We'll check your email against {{ breach_databases|default:"15+" }} major breach databases
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-shield-alt me-2"></i>
+                                    <strong>Privacy Notice:</strong> Your email is only used for the search and is not stored or shared.
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="includeDetails" name="include_details" checked>
+                                    <label class="form-check-label" for="includeDetails">
+                                        Include breach details and recommendations
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-danger btn-lg px-5">
+                                    <i class="fas fa-search me-2"></i>Check for Breaches
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Breaches -->
+    <section class="mb-5">
+        <h2 class="text-center mb-4">Recent Major Breaches</h2>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Major Tech Company</h6>
+                                <small class="text-muted">October 2024</small>
+                            </div>
+                        </div>
+                        <p class="text-muted small mb-2">500M+ accounts compromised</p>
+                        <p class="small">Email addresses, passwords, and personal information exposed.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Social Media Platform</h6>
+                                <small class="text-muted">September 2024</small>
+                            </div>
+                        </div>
+                        <p class="text-muted small mb-2">200M+ accounts affected</p>
+                        <p class="small">User profiles and contact information leaked.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">E-commerce Site</h6>
+                                <small class="text-muted">August 2024</small>
+                            </div>
+                        </div>
+                        <p class="text-muted small mb-2">100M+ customers</p>
+                        <p class="small">Payment information and addresses compromised.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Protection Tips -->
+    <section class="py-5 bg-light rounded">
+        <div class="container">
+            <h2 class="text-center mb-4">Protect Yourself</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3 text-center">
+                    <i class="fas fa-key fa-2x text-primary mb-3"></i>
+                    <h5>Strong Passwords</h5>
+                    <p class="text-muted">Use unique, complex passwords for each account</p>
+                </div>
+                <div class="col-md-6 col-lg-3 text-center">
+                    <i class="fas fa-mobile-alt fa-2x text-success mb-3"></i>
+                    <h5>Two-Factor Auth</h5>
+                    <p class="text-muted">Enable 2FA on all important accounts</p>
+                </div>
+                <div class="col-md-6 col-lg-3 text-center">
+                    <i class="fas fa-sync fa-2x text-info mb-3"></i>
+                    <h5>Regular Updates</h5>
+                    <p class="text-muted">Keep your software and apps updated</p>
+                </div>
+                <div class="col-md-6 col-lg-3 text-center">
+                    <i class="fas fa-bell fa-2x text-warning mb-3"></i>
+                    <h5>Monitor Accounts</h5>
+                    <p class="text-muted">Regularly check your accounts for suspicious activity</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

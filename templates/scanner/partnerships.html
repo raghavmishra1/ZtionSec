@@ -1,0 +1,148 @@
+{% extends 'scanner/base.html' %}
+{% load static %}
+
+{% block title %}Partnerships - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1><i class="fas fa-handshake"></i> Partnerships</h1>
+        <p class="lead">Join our partner ecosystem and grow together</p>
+    </div>
+
+    <!-- Partner Types -->
+    <section class="mb-5">
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-store fa-3x text-primary mb-3"></i>
+                        <h4>Reseller Partners</h4>
+                        <p class="text-muted">Sell ZtionSec to your customers and earn competitive margins</p>
+                        <ul class="list-unstyled text-start">
+                            <li><i class="fas fa-check text-success me-2"></i> Up to 30% margins</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Sales training & support</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Marketing materials</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Partner portal access</li>
+                        </ul>
+                        <button class="btn btn-primary">Apply Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-puzzle-piece fa-3x text-success mb-3"></i>
+                        <h4>Technology Partners</h4>
+                        <p class="text-muted">Integrate ZtionSec with your platform or service</p>
+                        <ul class="list-unstyled text-start">
+                            <li><i class="fas fa-check text-success me-2"></i> API integration support</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Technical documentation</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Co-marketing opportunities</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Joint solution development</li>
+                        </ul>
+                        <button class="btn btn-success">Learn More</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-graduation-cap fa-3x text-info mb-3"></i>
+                        <h4>Training Partners</h4>
+                        <p class="text-muted">Provide ZtionSec training and certification programs</p>
+                        <ul class="list-unstyled text-start">
+                            <li><i class="fas fa-check text-success me-2"></i> Certification programs</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Training materials</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Instructor support</li>
+                            <li><i class="fas fa-check text-success me-2"></i> Revenue sharing</li>
+                        </ul>
+                        <button class="btn btn-info">Get Started</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partner Benefits -->
+    <section class="py-5 bg-light rounded">
+        <div class="container">
+            <h2 class="text-center mb-4">Partner Benefits</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3 text-center">
+                    <i class="fas fa-dollar-sign fa-2x text-success mb-3"></i>
+                    <h5>Revenue Growth</h5>
+                    <p class="text-muted">Expand your revenue streams with our partner programs</p>
+                </div>
+                <div class="col-md-6 col-lg-3 text-center">
+                    <i class="fas fa-users fa-2x text-primary mb-3"></i>
+                    <h5>Dedicated Support</h5>
+                    <p class="text-muted">Get dedicated partner support and account management</p>
+                </div>
+                <div class="col-md-6 col-lg-3 text-center">
+                    <i class="fas fa-chart-line fa-2x text-info mb-3"></i>
+                    <h5>Marketing Support</h5>
+                    <p class="text-muted">Co-marketing opportunities and marketing materials</p>
+                </div>
+                <div class="col-md-6 col-lg-3 text-center">
+                    <i class="fas fa-certificate fa-2x text-warning mb-3"></i>
+                    <h5>Training & Certification</h5>
+                    <p class="text-muted">Comprehensive training and certification programs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-5">
+                        <h3 class="text-center mb-4">Become a Partner</h3>
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Company Name</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Contact Name</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" class="form-control">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Partnership Type</label>
+                                    <select class="form-select" required>
+                                        <option value="">Select partnership type</option>
+                                        <option value="reseller">Reseller Partner</option>
+                                        <option value="technology">Technology Partner</option>
+                                        <option value="training">Training Partner</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Tell us about your company</label>
+                                    <textarea class="form-control" rows="4" placeholder="Describe your company, target market, and how you'd like to partner with ZtionSec..."></textarea>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg px-5">Submit Application</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
