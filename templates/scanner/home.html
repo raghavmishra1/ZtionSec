@@ -48,14 +48,14 @@
                         </div>
                     </div>
                     <div class="d-flex gap-3 flex-wrap">
-                        <a href="#website-scanner" class="btn btn-warning btn-lg px-4">
-                            <i class="fas fa-search me-2"></i> Start Security Scan
+                        <a href="#scanner" class="btn btn-warning btn-lg px-4">
+                            <i class="fas fa-shield-alt me-2"></i> Start Security Scan
                         </a>
                         <a href="{% url 'advanced_dashboard' %}" class="btn btn-outline-light btn-lg px-4">
                             <i class="fas fa-microscope me-2"></i> Advanced Tools
                         </a>
-                        <a href="#breach-checker" class="btn btn-outline-light btn-lg px-4">
-                            <i class="fas fa-envelope me-2"></i> Check Breaches
+                        <a href="{% url 'budget_scanner' %}" class="btn btn-outline-light btn-lg px-4">
+                            <i class="fas fa-dollar-sign me-2"></i> Budget Scanner
                         </a>
                     </div>
                 </div>
@@ -167,9 +167,9 @@
             <div class="col-md-4 text-center">
                 <div class="card h-100 security-card">
                     <div class="card-body">
-                        <i class="fas fa-database feature-icon"></i>
-                        <h5 class="card-title">Data Breach Check</h5>
-                        <p class="card-text">Check if email addresses have been compromised in known data breaches.</p>
+                        <i class="fas fa-chart-line feature-icon"></i>
+                        <h5 class="card-title">Security Analytics</h5>
+                        <p class="card-text">Advanced security metrics and trend analysis for comprehensive insights.</p>
                     </div>
                 </div>
             </div>
@@ -545,20 +545,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlInput = document.getElementById('url');
     const scanButton = document.getElementById('scanButton');
     
-    // Breach Checker Form Validation
-    const breachForm = document.getElementById('breachCheckForm');
-    const emailInput = document.getElementById('email');
-    const breachButton = document.getElementById('breachButton');
+    // Additional form validation can be added here
     
     // Real-time URL validation
     urlInput.addEventListener('input', function() {
         validateURL(this);
     });
     
-    // Real-time email validation
-    emailInput.addEventListener('input', function() {
-        validateEmail(this);
-    });
+    // Additional validation can be added here
     
     // Website scanner form submission
     websiteForm.addEventListener('submit', function(e) {
@@ -584,22 +578,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Breach checker form submission
-    breachForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        if (validateEmail(emailInput)) {
-            // Show loading state
-            showLoadingState(breachButton, 'Checking Breach Databases...');
-            
-            // Submit form after validation
-            setTimeout(() => {
-                this.submit();
-            }, 1000);
-        } else {
-            breachForm.classList.add('was-validated');
-        }
-    });
+    // Additional form handlers can be added here
 });
 
 // URL Validation Function
@@ -830,6 +809,5 @@ function trackFormInteraction(formType, action) {
 
 // Track form focus events
 document.getElementById('url')?.addEventListener('focus', () => trackFormInteraction('website-scan', 'url-focus'));
-document.getElementById('email')?.addEventListener('focus', () => trackFormInteraction('breach-check', 'email-focus'));
 </script>
 {% endblock %}
