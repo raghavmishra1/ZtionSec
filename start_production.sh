@@ -15,9 +15,9 @@ python manage.py collectstatic --noinput --clear
 echo "Running database migrations..."
 python manage.py migrate --noinput
 
-# Create cache table if it doesn't exist
-echo "Setting up cache..."
-python manage.py createcachetable || true
+# Setup cache system with error handling
+echo "Setting up cache system..."
+python manage.py setup_cache || echo "Cache setup failed, using fallback"
 
 # Start Gunicorn with optimized settings
 echo "Starting Gunicorn server..."

@@ -124,8 +124,13 @@ class RateLimitMiddleware:
         current_time = int(time.time())
         window_start = current_time - config['period']
         
-        # Get request timestamps from cache
-        requests = cache.get(cache_key, [])
+        # Get request timestamps from cache with error handling
+        try:
+            requests = cache.get(cache_key, [])
+        except Exception as e:
+            # If cache fails, allow request but log error
+            print(f"Cache error in rate limiting: {e}")
+            return False
         
         # Filter out old requests
         requests = [req_time for req_time in requests if req_time > window_start]
@@ -141,15 +146,19 @@ class RateLimitMiddleware:
         current_time = int(time.time())
         window_start = current_time - config['period']
         
-        # Get existing requests
-        requests = cache.get(cache_key, [])
-        
-        # Filter out old requests and add new one
-        requests = [req_time for req_time in requests if req_time > window_start]
-        requests.append(current_time)
-        
-        # Store back in cache
-        cache.set(cache_key, requests, config['period'])
+        # Get existing requests with error handling
+        try:
+            requests = cache.get(cache_key, [])
+            
+            # Filter out old requests and add new one
+            requests = [req_time for req_time in requests if req_time > window_start]
+            requests.append(current_time)
+            
+            # Store back in cache
+            cache.set(cache_key, requests, config['period'])
+        except Exception as e:
+            # If cache fails, just log error and continue
+            print(f"Cache error in record_request: {e}")
 
 
 class SecurityMonitoringMiddleware:
