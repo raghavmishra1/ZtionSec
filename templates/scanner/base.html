@@ -196,34 +196,86 @@
             width: 80%;
         }
 
-        /* Fix Dropdown Overlapping Issues */
+        /* Dropdown Toggle Styling */
+        .dropdown-toggle {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500 !important;
+        }
+
+        .dropdown-toggle:hover {
+            color: #ffffff !important;
+        }
+
+        .dropdown-toggle::after {
+            margin-left: 8px !important;
+            vertical-align: middle !important;
+        }
+
+        /* Ensure dropdown shows on hover for desktop */
+        @media (min-width: 992px) {
+            .dropdown:hover .dropdown-menu {
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: translateY(0) !important;
+            }
+            
+            .dropdown-menu {
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: all 0.3s ease !important;
+            }
+        }
+
+        /* Professional Dropdown Styling - Fixed Visibility */
         .dropdown-menu {
-            background: white;
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 1035 !important; /* Higher than navbar but below modals */
-            margin-top: 8px;
-            padding: 8px 0;
-            min-width: 200px;
+            background: #ffffff !important;
+            border: 1px solid rgba(0, 0, 0, 0.15) !important;
+            border-radius: 8px !important;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+            z-index: 1035 !important;
+            margin-top: 8px !important;
+            padding: 12px 0 !important;
+            min-width: 220px !important;
+            max-width: 300px !important;
         }
 
         .dropdown-item {
-            padding: 10px 20px;
-            transition: var(--transition-smooth);
-            border-radius: 8px;
-            margin: 2px 8px;
+            padding: 12px 20px !important;
+            transition: all 0.3s ease !important;
+            border-radius: 6px !important;
+            margin: 2px 8px !important;
+            color: #2c3e50 !important;
+            font-weight: 500 !important;
+            display: flex !important;
+            align-items: center !important;
+            text-decoration: none !important;
         }
 
-        .dropdown-item:hover {
-            background: var(--primary-gradient);
-            color: white;
-            transform: translateX(5px);
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: #ffffff !important;
+            transform: translateX(3px) !important;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+        }
+
+        .dropdown-item:active {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%) !important;
+            color: #ffffff !important;
         }
 
         .dropdown-item i {
-            width: 20px;
-            margin-right: 8px;
+            width: 20px !important;
+            margin-right: 10px !important;
+            text-align: center !important;
+            font-size: 14px !important;
+        }
+
+        .dropdown-divider {
+            margin: 8px 0 !important;
+            border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
         }
 
         /* Ensure dropdowns don't overlap with content */
@@ -237,27 +289,39 @@
             }
         }
 
-        /* Fix for mobile dropdown overlapping */
-        @media (max-width: 991px) {
+        /* Mobile Dropdown - Professional Styling */
+        @media (max-width: 991.98px) {
             .dropdown-menu {
                 position: static !important;
                 transform: none !important;
-                box-shadow: none;
-                border: none;
-                background: rgba(0, 0, 0, 0.1);
-                margin-top: 0;
+                background: rgba(255, 255, 255, 0.98) !important;
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                border-radius: 8px !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+                margin: 8px 0 !important;
+                padding: 8px 0 !important;
+                backdrop-filter: blur(10px) !important;
             }
             
             .dropdown-item {
-                color: rgba(255, 255, 255, 0.8);
-                margin: 0;
-                border-radius: 0;
+                color: #2c3e50 !important;
+                margin: 2px 8px !important;
+                border-radius: 6px !important;
+                font-weight: 500 !important;
+                padding: 10px 16px !important;
             }
             
-            .dropdown-item:hover {
-                background: rgba(255, 255, 255, 0.1);
-                color: white;
-                transform: none;
+            .dropdown-item:hover,
+            .dropdown-item:focus {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                color: #ffffff !important;
+                transform: translateX(2px) !important;
+                box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+            }
+            
+            .dropdown-item:active {
+                background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%) !important;
+                color: #ffffff !important;
             }
         }
 
