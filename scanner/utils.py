@@ -124,10 +124,25 @@ class SecurityScanner:
                     cert_der = ssl.PEM_cert_to_DER_cert(cert_pem)
                     cert = x509.load_der_x509_certificate(cert_der, default_backend())
                     
+                    # Safely extract issuer information
+                    issuer = 'Unknown'
+                    try:
+                        if cert.issuer:
+                            issuer = cert.issuer.rfc4514_string()
+                    except:
+                        issuer = 'Unknown'
+                    
+                    # Safely extract expiry date
+                    expiry = None
+                    try:
+                        expiry = cert.not_valid_after
+                    except:
+                        expiry = None
+                    
                     return {
                         'ssl_valid': ssl_valid,
-                        'ssl_issuer': cert.issuer.rfc4514_string(),
-                        'ssl_expiry': cert.not_valid_after,
+                        'ssl_issuer': issuer,
+                        'ssl_expiry': expiry,
                         'ssl_grade': ssl_grade
                     }
                 except:
