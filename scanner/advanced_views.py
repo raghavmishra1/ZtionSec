@@ -122,16 +122,22 @@ def perform_advanced_scan(url, scan_id):
         results = scanner.comprehensive_scan()
         
         # Update scan record with results (ensure all fields are dicts)
-        scan.ip_address = results.get('results', {}).get('dns', {}).get('ip_address')
-        scan.dns_analysis = results.get('results', {}).get('dns', {}) or {}
-        scan.ssl_analysis = results.get('results', {}).get('ssl', {}) or {}
-        scan.port_scan_results = results.get('results', {}).get('ports', {}) or {}
-        scan.webapp_scan_results = results.get('results', {}).get('webapp', {}) or {}
-        scan.vulnerability_results = results.get('results', {}).get('vulns', {}) or {}
-        scan.subdomain_results = results.get('results', {}).get('subdomains', {}) or {}
-        scan.technology_stack = results.get('results', {}).get('tech', {}) or {}
-        scan.security_headers = results.get('results', {}).get('headers', {}) or {}
-        scan.threat_intelligence = results.get('results', {}).get('threat_intel', {}) or {}
+        try:
+            print("Updating scan record with results...")
+            scan.ip_address = results.get('results', {}).get('dns', {}).get('ip_address')
+            scan.dns_analysis = results.get('results', {}).get('dns', {}) or {}
+            scan.ssl_analysis = results.get('results', {}).get('ssl', {}) or {}
+            scan.port_scan_results = results.get('results', {}).get('ports', {}) or {}
+            scan.webapp_scan_results = results.get('results', {}).get('webapp', {}) or {}
+            scan.vulnerability_results = results.get('results', {}).get('vulns', {}) or {}
+            scan.subdomain_results = results.get('results', {}).get('subdomains', {}) or {}
+            scan.technology_stack = results.get('results', {}).get('tech', {}) or {}
+            scan.security_headers = results.get('results', {}).get('headers', {}) or {}
+            scan.threat_intelligence = results.get('results', {}).get('threat_intel', {}) or {}
+            print("Scan record fields updated successfully")
+        except Exception as field_error:
+            print(f"Error updating scan fields: {field_error}")
+            raise
         
         scan.security_score = results.get('security_score', 0)
         scan.risk_level = results.get('risk_level', 'unknown')
@@ -139,49 +145,61 @@ def perform_advanced_scan(url, scan_id):
         scan.status = 'completed'
         
         # Process findings
-        findings = results.get('findings', [])
-        scan.total_findings = len(findings)
-        
-        # Count findings by severity
-        severity_counts = {'critical': 0, 'high': 0, 'medium': 0, 'low': 0, 'info': 0}
-        
-        for finding_data in findings:
-            severity = finding_data.get('severity', 'info')
-            if severity in severity_counts:
-                severity_counts[severity] += 1
+        try:
+            print("Processing findings...")
+            findings = results.get('findings', [])
+            print(f"Found {len(findings)} findings")
+            scan.total_findings = len(findings)
             
-            # Create SecurityFinding record
-            try:
-                SecurityFinding.objects.create(
-                    scan=scan,
-                    severity=finding_data.get('severity', 'info'),
-                    category=finding_data.get('category', 'other'),
-                    title=finding_data.get('title', ''),
-                    description=finding_data.get('description', ''),
-                    recommendation=finding_data.get('recommendation', ''),
-                    cve_id=finding_data.get('cve_id'),
-                    cvss_score=finding_data.get('cvss_score')
-                )
-            except Exception as e:
-                print(f"Error creating finding: {str(e)}")
-        
-        scan.critical_findings = severity_counts['critical']
-        scan.high_findings = severity_counts['high']
-        scan.medium_findings = severity_counts['medium']
-        scan.low_findings = severity_counts['low']
-        scan.info_findings = severity_counts['info']
+            # Count findings by severity
+            severity_counts = {'critical': 0, 'high': 0, 'medium': 0, 'low': 0, 'info': 0}
+            
+            for i, finding_data in enumerate(findings):
+                print(f"Processing finding {i+1}: {finding_data.get('title', 'Unknown')}")
+                severity = finding_data.get('severity', 'info')
+                if severity in severity_counts:
+                    severity_counts[severity] += 1
+                
+                # Create SecurityFinding record
+                try:
+                    SecurityFinding.objects.create(
+                        scan=scan,
+                        severity=finding_data.get('severity', 'info'),
+                        category=finding_data.get('category', 'other'),
+                        title=finding_data.get('title', ''),
+                        description=finding_data.get('description', ''),
+                        recommendation=finding_data.get('recommendation', ''),
+                        cve_id=finding_data.get('cve_id'),
+                        cvss_score=finding_data.get('cvss_score')
+                    )
+                except Exception as e:
+                    print(f"Error creating finding {i+1}: {str(e)}")
+            
+            scan.critical_findings = severity_counts['critical']
+            scan.high_findings = severity_counts['high']
+            scan.medium_findings = severity_counts['medium']
+            scan.low_findings = severity_counts['low']
+            scan.info_findings = severity_counts['info']
+            print("Findings processed successfully")
+        except Exception as findings_error:
+            print(f"Error processing findings: {findings_error}")
+            raise
         
         scan.save()
         
         # Generate threat intelligence report (if available)
         if SecurityIntelligence:
             try:
+                print("Generating threat intelligence...")
                 security_intel = SecurityIntelligence()
                 threat_assessment = security_intel.comprehensive_threat_assessment({
                     'domain': scan.domain,
                     'ip_address': scan.ip_address,
                     'technologies': scan.technology_stack or {}
                 })
+                
+                print(f"Threat assessment type: {type(threat_assessment)}")
+                print(f"Threat assessment: {threat_assessment}")
                 
                 # Update threat intelligence data safely
                 if hasattr(scan, 'threat_intelligence') and scan.threat_intelligence:
@@ -191,23 +209,31 @@ def perform_advanced_scan(url, scan_id):
                         scan.threat_intelligence = threat_assessment
                 else:
                     scan.threat_intelligence = threat_assessment
+                    
+                print("Threat intelligence updated successfully")
             except Exception as e:
+                import traceback
                 print(f"Threat intelligence generation failed: {str(e)}")
+                print(f"Threat intelligence traceback: {traceback.format_exc()}")
                 # Set empty dict if threat intelligence fails
                 scan.threat_intelligence = {}
+        else:
+            print("SecurityIntelligence not available, skipping threat intelligence")
         
         scan.save()
         
         return results
         
     except Exception as e:
+        import traceback
         print(f"Error in advanced scan: {e}")
+        print(f"Traceback: {traceback.format_exc()}")
         # Update scan status to failed
         try:
             scan.status = 'failed'
             scan.save()
-        except:
-            pass
+        except Exception as save_error:
+            print(f"Error saving failed scan: {save_error}")
         return {'error': str(e)}
 
 def advanced_scan_results(request, scan_id):
