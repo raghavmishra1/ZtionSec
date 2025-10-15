@@ -1,0 +1,31 @@
+name: ZtionSec Keep-Alive
+
+on:
+  schedule:
+    # Every 5 minutes
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Wake Up Service
+        run: |
+          echo "Pinging ZtionSec service..."
+          
+          # Multiple endpoint pinging - UPDATE WITH YOUR ACTUAL RENDER URL
+          ENDPOINTS=(
+            "https://YOUR-ACTUAL-SERVICE-NAME.onrender.com/api/v1/health/"
+            "https://YOUR-ACTUAL-SERVICE-NAME.onrender.com/api/v1/stats/"
+          )
+          
+          for endpoint in "${ENDPOINTS[@]}"; do
+            echo "Pinging: $endpoint"
+            curl -f -m 30 "$endpoint" || echo "Failed to ping $endpoint"
+            sleep 2
+          done
+          
+          echo "Keep-alive completed"
+        continue-on-error: true

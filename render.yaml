@@ -1,4 +1,4 @@
-# Render.com deployment configuration for ZtionSec Backend API
+# Optimized Render.com configuration for cold start prevention
 services:
   - type: web
     name: ztionsec-api
@@ -7,13 +7,11 @@ services:
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
-      python startup_optimize.py
       python manage.py collectstatic --noinput
       python manage.py migrate
     startCommand: |
       python manage.py migrate --run-syncdb
-      python startup_optimize.py
-      gunicorn Ztionsec.wsgi:application --config gunicorn.conf.py
+      gunicorn Ztionsec.wsgi:application --config gunicorn.conf.py --preload --max-requests 1000 --max-requests-jitter 50
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: Ztionsec.settings_deploy
@@ -29,18 +27,14 @@ services:
           property: connectionString
       - key: CORS_ALLOW_ALL_ORIGINS
         value: "True"
-      - key: ENABLE_PORT_SCANNING
-        value: "False"
-      - key: RATE_LIMIT_SCANS_PER_HOUR
-        value: "5"
-      - key: RATE_LIMIT_API_CALLS_PER_HOUR
-        value: "50"
       - key: PYTHONUNBUFFERED
         value: "1"
       - key: PYTHONDONTWRITEBYTECODE
         value: "1"
       - key: WEB_CONCURRENCY
         value: "2"
+      - key: GUNICORN_TIMEOUT
+        value: "120"
     healthCheckPath: /api/v1/health/
     
   - type: pserv
