@@ -19,11 +19,15 @@ import threading
 import random
 from concurrent.futures import ThreadPoolExecutor
 
-# Import only existing modules
+# Import enhanced scanner
 try:
-    from .advanced_scanner import AdvancedSecurityScanner
+    from .enhanced_advanced_scanner import EnhancedAdvancedScanner
+    AdvancedSecurityScanner = EnhancedAdvancedScanner
 except ImportError:
-    AdvancedSecurityScanner = None
+    try:
+        from .advanced_scanner import AdvancedSecurityScanner
+    except ImportError:
+        AdvancedSecurityScanner = None
 
 try:
     from .vulnerability_db import SecurityIntelligence
@@ -103,6 +107,14 @@ def perform_advanced_scan(url, scan_id):
         scan = AdvancedSecurityScan.objects.get(id=scan_id)
         start_time = time.time()
         
+        # Update scan status
+        scan.status = 'running'
+        scan.save()
+        
+        # Check if scanner is available
+        if AdvancedSecurityScanner is None:
+            raise Exception("Advanced scanner not available")
+        
         # Initialize advanced scanner
         scanner = AdvancedSecurityScanner(url)
         
@@ -124,6 +136,7 @@ def perform_advanced_scan(url, scan_id):
         scan.security_score = results.get('security_score', 0)
         scan.risk_level = results.get('risk_level', 'unknown')
         scan.scan_duration = time.time() - start_time
+        scan.status = 'completed'
         
         # Process findings
         findings = results.get('findings', [])
@@ -138,19 +151,19 @@ def perform_advanced_scan(url, scan_id):
                 severity_counts[severity] += 1
             
             # Create SecurityFinding record
-            SecurityFinding.objects.create(
-                scan=scan,
-                severity=finding_data.get('severity', 'info'),
-                category=finding_data.get('category', 'other'),
-                title=finding_data.get('title', ''),
-                description=finding_data.get('description', ''),
-                recommendation=finding_data.get('recommendation', ''),
-                cve_id=finding_data.get('cve_id'),
-                cvss_score=finding_data.get('cvss_score'),
-                affected_component=finding_data.get('affected_component', ''),
-                proof_of_concept=finding_data.get('proof_of_concept', ''),
-                references=finding_data.get('references', [])
-            )
+            try:
+                SecurityFinding.objects.create(
+                    scan=scan,
+                    severity=finding_data.get('severity', 'info'),
+                    category=finding_data.get('category', 'other'),
+                    title=finding_data.get('title', ''),
+                    description=finding_data.get('description', ''),
+                    recommendation=finding_data.get('recommendation', ''),
+                    cve_id=finding_data.get('cve_id'),
+                    cvss_score=finding_data.get('cvss_score')
+                )
+            except Exception as e:
+                print(f"Error creating finding: {str(e)}")
         
         scan.critical_findings = severity_counts['critical']
         scan.high_findings = severity_counts['high']
@@ -160,16 +173,24 @@ def perform_advanced_scan(url, scan_id):
         
         scan.save()
         
-        # Generate threat intelligence report
-        security_intel = SecurityIntelligence()
-        threat_assessment = security_intel.comprehensive_threat_assessment({
-            'domain': scan.domain,
-            'ip_address': scan.ip_address,
-            'technologies': scan.technology_stack
-        })
+        # Generate threat intelligence report (if available)
+        if SecurityIntelligence:
+            try:
+                security_intel = SecurityIntelligence()
+                threat_assessment = security_intel.comprehensive_threat_assessment({
+                    'domain': scan.domain,
+                    'ip_address': scan.ip_address,
+                    'technologies': scan.technology_stack
+                })
+                
+                # Update threat intelligence data
+                if isinstance(scan.threat_intelligence, dict):
+                    scan.threat_intelligence.update(threat_assessment)
+                else:
+                    scan.threat_intelligence = threat_assessment
+            except Exception as e:
+                print(f"Threat intelligence generation failed: {str(e)}")
         
-        # Update threat intelligence data
-        scan.threat_intelligence.update(threat_assessment)
         scan.save()
         
         return results
@@ -188,24 +209,30 @@ def advanced_scan_results(request, scan_id):
     page_number = request.GET.get('page')
     page_findings = paginator.get_page(page_number)
     
-    # Generate charts data
-    report_generator = AdvancedReportGenerator()
-    scan_data = {
-        'security_score': scan.security_score,
-        'risk_level': scan.risk_level,
-        'findings': [
-            {
-                'severity': f.severity,
-                'category': f.category,
-                'title': f.title,
-                'description': f.description,
-                'recommendation': f.recommendation
+    # Generate charts data (if available)
+    charts = {}
+    if AdvancedReportGenerator:
+        try:
+            report_generator = AdvancedReportGenerator()
+            scan_data = {
+                'security_score': scan.security_score,
+                'risk_level': scan.risk_level,
+                'findings': [
+                    {
+                        'severity': f.severity,
+                        'category': f.category,
+                        'title': f.title,
+                        'description': f.description,
+                        'recommendation': f.recommendation
+                    }
+                    for f in findings
+                ]
             }
-            for f in findings
-        ]
-    }
-    
-    charts = report_generator.generate_charts(scan_data)
+            
+            charts = report_generator.generate_charts(scan_data)
+        except Exception as e:
+            print(f"Chart generation failed: {str(e)}")
+            charts = {}
     
     context = {
         'scan': scan,

@@ -1010,5 +1010,113 @@ document.addEventListener('DOMContentLoaded', function() {
         bar.style.width = width + '%';
     });
 });
+
+// Helper functions for error handling and loading
+function showError(title, message) {
+    const errorModal = `
+        <div class="modal fade" id="errorModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">
+                            <i class="fas fa-exclamation-triangle"></i> ${title}
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>${message}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remove existing error modal
+    const existingModal = document.getElementById('errorModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    document.body.insertAdjacentHTML('beforeend', errorModal);
+    const modal = new bootstrap.Modal(document.getElementById('errorModal'));
+    modal.show();
+}
+
+function showLoading(title, message) {
+    const loadingModal = `
+        <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body text-center py-4">
+                        <div class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h5>${title}</h5>
+                        <p class="text-muted">${message}</p>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remove existing loading modal
+    const existingModal = document.getElementById('loadingModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    document.body.insertAdjacentHTML('beforeend', loadingModal);
+    const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    modal.show();
+}
+
+// Enhanced form validation
+document.getElementById('advancedScanForm').addEventListener('submit', function(e) {
+    const url = document.getElementById('url').value.trim();
+    
+    if (!url) {
+        e.preventDefault();
+        showError('Missing URL', 'Please enter a valid URL to scan.');
+        return;
+    }
+    
+    // Basic URL validation
+    const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+    const cleanUrl = url.replace(/^https?:\/\//, '');
+    
+    if (!urlPattern.test(url) && !urlPattern.test('http://' + cleanUrl)) {
+        e.preventDefault();
+        showError('Invalid URL', 'Please enter a valid URL format (e.g., example.com or https://example.com).');
+        return;
+    }
+    
+    // Check for aggressive options warning
+    const aggressiveOptions = [
+        'enableSQLInjection', 'enableXSSTest', 'enableDirBruteforce', 
+        'enableFileInclusion', 'enableCSRFTest', 'enableCommandInjection'
+    ];
+    
+    const hasAggressive = aggressiveOptions.some(id => {
+        const element = document.getElementById(id);
+        return element && element.checked;
+    });
+    
+    if (hasAggressive) {
+        if (!confirm('⚠️ WARNING: You have enabled aggressive testing options. These should only be used on systems you own or have explicit permission to test. Unauthorized testing may be illegal.\n\nDo you want to continue?')) {
+            e.preventDefault();
+            return;
+        }
+    }
+    
+    // Show loading modal
+    showLoading('Advanced Security Scan in Progress', 'Performing comprehensive security analysis. This may take several minutes...');
+});
 </script>
 {% endblock %}
