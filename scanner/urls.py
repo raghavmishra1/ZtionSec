@@ -29,6 +29,11 @@ urlpatterns = [
     # Resource pages
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
+    
+    # Legal pages
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
+    path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
+    path('security-policy/', views.security_policy, name='security_policy'),
     path('documentation/', views.documentation, name='documentation'),
     path('tutorials/', views.tutorials, name='tutorials'),
     path('faq/', views.faq, name='faq'),

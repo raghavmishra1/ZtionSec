@@ -1,0 +1,518 @@
+{% extends 'scanner/base.html' %}
+
+{% block title %}Security Policy - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h1 class="h3 mb-0">
+                        <i class="fas fa-shield-alt"></i> Security Policy
+                    </h1>
+                    <small>Last updated: October 15, 2025</small>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <nav class="nav nav-pills flex-column sticky-top" style="top: 100px;">
+                                <a class="nav-link active" href="#overview">Security Overview</a>
+                                <a class="nav-link" href="#infrastructure">Infrastructure Security</a>
+                                <a class="nav-link" href="#data-protection">Data Protection</a>
+                                <a class="nav-link" href="#access-control">Access Control</a>
+                                <a class="nav-link" href="#vulnerability-management">Vulnerability Management</a>
+                                <a class="nav-link" href="#incident-response">Incident Response</a>
+                                <a class="nav-link" href="#compliance">Compliance</a>
+                                <a class="nav-link" href="#reporting">Security Reporting</a>
+                            </nav>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="security-content">
+                                <section id="overview" class="mb-5">
+                                    <h2 class="h4 text-danger mb-3">Security Overview</h2>
+                                    <p>ZtionSec is committed to maintaining the highest security standards to protect our platform, users, and data. This policy outlines our comprehensive security framework.</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="text-center mb-3">
+                                                <i class="fas fa-lock fa-3x text-success mb-2"></i>
+                                                <h5>Secure by Design</h5>
+                                                <p class="small">Security integrated into every aspect of our platform</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="text-center mb-3">
+                                                <i class="fas fa-eye fa-3x text-primary mb-2"></i>
+                                                <h5>Continuous Monitoring</h5>
+                                                <p class="small">24/7 security monitoring and threat detection</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="text-center mb-3">
+                                                <i class="fas fa-users-cog fa-3x text-warning mb-2"></i>
+                                                <h5>Expert Team</h5>
+                                                <p class="small">Dedicated security professionals and researchers</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-success">
+                                        <i class="fas fa-certificate"></i>
+                                        <strong>Security Commitment:</strong> We follow industry best practices and maintain compliance with international security standards including OWASP, NIST, and ISO 27001 guidelines.
+                                    </div>
+                                </section>
+
+                                <section id="infrastructure" class="mb-5">
+                                    <h2 class="h4 text-danger mb-3">Infrastructure Security</h2>
+                                    <p>Our infrastructure is built with security as the foundation:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-cloud text-primary"></i> Cloud Security</h5>
+                                            <ul>
+                                                <li><strong>Render.com Hosting:</strong> Enterprise-grade cloud infrastructure</li>
+                                                <li><strong>Auto-scaling:</strong> Dynamic resource allocation</li>
+                                                <li><strong>Geographic Distribution:</strong> Multi-region deployment</li>
+                                                <li><strong>DDoS Protection:</strong> Built-in attack mitigation</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-network-wired text-success"></i> Network Security</h5>
+                                            <ul>
+                                                <li><strong>SSL/TLS Encryption:</strong> All traffic encrypted in transit</li>
+                                                <li><strong>HTTPS Enforcement:</strong> Automatic HTTP to HTTPS redirection</li>
+                                                <li><strong>Firewall Protection:</strong> Advanced network filtering</li>
+                                                <li><strong>VPN Access:</strong> Secure administrative access</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive mt-4">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Security Layer</th>
+                                                    <th>Implementation</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>SSL/TLS</strong></td>
+                                                    <td>TLS 1.3, Perfect Forward Secrecy</td>
+                                                    <td><span class="badge bg-success">Active</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>HSTS</strong></td>
+                                                    <td>HTTP Strict Transport Security</td>
+                                                    <td><span class="badge bg-success">Active</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>CSP</strong></td>
+                                                    <td>Content Security Policy</td>
+                                                    <td><span class="badge bg-success">Active</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Rate Limiting</strong></td>
+                                                    <td>API and request throttling</td>
+                                                    <td><span class="badge bg-success">Active</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </section>
+
+                                <section id="data-protection" class="mb-5">
+                                    <h2 class="h4 text-danger mb-3">Data Protection</h2>
+                                    <p>We implement comprehensive data protection measures:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="card border-primary mb-3">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-database fa-2x text-primary mb-2"></i>
+                                                    <h5>Data at Rest</h5>
+                                                    <p class="small">AES-256 encryption for stored data</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="card border-success mb-3">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-exchange-alt fa-2x text-success mb-2"></i>
+                                                    <h5>Data in Transit</h5>
+                                                    <p class="small">TLS 1.3 encryption for all communications</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="card border-warning mb-3">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-memory fa-2x text-warning mb-2"></i>
+                                                    <h5>Data in Use</h5>
+                                                    <p class="small">Secure processing and memory protection</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h5>Data Classification & Handling</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Data Type</th>
+                                                    <th>Classification</th>
+                                                    <th>Retention</th>
+                                                    <th>Protection Level</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Scan Results</td>
+                                                    <td>Confidential</td>
+                                                    <td>90 days</td>
+                                                    <td>High</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>User Credentials</td>
+                                                    <td>Restricted</td>
+                                                    <td>Account lifetime</td>
+                                                    <td>Maximum</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>System Logs</td>
+                                                    <td>Internal</td>
+                                                    <td>30 days</td>
+                                                    <td>Medium</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Analytics Data</td>
+                                                    <td>Internal</td>
+                                                    <td>1 year</td>
+                                                    <td>Medium</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </section>
+
+                                <section id="access-control" class="mb-5">
+                                    <h2 class="h4 text-danger mb-3">Access Control</h2>
+                                    <p>Strict access controls protect our systems and data:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-key text-warning"></i> Authentication</h5>
+                                            <ul>
+                                                <li><strong>Multi-Factor Authentication:</strong> Required for all admin accounts</li>
+                                                <li><strong>Strong Passwords:</strong> Enforced password complexity</li>
+                                                <li><strong>Session Management:</strong> Secure session handling</li>
+                                                <li><strong>Account Lockout:</strong> Brute force protection</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-user-shield text-primary"></i> Authorization</h5>
+                                            <ul>
+                                                <li><strong>Role-Based Access:</strong> Principle of least privilege</li>
+                                                <li><strong>Permission Matrix:</strong> Granular access controls</li>
+                                                <li><strong>Regular Reviews:</strong> Quarterly access audits</li>
+                                                <li><strong>Automated Provisioning:</strong> Secure account management</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-info mt-3">
+                                        <i class="fas fa-users"></i>
+                                        <strong>Administrative Access:</strong> All administrative access is logged, monitored, and requires approval through our change management process.
+                                    </div>
+                                </section>
+
+                                <section id="vulnerability-management" class="mb-5">
+                                    <h2 class="h4 text-danger mb-3">Vulnerability Management</h2>
+                                    <p>Proactive vulnerability management ensures platform security:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="text-center mb-3">
+                                                <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                                    <strong>1</strong>
+                                                </div>
+                                                <h6 class="mt-2">Continuous Scanning</h6>
+                                                <p class="small">Automated vulnerability detection</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-center mb-3">
+                                                <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                                    <strong>2</strong>
+                                                </div>
+                                                <h6 class="mt-2">Risk Assessment</h6>
+                                                <p class="small">CVSS scoring and prioritization</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-center mb-3">
+                                                <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                                    <strong>3</strong>
+                                                </div>
+                                                <h6 class="mt-2">Remediation</h6>
+                                                <p class="small">Rapid patching and fixes</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-center mb-3">
+                                                <div class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                                    <strong>4</strong>
+                                                </div>
+                                                <h6 class="mt-2">Verification</h6>
+                                                <p class="small">Testing and validation</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h5>Vulnerability Response Times</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Severity</th>
+                                                    <th>CVSS Score</th>
+                                                    <th>Response Time</th>
+                                                    <th>Fix Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="table-danger">
+                                                    <td><strong>Critical</strong></td>
+                                                    <td>9.0 - 10.0</td>
+                                                    <td>2 hours</td>
+                                                    <td>24 hours</td>
+                                                </tr>
+                                                <tr class="table-warning">
+                                                    <td><strong>High</strong></td>
+                                                    <td>7.0 - 8.9</td>
+                                                    <td>8 hours</td>
+                                                    <td>72 hours</td>
+                                                </tr>
+                                                <tr class="table-info">
+                                                    <td><strong>Medium</strong></td>
+                                                    <td>4.0 - 6.9</td>
+                                                    <td>24 hours</td>
+                                                    <td>7 days</td>
+                                                </tr>
+                                                <tr class="table-light">
+                                                    <td><strong>Low</strong></td>
+                                                    <td>0.1 - 3.9</td>
+                                                    <td>72 hours</td>
+                                                    <td>30 days</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </section>
+
+                                <section id="incident-response" class="mb-5">
+                                    <h2 class="h4 text-danger mb-3">Incident Response</h2>
+                                    <p>Our incident response plan ensures rapid and effective security incident handling:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-exclamation-triangle text-danger"></i> Incident Classification</h5>
+                                            <ul>
+                                                <li><strong>P1 - Critical:</strong> Service outage, data breach</li>
+                                                <li><strong>P2 - High:</strong> Security compromise, major functionality loss</li>
+                                                <li><strong>P3 - Medium:</strong> Performance degradation, minor security issues</li>
+                                                <li><strong>P4 - Low:</strong> Cosmetic issues, enhancement requests</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-clock text-primary"></i> Response Times</h5>
+                                            <ul>
+                                                <li><strong>P1:</strong> 15 minutes acknowledgment, 1 hour response</li>
+                                                <li><strong>P2:</strong> 1 hour acknowledgment, 4 hours response</li>
+                                                <li><strong>P3:</strong> 4 hours acknowledgment, 24 hours response</li>
+                                                <li><strong>P4:</strong> 24 hours acknowledgment, 72 hours response</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <h5>Incident Response Process</h5>
+                                    <div class="row">
+                                        <div class="col-md-2 text-center">
+                                            <i class="fas fa-bell fa-2x text-danger mb-2"></i>
+                                            <h6>Detection</h6>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <i class="fas fa-arrow-right fa-2x text-muted mb-2"></i>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <i class="fas fa-search fa-2x text-warning mb-2"></i>
+                                            <h6>Analysis</h6>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <i class="fas fa-arrow-right fa-2x text-muted mb-2"></i>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <i class="fas fa-tools fa-2x text-primary mb-2"></i>
+                                            <h6>Containment</h6>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                                            <h6>Recovery</h6>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section id="compliance" class="mb-5">
+                                    <h2 class="h4 text-danger mb-3">Compliance & Standards</h2>
+                                    <p>ZtionSec adheres to international security standards and regulations:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="card border-success mb-3">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-shield-alt fa-2x text-success mb-2"></i>
+                                                    <h5>OWASP</h5>
+                                                    <p class="small">Following OWASP Top 10 and security guidelines</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="card border-primary mb-3">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-certificate fa-2x text-primary mb-2"></i>
+                                                    <h5>ISO 27001</h5>
+                                                    <p class="small">Information security management standards</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="card border-warning mb-3">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-balance-scale fa-2x text-warning mb-2"></i>
+                                                    <h5>GDPR</h5>
+                                                    <p class="small">Data protection and privacy compliance</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h5>Security Frameworks</h5>
+                                    <ul>
+                                        <li><strong>NIST Cybersecurity Framework:</strong> Comprehensive security controls</li>
+                                        <li><strong>CIS Controls:</strong> Critical security controls implementation</li>
+                                        <li><strong>SANS Top 20:</strong> Essential security measures</li>
+                                        <li><strong>PCI DSS:</strong> Payment card industry standards (where applicable)</li>
+                                    </ul>
+                                </section>
+
+                                <section id="reporting" class="mb-5">
+                                    <h2 class="h4 text-danger mb-3">Security Reporting</h2>
+                                    <p>We encourage responsible disclosure of security vulnerabilities:</p>
+                                    
+                                    <div class="alert alert-success">
+                                        <h5><i class="fas fa-bug"></i> Responsible Disclosure</h5>
+                                        <p>If you discover a security vulnerability in ZtionSec, please report it responsibly:</p>
+                                        <ul class="mb-0">
+                                            <li><strong>Email:</strong> security@ztionsec.com</li>
+                                            <li><strong>Response Time:</strong> 24-48 hours acknowledgment</li>
+                                            <li><strong>Coordination:</strong> We work with researchers for responsible disclosure</li>
+                                            <li><strong>Recognition:</strong> Security researchers are credited (with permission)</li>
+                                        </ul>
+                                    </div>
+
+                                    <h5>Bug Bounty Program</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Vulnerability Type</th>
+                                                    <th>Severity</th>
+                                                    <th>Recognition</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Remote Code Execution</td>
+                                                    <td><span class="badge bg-danger">Critical</span></td>
+                                                    <td>Hall of Fame + Certificate</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>SQL Injection</td>
+                                                    <td><span class="badge bg-warning">High</span></td>
+                                                    <td>Hall of Fame + Certificate</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cross-Site Scripting</td>
+                                                    <td><span class="badge bg-info">Medium</span></td>
+                                                    <td>Hall of Fame</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Information Disclosure</td>
+                                                    <td><span class="badge bg-secondary">Low</span></td>
+                                                    <td>Acknowledgment</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-envelope"></i>
+                                        <strong>Contact Security Team:</strong> For security-related inquiries, contact security@ztionsec.com or use our <a href="{% url 'contact' %}">secure contact form</a>.
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Smooth scrolling for navigation links
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        }
+    });
+});
+
+// Update active nav link on scroll
+window.addEventListener('scroll', function() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= sectionTop - 200) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -238,6 +238,35 @@ def contact(request):
     """Contact page"""
     return render(request, 'scanner/contact.html')
 
+def privacy_policy(request):
+    """Privacy Policy page"""
+    return render(request, 'scanner/privacy_policy.html')
+
+def terms_of_service(request):
+    """Terms of Service page"""
+    return render(request, 'scanner/terms_of_service.html')
+
+def security_policy(request):
+    """Security Policy page"""
+    return render(request, 'scanner/security_policy.html')
+
+def ads_txt(request):
+    """Serve ads.txt file"""
+    from django.http import HttpResponse
+    from django.conf import settings
+    import os
+    
+    try:
+        ads_txt_path = os.path.join(settings.STATIC_ROOT or settings.BASE_DIR / 'static', 'ads.txt')
+        with open(ads_txt_path, 'r') as f:
+            content = f.read()
+        return HttpResponse(content, content_type='text/plain')
+    except FileNotFoundError:
+        # Fallback content if file not found
+        content = """# ads.txt file for ZtionSec Security Platform
+google.com, pub-9693358517951567, DIRECT, f08c47fec0942fa0"""
+        return HttpResponse(content, content_type='text/plain')
+
 def budget_scanner(request):
     """Budget scanner page for P4 vulnerabilities"""
     # Get some sample recent scans for display

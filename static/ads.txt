@@ -1,0 +1,16 @@
+# ads.txt file for ZtionSec Security Platform
+# This file contains authorized digital sellers for ztionsec-security-platform.onrender.com
+
+# Google AdSense
+google.com, pub-9693358517951567, DIRECT, f08c47fec0942fa0
+
+# Additional authorized sellers can be added here
+# Format: <Field #1>, <Field #2>, <Field #3>, <Field #4>
+# Field #1: Domain name of the advertising system
+# Field #2: Publisher's Account ID
+# Field #3: Type of Account/Relationship
+# Field #4: Certification Authority ID
+
+# Contact Information
+# For questions about this ads.txt file, contact: ads@ztionsec.com
+# Last updated: October 15, 2025

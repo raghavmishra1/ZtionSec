@@ -1,0 +1,356 @@
+{% extends 'scanner/base.html' %}
+
+{% block title %}Terms of Service - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h1 class="h3 mb-0">
+                        <i class="fas fa-file-contract"></i> Terms of Service
+                    </h1>
+                    <small>Last updated: October 15, 2025</small>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <nav class="nav nav-pills flex-column sticky-top" style="top: 100px;">
+                                <a class="nav-link active" href="#acceptance">Acceptance</a>
+                                <a class="nav-link" href="#services">Our Services</a>
+                                <a class="nav-link" href="#user-responsibilities">User Responsibilities</a>
+                                <a class="nav-link" href="#acceptable-use">Acceptable Use</a>
+                                <a class="nav-link" href="#intellectual-property">Intellectual Property</a>
+                                <a class="nav-link" href="#disclaimers">Disclaimers</a>
+                                <a class="nav-link" href="#limitation-liability">Limitation of Liability</a>
+                                <a class="nav-link" href="#termination">Termination</a>
+                                <a class="nav-link" href="#governing-law">Governing Law</a>
+                            </nav>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="terms-content">
+                                <section id="acceptance" class="mb-5">
+                                    <h2 class="h4 text-success mb-3">Acceptance of Terms</h2>
+                                    <p>By accessing and using ZtionSec ("the Service"), you accept and agree to be bound by the terms and provision of this agreement.</p>
+                                    
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle"></i>
+                                        <strong>Agreement:</strong> If you do not agree to abide by the above, please do not use this service. These terms apply to all users of the ZtionSec platform.
+                                    </div>
+
+                                    <h5>Key Points</h5>
+                                    <ul>
+                                        <li>These terms constitute a legally binding agreement</li>
+                                        <li>By using our service, you confirm you are at least 18 years old</li>
+                                        <li>You have the authority to enter into this agreement</li>
+                                        <li>You agree to comply with all applicable laws and regulations</li>
+                                    </ul>
+                                </section>
+
+                                <section id="services" class="mb-5">
+                                    <h2 class="h4 text-success mb-3">Our Services</h2>
+                                    <p>ZtionSec provides comprehensive security analysis and vulnerability assessment services:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-shield-alt text-primary"></i> Security Scanning</h5>
+                                            <ul>
+                                                <li>Website vulnerability assessment</li>
+                                                <li>SSL/TLS certificate analysis</li>
+                                                <li>Security header evaluation</li>
+                                                <li>CMS and technology detection</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-database text-warning"></i> Data Breach Checking</h5>
+                                            <ul>
+                                                <li>Email breach monitoring</li>
+                                                <li>Password compromise detection</li>
+                                                <li>Data leak notifications</li>
+                                                <li>Security recommendations</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-success mt-3">
+                                        <i class="fas fa-check-circle"></i>
+                                        <strong>Service Availability:</strong> We strive to provide 99.9% uptime but cannot guarantee uninterrupted service. Maintenance windows will be announced in advance.
+                                    </div>
+                                </section>
+
+                                <section id="user-responsibilities" class="mb-5">
+                                    <h2 class="h4 text-success mb-3">User Responsibilities</h2>
+                                    <p>As a user of ZtionSec, you agree to the following responsibilities:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="card border-primary mb-3">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-user-check fa-2x text-primary mb-2"></i>
+                                                    <h5>Account Security</h5>
+                                                    <p class="small">Maintain secure credentials and protect your account</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="card border-success mb-3">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-gavel fa-2x text-success mb-2"></i>
+                                                    <h5>Legal Compliance</h5>
+                                                    <p class="small">Comply with all applicable laws and regulations</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="card border-warning mb-3">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-info-circle fa-2x text-warning mb-2"></i>
+                                                    <h5>Accurate Information</h5>
+                                                    <p class="small">Provide accurate and truthful information</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h5>Specific Obligations</h5>
+                                    <ul>
+                                        <li><strong>Authorization:</strong> Only scan websites you own or have explicit permission to test</li>
+                                        <li><strong>Data Protection:</strong> Protect any sensitive information obtained through our service</li>
+                                        <li><strong>Responsible Disclosure:</strong> Report security vulnerabilities responsibly</li>
+                                        <li><strong>No Malicious Use:</strong> Do not use our service for illegal or harmful activities</li>
+                                    </ul>
+                                </section>
+
+                                <section id="acceptable-use" class="mb-5">
+                                    <h2 class="h4 text-success mb-3">Acceptable Use Policy</h2>
+                                    <p>You agree to use ZtionSec only for lawful purposes and in accordance with these terms:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5 class="text-success"><i class="fas fa-check"></i> Permitted Uses</h5>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fas fa-check-circle text-success"></i> Security assessment of your own websites</li>
+                                                <li><i class="fas fa-check-circle text-success"></i> Authorized penetration testing</li>
+                                                <li><i class="fas fa-check-circle text-success"></i> Educational and research purposes</li>
+                                                <li><i class="fas fa-check-circle text-success"></i> Compliance and audit activities</li>
+                                                <li><i class="fas fa-check-circle text-success"></i> Bug bounty program participation</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5 class="text-danger"><i class="fas fa-times"></i> Prohibited Uses</h5>
+                                            <ul class="list-unstyled">
+                                                <li><i class="fas fa-times-circle text-danger"></i> Unauthorized scanning of third-party websites</li>
+                                                <li><i class="fas fa-times-circle text-danger"></i> Malicious hacking or cyberattacks</li>
+                                                <li><i class="fas fa-times-circle text-danger"></i> Data theft or privacy violations</li>
+                                                <li><i class="fas fa-times-circle text-danger"></i> Service abuse or overuse</li>
+                                                <li><i class="fas fa-times-circle text-danger"></i> Circumventing security measures</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-danger">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <strong>Violation Consequences:</strong> Violation of this policy may result in immediate termination of service access and potential legal action.
+                                    </div>
+                                </section>
+
+                                <section id="intellectual-property" class="mb-5">
+                                    <h2 class="h4 text-success mb-3">Intellectual Property Rights</h2>
+                                    <p>ZtionSec respects intellectual property rights and expects users to do the same:</p>
+                                    
+                                    <h5>Our Rights</h5>
+                                    <ul>
+                                        <li><strong>Platform Ownership:</strong> ZtionSec owns all rights to the platform, code, and algorithms</li>
+                                        <li><strong>Trademarks:</strong> ZtionSec name, logo, and branding are our trademarks</li>
+                                        <li><strong>Content:</strong> All documentation, reports, and platform content are protected</li>
+                                        <li><strong>Technology:</strong> Our scanning technology and methodologies are proprietary</li>
+                                    </ul>
+
+                                    <h5>Your Rights</h5>
+                                    <ul>
+                                        <li><strong>Scan Results:</strong> You own the results of scans performed on your websites</li>
+                                        <li><strong>Reports:</strong> You may use and distribute reports for your websites</li>
+                                        <li><strong>Data:</strong> You retain ownership of any data you provide to the service</li>
+                                    </ul>
+
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-copyright"></i>
+                                        <strong>License:</strong> We grant you a limited, non-exclusive license to use our service for its intended purpose.
+                                    </div>
+                                </section>
+
+                                <section id="disclaimers" class="mb-5">
+                                    <h2 class="h4 text-success mb-3">Disclaimers & Warranties</h2>
+                                    <p>Important disclaimers regarding the use of ZtionSec services:</p>
+                                    
+                                    <div class="alert alert-warning">
+                                        <h5><i class="fas fa-exclamation-triangle"></i> Service Disclaimer</h5>
+                                        <p>ZtionSec is provided "AS IS" without warranties of any kind. We do not guarantee:</p>
+                                        <ul class="mb-0">
+                                            <li>Complete accuracy of security assessments</li>
+                                            <li>Detection of all vulnerabilities</li>
+                                            <li>Uninterrupted service availability</li>
+                                            <li>Compatibility with all systems</li>
+                                        </ul>
+                                    </div>
+
+                                    <h5>Security Assessment Limitations</h5>
+                                    <ul>
+                                        <li><strong>Scope:</strong> Our scans cover common vulnerabilities but may not detect all issues</li>
+                                        <li><strong>False Positives:</strong> Some findings may be false positives requiring manual verification</li>
+                                        <li><strong>Timing:</strong> Security landscapes change rapidly; scans reflect point-in-time assessments</li>
+                                        <li><strong>Responsibility:</strong> Users are responsible for implementing security recommendations</li>
+                                    </ul>
+
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-lightbulb"></i>
+                                        <strong>Best Practice:</strong> Use ZtionSec as part of a comprehensive security strategy, not as the sole security measure.
+                                    </div>
+                                </section>
+
+                                <section id="limitation-liability" class="mb-5">
+                                    <h2 class="h4 text-success mb-3">Limitation of Liability</h2>
+                                    <p>To the maximum extent permitted by law, ZtionSec's liability is limited:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card border-warning">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><i class="fas fa-shield-alt text-warning"></i> Liability Cap</h5>
+                                                    <p class="card-text">Our total liability shall not exceed the amount paid by you for the service in the 12 months preceding the claim.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card border-danger">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><i class="fas fa-times-circle text-danger"></i> Excluded Damages</h5>
+                                                    <p class="card-text">We are not liable for indirect, incidental, special, consequential, or punitive damages.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h5 class="mt-4">Specific Exclusions</h5>
+                                    <ul>
+                                        <li><strong>Data Loss:</strong> Loss of data or information</li>
+                                        <li><strong>Business Interruption:</strong> Loss of profits or business opportunities</li>
+                                        <li><strong>Security Breaches:</strong> Damages from undetected vulnerabilities</li>
+                                        <li><strong>Third-Party Actions:</strong> Actions of third parties using our service</li>
+                                    </ul>
+                                </section>
+
+                                <section id="termination" class="mb-5">
+                                    <h2 class="h4 text-success mb-3">Termination</h2>
+                                    <p>Either party may terminate this agreement under certain conditions:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-user-times text-primary"></i> User Termination</h5>
+                                            <ul>
+                                                <li>You may stop using the service at any time</li>
+                                                <li>Delete your account through the platform</li>
+                                                <li>Contact support for account deletion</li>
+                                                <li>No penalties for voluntary termination</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-ban text-danger"></i> Service Termination</h5>
+                                            <ul>
+                                                <li>Violation of terms of service</li>
+                                                <li>Illegal or harmful activities</li>
+                                                <li>Abuse of service resources</li>
+                                                <li>Non-payment (for paid services)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle"></i>
+                                        <strong>Effect of Termination:</strong> Upon termination, your access will be immediately revoked. Data may be retained according to our privacy policy.
+                                    </div>
+                                </section>
+
+                                <section id="governing-law" class="mb-5">
+                                    <h2 class="h4 text-success mb-3">Governing Law & Disputes</h2>
+                                    <p>These terms are governed by applicable laws and dispute resolution procedures:</p>
+                                    
+                                    <h5>Jurisdiction</h5>
+                                    <ul>
+                                        <li><strong>Governing Law:</strong> These terms are governed by Indian law</li>
+                                        <li><strong>Jurisdiction:</strong> Courts of competent jurisdiction in India</li>
+                                        <li><strong>Language:</strong> English is the official language for all legal proceedings</li>
+                                    </ul>
+
+                                    <h5>Dispute Resolution</h5>
+                                    <ol>
+                                        <li><strong>Direct Communication:</strong> Contact our support team first</li>
+                                        <li><strong>Mediation:</strong> Attempt resolution through mediation</li>
+                                        <li><strong>Arbitration:</strong> Binding arbitration if mediation fails</li>
+                                        <li><strong>Legal Action:</strong> Court proceedings as last resort</li>
+                                    </ol>
+
+                                    <div class="alert alert-success">
+                                        <i class="fas fa-handshake"></i>
+                                        <strong>Contact Information:</strong> For legal matters, contact legal@ztionsec.com or use our <a href="{% url 'contact' %}">contact form</a>.
+                                    </div>
+                                </section>
+
+                                <div class="alert alert-primary">
+                                    <h5><i class="fas fa-edit"></i> Changes to Terms</h5>
+                                    <p class="mb-0">We may update these terms periodically. Continued use of the service after changes constitutes acceptance of new terms. We will notify users of significant changes via email or platform notifications.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Smooth scrolling for navigation links
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        }
+    });
+});
+
+// Update active nav link on scroll
+window.addEventListener('scroll', function() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= sectionTop - 200) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+{% endblock %}

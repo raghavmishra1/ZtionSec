@@ -1,0 +1,322 @@
+{% extends 'scanner/base.html' %}
+
+{% block title %}Privacy Policy - ZtionSec{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h1 class="h3 mb-0">
+                        <i class="fas fa-shield-alt"></i> Privacy Policy
+                    </h1>
+                    <small>Last updated: October 15, 2025</small>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <nav class="nav nav-pills flex-column sticky-top" style="top: 100px;">
+                                <a class="nav-link active" href="#information-collection">Information Collection</a>
+                                <a class="nav-link" href="#data-usage">Data Usage</a>
+                                <a class="nav-link" href="#data-protection">Data Protection</a>
+                                <a class="nav-link" href="#cookies">Cookies & Tracking</a>
+                                <a class="nav-link" href="#third-parties">Third Parties</a>
+                                <a class="nav-link" href="#user-rights">Your Rights</a>
+                                <a class="nav-link" href="#contact">Contact Us</a>
+                            </nav>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="privacy-content">
+                                <section id="information-collection" class="mb-5">
+                                    <h2 class="h4 text-primary mb-3">Information We Collect</h2>
+                                    <p>ZtionSec is committed to protecting your privacy. We collect information to provide better security analysis services:</p>
+                                    
+                                    <h5>Information You Provide</h5>
+                                    <ul>
+                                        <li><strong>Website URLs:</strong> URLs you submit for security scanning</li>
+                                        <li><strong>Email Addresses:</strong> For breach checking and newsletter subscriptions</li>
+                                        <li><strong>Contact Information:</strong> When you contact our support team</li>
+                                        <li><strong>Account Data:</strong> If you create an account (optional)</li>
+                                    </ul>
+
+                                    <h5>Automatically Collected Information</h5>
+                                    <ul>
+                                        <li><strong>Technical Data:</strong> IP address, browser type, device information</li>
+                                        <li><strong>Usage Data:</strong> Pages visited, scan history, feature usage</li>
+                                        <li><strong>Security Scan Results:</strong> Technical findings from security assessments</li>
+                                        <li><strong>Performance Metrics:</strong> Response times, error rates, system performance</li>
+                                    </ul>
+                                </section>
+
+                                <section id="data-usage" class="mb-5">
+                                    <h2 class="h4 text-primary mb-3">How We Use Your Data</h2>
+                                    <p>We use collected information for legitimate business purposes:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-search text-success"></i> Service Provision</h5>
+                                            <ul>
+                                                <li>Perform security scans and analysis</li>
+                                                <li>Generate security reports</li>
+                                                <li>Provide vulnerability assessments</li>
+                                                <li>Deliver breach notifications</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-chart-line text-info"></i> Service Improvement</h5>
+                                            <ul>
+                                                <li>Analyze platform performance</li>
+                                                <li>Improve security detection algorithms</li>
+                                                <li>Enhance user experience</li>
+                                                <li>Develop new security features</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-info mt-3">
+                                        <i class="fas fa-info-circle"></i>
+                                        <strong>No Personal Data in Scans:</strong> We only analyze publicly available information from websites. We do not access private or sensitive user data during security scans.
+                                    </div>
+                                </section>
+
+                                <section id="data-protection" class="mb-5">
+                                    <h2 class="h4 text-primary mb-3">Data Protection & Security</h2>
+                                    <p>We implement industry-standard security measures to protect your information:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="text-center mb-3">
+                                                <i class="fas fa-lock fa-3x text-success mb-2"></i>
+                                                <h5>Encryption</h5>
+                                                <p class="small">All data transmitted using SSL/TLS encryption</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="text-center mb-3">
+                                                <i class="fas fa-server fa-3x text-primary mb-2"></i>
+                                                <h5>Secure Storage</h5>
+                                                <p class="small">Data stored on secure, monitored servers</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="text-center mb-3">
+                                                <i class="fas fa-user-shield fa-3x text-warning mb-2"></i>
+                                                <h5>Access Control</h5>
+                                                <p class="small">Limited access on need-to-know basis</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h5>Data Retention</h5>
+                                    <ul>
+                                        <li><strong>Scan Results:</strong> Retained for 90 days for analysis and reporting</li>
+                                        <li><strong>Email Addresses:</strong> Retained until you unsubscribe</li>
+                                        <li><strong>Technical Logs:</strong> Retained for 30 days for security monitoring</li>
+                                        <li><strong>Account Data:</strong> Retained while account is active</li>
+                                    </ul>
+                                </section>
+
+                                <section id="cookies" class="mb-5">
+                                    <h2 class="h4 text-primary mb-3">Cookies & Tracking</h2>
+                                    <p>We use cookies and similar technologies to enhance your experience:</p>
+                                    
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Cookie Type</th>
+                                                    <th>Purpose</th>
+                                                    <th>Duration</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Essential</strong></td>
+                                                    <td>Core functionality, security, session management</td>
+                                                    <td>Session</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Analytics</strong></td>
+                                                    <td>Usage statistics, performance monitoring</td>
+                                                    <td>30 days</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Preferences</strong></td>
+                                                    <td>User settings, language, theme preferences</td>
+                                                    <td>1 year</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="alert alert-warning">
+                                        <i class="fas fa-cookie-bite"></i>
+                                        <strong>Cookie Control:</strong> You can control cookies through your browser settings. Disabling essential cookies may affect platform functionality.
+                                    </div>
+                                </section>
+
+                                <section id="third-parties" class="mb-5">
+                                    <h2 class="h4 text-primary mb-3">Third-Party Services</h2>
+                                    <p>We work with trusted third-party services to enhance our platform:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-cloud text-primary"></i> Infrastructure Partners</h5>
+                                            <ul>
+                                                <li><strong>Render.com:</strong> Hosting and deployment</li>
+                                                <li><strong>Cloudflare:</strong> CDN and security services</li>
+                                                <li><strong>GitHub:</strong> Code repository and CI/CD</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5><i class="fas fa-chart-bar text-success"></i> Analytics & Monitoring</h5>
+                                            <ul>
+                                                <li><strong>Google Analytics:</strong> Usage analytics (anonymized)</li>
+                                                <li><strong>Google AdSense:</strong> Advertising services</li>
+                                                <li><strong>HaveIBeenPwned:</strong> Breach data checking</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-handshake"></i>
+                                        <strong>Data Sharing:</strong> We only share data with third parties as necessary to provide our services. We do not sell personal information.
+                                    </div>
+                                </section>
+
+                                <section id="user-rights" class="mb-5">
+                                    <h2 class="h4 text-primary mb-3">Your Rights & Choices</h2>
+                                    <p>You have several rights regarding your personal data:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card border-primary mb-3">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><i class="fas fa-eye text-primary"></i> Access</h5>
+                                                    <p class="card-text">Request access to your personal data and scan history</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card border-warning mb-3">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><i class="fas fa-edit text-warning"></i> Correction</h5>
+                                                    <p class="card-text">Request correction of inaccurate personal data</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card border-danger mb-3">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><i class="fas fa-trash text-danger"></i> Deletion</h5>
+                                                    <p class="card-text">Request deletion of your personal data</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card border-info mb-3">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><i class="fas fa-download text-info"></i> Portability</h5>
+                                                    <p class="card-text">Request export of your data in machine-readable format</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h5>How to Exercise Your Rights</h5>
+                                    <p>To exercise any of these rights, please contact us at:</p>
+                                    <ul>
+                                        <li><strong>Email:</strong> privacy@ztionsec.com</li>
+                                        <li><strong>Contact Form:</strong> <a href="{% url 'contact' %}">Contact Support</a></li>
+                                        <li><strong>Response Time:</strong> We will respond within 30 days</li>
+                                    </ul>
+                                </section>
+
+                                <section id="contact" class="mb-5">
+                                    <h2 class="h4 text-primary mb-3">Contact Information</h2>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card bg-light">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><i class="fas fa-envelope text-primary"></i> Privacy Officer</h5>
+                                                    <p class="card-text">
+                                                        <strong>Email:</strong> privacy@ztionsec.com<br>
+                                                        <strong>Response Time:</strong> 24-48 hours<br>
+                                                        <strong>Languages:</strong> English, Hindi
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card bg-light">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><i class="fas fa-question-circle text-success"></i> General Support</h5>
+                                                    <p class="card-text">
+                                                        <strong>Email:</strong> support@ztionsec.com<br>
+                                                        <strong>Contact Form:</strong> <a href="{% url 'contact' %}">Available 24/7</a><br>
+                                                        <strong>Documentation:</strong> <a href="{% url 'documentation' %}">Help Center</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-success mt-4">
+                                        <i class="fas fa-check-circle"></i>
+                                        <strong>Commitment:</strong> We are committed to protecting your privacy and will continue to update this policy as our services evolve. Any changes will be communicated through our platform and email notifications.
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Smooth scrolling for navigation links
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        }
+    });
+});
+
+// Update active nav link on scroll
+window.addEventListener('scroll', function() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= sectionTop - 200) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.http import Http404
 from django.views.generic import TemplateView
+from scanner import views as scanner_views
 
 # Custom admin site configuration
 admin.site.site_header = "ZtionSec Security Administration"
@@ -58,6 +59,9 @@ urlpatterns = [
     
     # API URLs (for backend-only deployment)
     path('', include('scanner.api_urls')),
+    
+    # ads.txt file for Google AdSense
+    path('ads.txt', scanner_views.ads_txt, name='ads_txt'),
     
     # Main application URLs
     path('', include('scanner.urls')),
