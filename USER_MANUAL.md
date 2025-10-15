@@ -256,7 +256,7 @@ For advanced users:
 #### Getting Help
 - **Documentation**: Comprehensive guides and tutorials
 - **FAQ**: Common questions and answers
-- **Support Email**: support@yourdomain.com
+- **Support Email**: ztionsec@zohomail.in
 - **Live Chat**: Available during business hours
 
 #### Training Resources

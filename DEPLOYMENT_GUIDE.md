@@ -349,11 +349,11 @@ sudo -u postgres psql ztionsec_prod -c "SELECT pg_size_pretty(pg_database_size('
 - [Security Guide](https://yourdomain.com/security/)
 
 #### Support Channels
-- Email: support@yourdomain.com
+- Email: ztionsec@zohomail.in
 - Documentation: https://docs.yourdomain.com
 - GitHub Issues: https://github.com/your-org/ztionsec/issues
 
 #### Emergency Contacts
-- System Administrator: admin@yourdomain.com
-- Security Team: security@yourdomain.com
+- System Administrator: ztionsec@zohomail.in
+- Security Team: ztionsec@zohomail.in
 - On-call Support: +1-XXX-XXX-XXXX

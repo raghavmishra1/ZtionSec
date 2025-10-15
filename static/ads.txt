@@ -12,5 +12,5 @@ google.com, pub-9693358517951567, DIRECT, f08c47fec0942fa0
 # Field #4: Certification Authority ID
 
 # Contact Information
-# For questions about this ads.txt file, contact: ads@ztionsec.com
+# For questions about this ads.txt file, contact: ztionsec@zohomail.in
 # Last updated: October 15, 2025

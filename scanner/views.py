@@ -264,7 +264,8 @@ def ads_txt(request):
     except FileNotFoundError:
         # Fallback content if file not found
         content = """# ads.txt file for ZtionSec Security Platform
-google.com, pub-9693358517951567, DIRECT, f08c47fec0942fa0"""
+google.com, pub-9693358517951567, DIRECT, f08c47fec0942fa0
+# Contact: ztionsec@zohomail.in"""
         return HttpResponse(content, content_type='text/plain')
 
 def budget_scanner(request):
