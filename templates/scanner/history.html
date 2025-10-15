@@ -124,7 +124,7 @@
                 <div class="card-body">
                     <i class="fas fa-chart-line fa-2x text-primary mb-2"></i>
                     <h5>Total Scans</h5>
-                    <h3 class="text-primary">{{ scans|length }}</h3>
+                    <h3 class="text-primary">{{ stats.total_scans }}</h3>
                 </div>
             </div>
         </div>
@@ -133,13 +133,7 @@
                 <div class="card-body">
                     <i class="fas fa-shield-alt fa-2x text-success mb-2"></i>
                     <h5>SSL Secured</h5>
-                    <h3 class="text-success">
-                        {% with ssl_count=scans|length %}
-                            {% for scan in scans %}
-                                {% if scan.ssl_valid %}{{ forloop.counter0|add:1 }}{% endif %}
-                            {% endfor %}
-                        {% endwith %}
-                    </h3>
+                    <h3 class="text-success">{{ stats.ssl_secured }}</h3>
                 </div>
             </div>
         </div>
@@ -148,13 +142,7 @@
                 <div class="card-body">
                     <i class="fas fa-trophy fa-2x text-warning mb-2"></i>
                     <h5>Grade A+/A</h5>
-                    <h3 class="text-warning">
-                        {% with grade_a_count=0 %}
-                            {% for scan in scans %}
-                                {% if scan.grade == 'A+' or scan.grade == 'A' %}{{ forloop.counter0|add:1 }}{% endif %}
-                            {% endfor %}
-                        {% endwith %}
-                    </h3>
+                    <h3 class="text-warning">{{ stats.grade_a_count }}</h3>
                 </div>
             </div>
         </div>
@@ -164,19 +152,11 @@
                     <i class="fas fa-clock fa-2x text-info mb-2"></i>
                     <h5>Avg Response</h5>
                     <h3 class="text-info">
-                        {% with total_time=0 count=0 %}
-                            {% for scan in scans %}
-                                {% if scan.response_time %}
-                                    {% with total_time=total_time|add:scan.response_time count=count|add:1 %}
-                                    {% endwith %}
-                                {% endif %}
-                            {% endfor %}
-                            {% if count > 0 %}
-                                {{ total_time|floatformat:0 }}ms
-                            {% else %}
-                                N/A
-                            {% endif %}
-                        {% endwith %}
+                        {% if stats.avg_response_time != 'N/A' %}
+                            {{ stats.avg_response_time }}ms
+                        {% else %}
+                            N/A
+                        {% endif %}
                     </h3>
                 </div>
             </div>

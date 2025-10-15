@@ -198,10 +198,29 @@ def generate_report(request, scan_id):
         return redirect('home')
 
 def scan_history(request):
-    """View scan history"""
+    """View scan history with statistics"""
     scans = SecurityScan.objects.order_by('-scan_date')
+    
+    # Calculate statistics
+    total_scans = scans.count()
+    ssl_secured_count = scans.filter(ssl_valid=True).count()
+    grade_a_count = scans.filter(grade__in=['A+', 'A']).count()
+    
+    # Calculate average response time
+    response_times = scans.exclude(response_time__isnull=True).values_list('response_time', flat=True)
+    avg_response_time = sum(response_times) / len(response_times) if response_times else 0
+    
+    # Prepare statistics
+    stats = {
+        'total_scans': total_scans,
+        'ssl_secured': ssl_secured_count,
+        'grade_a_count': grade_a_count,
+        'avg_response_time': round(avg_response_time, 0) if avg_response_time else 'N/A'
+    }
+    
     return render(request, 'scanner/history.html', {
-        'scans': scans
+        'scans': scans,
+        'stats': stats
     })
 
 def breach_history(request):
