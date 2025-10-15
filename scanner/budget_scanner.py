@@ -32,6 +32,8 @@ class BudgetSecurityScanner:
         self.session.headers.update({
             'User-Agent': 'ZtionSec-BudgetScanner/1.0'
         })
+        # Set reasonable timeouts to prevent worker timeouts
+        self.session.timeout = 5
         self.findings: List[BudgetFinding] = []
         
     def scan_all_budget_issues(self) -> List[BudgetFinding]:
@@ -56,7 +58,19 @@ class BudgetSecurityScanner:
         self.check_development_files()
         
         print(f"✅ Budget scan completed. Found {len(self.findings)} easy issues!")
+        
+        # Cleanup session to free memory
+        self.cleanup()
+        
         return self.findings
+    
+    def cleanup(self):
+        """Clean up resources to free memory"""
+        try:
+            if hasattr(self, 'session'):
+                self.session.close()
+        except Exception:
+            pass
     
     def check_directory_listing(self):
         """Check for directory listing vulnerabilities"""

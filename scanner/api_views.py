@@ -21,7 +21,7 @@ from .serializers import (
 )
 from .advanced_views import perform_advanced_scan
 from .views import scan_website, check_breach
-from .budget_scanner import BudgetSecurityScanner
+from .budget_scanner import BudgetSecurityScanner, generate_budget_report
 from .p4_security_scanner import P4SecurityScanner
 
 @api_view(['GET'])
@@ -218,7 +218,7 @@ def api_budget_scan(request):
         findings = scanner.scan_all_budget_issues()
         
         # Generate report
-        report = scanner.generate_budget_report(findings)
+        report = generate_budget_report(findings)
         
         return Response({
             'success': True,
