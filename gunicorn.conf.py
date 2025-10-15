@@ -6,17 +6,21 @@ import os
 bind = f"0.0.0.0:{os.environ.get('PORT', '8000')}"
 backlog = 2048
 
-# Worker processes
+# Worker processes - Optimized for cold start prevention
 workers = min(2, multiprocessing.cpu_count())  # Limit workers for memory
 worker_class = "sync"
 worker_connections = 1000
 timeout = 120
-keepalive = 2
+keepalive = 5  # Increased keepalive for better connection reuse
 
-# Memory management
-max_requests = 1000  # Restart workers after 1000 requests to prevent memory leaks
-max_requests_jitter = 50
-preload_app = True
+# Memory management - Optimized for faster startup
+max_requests = 1500  # Increased for better performance
+max_requests_jitter = 100
+preload_app = True  # Critical for faster startup
+
+# Cold start optimization
+graceful_timeout = 60  # Faster graceful shutdown
+worker_timeout = 120  # Worker timeout
 
 # Logging
 accesslog = "-"

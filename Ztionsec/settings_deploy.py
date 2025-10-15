@@ -56,17 +56,29 @@ SECRET_KEY = config('SECRET_KEY', default='your-secret-key-here-change-in-produc
 # Allowed hosts
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
 
-# Database configuration
+# Database configuration with connection pooling
 if 'DATABASE_URL' in os.environ:
     DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+        'default': dj_database_url.parse(
+            os.environ.get('DATABASE_URL'),
+            conn_max_age=600,  # Connection pooling for 10 minutes
+        )
     }
+    # Additional database optimization for cold start prevention
+    DATABASES['default'].update({
+        'CONN_MAX_AGE': 600,  # Keep connections alive for 10 minutes
+        'OPTIONS': {
+            'MAX_CONNS': 20,  # Maximum number of connections
+            'MIN_CONNS': 2,   # Minimum number of connections to maintain
+        }
+    })
 else:
     # Fallback to SQLite for development
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
+            'CONN_MAX_AGE': 300,  # Connection pooling for SQLite too
         }
     }
 

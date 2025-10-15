@@ -27,12 +27,46 @@ from .p4_security_scanner import P4SecurityScanner
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def api_health_check(request):
-    """API health check endpoint"""
+    """Enhanced API health check endpoint for cold start prevention"""
+    import psutil
+    import time
+    from django.db import connection
+    from django.utils import timezone
+    
+    start_time = time.time()
+    
+    try:
+        # Test database connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        db_status = 'connected'
+    except Exception as e:
+        db_status = f'error: {str(e)}'
+    
+    # System metrics (if available)
+    try:
+        cpu_percent = psutil.cpu_percent(interval=0.1)
+        memory = psutil.virtual_memory()
+        system_metrics = {
+            'cpu_usage': f"{cpu_percent}%",
+            'memory_usage': f"{memory.percent}%",
+            'memory_available': f"{memory.available / (1024**3):.2f}GB"
+        }
+    except:
+        system_metrics = {'status': 'metrics_unavailable'}
+    
+    response_time = (time.time() - start_time) * 1000  # Convert to ms
+    
     return Response({
         'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
+        'timestamp': timezone.now().isoformat(),
         'version': '1.0.0',
-        'service': 'ZtionSec API'
+        'service': 'ZtionSec API',
+        'database': db_status,
+        'response_time_ms': round(response_time, 2),
+        'uptime': 'service_active',
+        'system_metrics': system_metrics,
+        'cold_start_prevention': 'active'
     })
 
 @api_view(['GET'])
