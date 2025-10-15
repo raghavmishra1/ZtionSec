@@ -67,10 +67,6 @@ if 'DATABASE_URL' in os.environ:
     # Additional database optimization for cold start prevention
     DATABASES['default'].update({
         'CONN_MAX_AGE': 600,  # Keep connections alive for 10 minutes
-        'OPTIONS': {
-            'MAX_CONNS': 20,  # Maximum number of connections
-            'MIN_CONNS': 2,   # Minimum number of connections to maintain
-        }
     })
 else:
     # Fallback to SQLite for development
