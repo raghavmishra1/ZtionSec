@@ -1,9 +1,9 @@
-name: ZtionSec Keep-Alive
+name: ZtionSec Aggressive Keep-Alive
 
 on:
   schedule:
-    # Every 5 minutes
-    - cron: '*/5 * * * *'
+    # Every 3 minutes for aggressive prevention
+    - cron: '*/3 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -11,21 +11,43 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Wake Up Service
+      - name: Aggressive Wake Up Service
         run: |
-          echo "Pinging ZtionSec service..."
+          echo "🚀 Starting aggressive ZtionSec keep-alive..."
+          echo "⏰ Time: $(date)"
           
-          # Multiple endpoint pinging - UPDATE WITH YOUR ACTUAL RENDER URL
+          # Multiple endpoint pinging with actual Render URL
           ENDPOINTS=(
-            "https://YOUR-ACTUAL-SERVICE-NAME.onrender.com/api/v1/health/"
-            "https://YOUR-ACTUAL-SERVICE-NAME.onrender.com/api/v1/stats/"
+            "https://ztionsec-security-platform.onrender.com/api/v1/health/"
+            "https://ztionsec-security-platform.onrender.com/api/v1/stats/"
+            "https://ztionsec-security-platform.onrender.com/api/v1/scan-history/"
+            "https://ztionsec-security-platform.onrender.com/"
           )
           
+          # First attempt - normal pinging
+          echo "🎯 Phase 1: Normal endpoint pinging..."
           for endpoint in "${ENDPOINTS[@]}"; do
             echo "Pinging: $endpoint"
-            curl -f -m 30 "$endpoint" || echo "Failed to ping $endpoint"
-            sleep 2
+            if curl -f -m 45 "$endpoint" > /dev/null 2>&1; then
+              echo "✅ Success: $endpoint"
+            else
+              echo "❌ Failed: $endpoint"
+            fi
+            sleep 1
           done
           
-          echo "Keep-alive completed"
+          # Second attempt - aggressive burst if needed
+          echo "🔥 Phase 2: Aggressive burst pinging..."
+          for i in {1..3}; do
+            echo "Burst attempt $i/3"
+            if curl -f -m 60 "https://ztionsec-security-platform.onrender.com/api/v1/health/" > /dev/null 2>&1; then
+              echo "✅ Service is awake!"
+              break
+            else
+              echo "⚠️ Service still sleeping, retrying in 10s..."
+              sleep 10
+            fi
+          done
+          
+          echo "🏁 Keep-alive completed at $(date)"
         continue-on-error: true
