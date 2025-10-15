@@ -47,7 +47,7 @@ class EnhancedAdvancedScanner:
         self.findings: List[SecurityFinding] = []
         self.results = {}
         
-        # Session for persistent connections
+        # Session for persistent connections with memory optimization
         self.session = requests.Session()
         self.session.headers.update({
             'User-Agent': 'ZtionSec-Scanner/2.0 (Security Analysis Tool)',
@@ -56,6 +56,10 @@ class EnhancedAdvancedScanner:
             'Accept-Encoding': 'gzip, deflate',
             'Connection': 'keep-alive',
         })
+        
+        # Set reasonable timeouts and limits
+        self.session.timeout = 10
+        self.max_workers = 2  # Reduce concurrent workers to save memory
         
     def comprehensive_scan(self) -> Dict[str, Any]:
         """Perform comprehensive security analysis"""
@@ -89,6 +93,12 @@ class EnhancedAdvancedScanner:
                 self.results[f"{scan_name}_duration"] = round(duration, 2)
                 print(f"✅ {scan_name.upper()} scan completed in {duration:.2f}s")
                 
+                # Memory cleanup after each scan
+                if hasattr(result, 'clear') and len(str(result)) > 10000:
+                    # If result is very large, summarize it
+                    if isinstance(result, dict) and 'status' in result:
+                        result = {'status': result.get('status', 'completed'), 'summary': 'Large result truncated for memory'}
+                
             except Exception as e:
                 print(f"❌ {scan_name.upper()} scan failed: {str(e)}")
                 self.results[scan_name] = {'error': str(e), 'status': 'failed'}
@@ -96,7 +106,8 @@ class EnhancedAdvancedScanner:
         # Calculate final security score
         self.calculate_enhanced_score()
         
-        return {
+        # Prepare final results
+        final_results = {
             'target': self.target_url,
             'scan_time': datetime.now().isoformat(),
             'results': self.results,
@@ -105,6 +116,22 @@ class EnhancedAdvancedScanner:
             'risk_level': self.results.get('risk_level', 'unknown'),
             'scan_summary': self.generate_scan_summary()
         }
+        
+        # Cleanup session to free memory
+        self.cleanup()
+        
+        return final_results
+    
+    def cleanup(self):
+        """Clean up resources to free memory"""
+        try:
+            if hasattr(self, 'session'):
+                self.session.close()
+            # Clear large data structures
+            if len(self.findings) > 100:
+                self.findings = self.findings[:100]  # Keep only first 100 findings
+        except Exception:
+            pass
     
     def enhanced_dns_analysis(self) -> Dict[str, Any]:
         """Enhanced DNS analysis with fallback methods"""
@@ -334,14 +361,19 @@ class EnhancedAdvancedScanner:
             except:
                 return None
         
-        # Check subdomains concurrently
-        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        # Check subdomains concurrently with memory optimization
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             futures = [executor.submit(check_subdomain, sub) for sub in common_subdomains]
             
-            for future in concurrent.futures.as_completed(futures):
-                result = future.result()
-                if result:
-                    subdomain_results['discovered_subdomains'].append(result)
+            for future in concurrent.futures.as_completed(futures, timeout=30):
+                try:
+                    result = future.result(timeout=5)
+                    if result:
+                        subdomain_results['discovered_subdomains'].append(result)
+                except concurrent.futures.TimeoutError:
+                    continue
+                except Exception:
+                    continue
         
         subdomain_results['total_found'] = len(subdomain_results['discovered_subdomains'])
         

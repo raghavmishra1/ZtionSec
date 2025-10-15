@@ -111,6 +111,10 @@ def perform_advanced_scan(url, scan_id):
         scan.status = 'running'
         scan.save()
         
+        # Memory monitoring
+        import gc
+        gc.collect()  # Force garbage collection before scan
+        
         # Check if scanner is available
         if AdvancedSecurityScanner is None:
             raise Exception("Advanced scanner not available")
@@ -197,6 +201,9 @@ def perform_advanced_scan(url, scan_id):
                 scan.threat_intelligence = {}
         
         scan.save()
+        
+        # Final memory cleanup
+        gc.collect()
         
         return results
         
