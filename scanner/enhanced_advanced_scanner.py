@@ -601,11 +601,24 @@ class EnhancedAdvancedScanner:
         for finding in self.findings:
             severity_counts[finding.severity] += 1
         
+        # Count completed scans safely
+        scans_completed = 0
+        for k in self.results.keys():
+            if not k.endswith('_duration'):
+                result = self.results.get(k, {})
+                # Only check for 'error' if result is a dict
+                if isinstance(result, dict):
+                    if 'error' not in result:
+                        scans_completed += 1
+                else:
+                    # If result is not a dict, consider it completed
+                    scans_completed += 1
+        
         return {
             'total_findings': len(self.findings),
             'severity_breakdown': severity_counts,
-            'scan_duration': sum(v for k, v in self.results.items() if k.endswith('_duration')),
-            'scans_completed': len([k for k in self.results.keys() if not k.endswith('_duration') and 'error' not in self.results.get(k, {})])
+            'scan_duration': sum(v for k, v in self.results.items() if k.endswith('_duration') and isinstance(v, (int, float))),
+            'scans_completed': scans_completed
         }
     
     # Placeholder methods for specific security checks (implement as needed)
