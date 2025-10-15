@@ -23,6 +23,7 @@ api_urlpatterns = [
     
     # Scan history and details
     path('scans/history/', api_views.api_scan_history, name='api_scan_history'),
+    path('scans/latest/', api_views.api_latest_scans, name='api_latest_scans'),
     path('scans/<int:scan_id>/', api_views.api_scan_details, name='api_scan_details'),
     
     # CORS support

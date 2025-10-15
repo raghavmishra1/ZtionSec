@@ -27,7 +27,7 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover mb-0">
+                        <table class="table table-hover mb-0" id="scans-table">
                             <thead class="table-light">
                                 <tr>
                                     <th>Website</th>
@@ -119,12 +119,23 @@
 
     <!-- Statistics Section -->
     <div class="row mt-5">
+        <div class="col-12 mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4><i class="fas fa-chart-bar"></i> Live Statistics</h4>
+                <button class="btn btn-outline-primary btn-sm refresh-stats-btn" onclick="refreshStats()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <small class="text-muted">Updates automatically every 10 seconds</small>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-3">
             <div class="card text-center">
                 <div class="card-body">
                     <i class="fas fa-chart-line fa-2x text-primary mb-2"></i>
                     <h5>Total Scans</h5>
-                    <h3 class="text-primary">{{ stats.total_scans }}</h3>
+                    <h3 class="text-primary" id="total-scans">{{ stats.total_scans }}</h3>
                 </div>
             </div>
         </div>
@@ -133,7 +144,7 @@
                 <div class="card-body">
                     <i class="fas fa-shield-alt fa-2x text-success mb-2"></i>
                     <h5>SSL Secured</h5>
-                    <h3 class="text-success">{{ stats.ssl_secured }}</h3>
+                    <h3 class="text-success" id="ssl-secured">{{ stats.ssl_secured }}</h3>
                 </div>
             </div>
         </div>
@@ -142,7 +153,7 @@
                 <div class="card-body">
                     <i class="fas fa-trophy fa-2x text-warning mb-2"></i>
                     <h5>Grade A+/A</h5>
-                    <h3 class="text-warning">{{ stats.grade_a_count }}</h3>
+                    <h3 class="text-warning" id="grade-a-count">{{ stats.grade_a_count }}</h3>
                 </div>
             </div>
         </div>
@@ -151,7 +162,7 @@
                 <div class="card-body">
                     <i class="fas fa-clock fa-2x text-info mb-2"></i>
                     <h5>Avg Response</h5>
-                    <h3 class="text-info">
+                    <h3 class="text-info" id="avg-response">
                         {% if stats.avg_response_time != 'N/A' %}
                             {{ stats.avg_response_time }}ms
                         {% else %}
@@ -180,4 +191,110 @@
     </div>
     {% endif %}
 </div>
+
+<script>
+// Real-time statistics updates
+function updateStatistics() {
+    fetch('/api/v1/stats/')
+        .then(response => response.json())
+        .then(data => {
+            // Update total scans
+            const totalScansElement = document.getElementById('total-scans');
+            if (totalScansElement && data.total_scans !== undefined) {
+                totalScansElement.textContent = data.total_scans;
+                
+                // Add animation effect
+                totalScansElement.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    totalScansElement.style.transform = 'scale(1)';
+                }, 200);
+            }
+            
+            // Update SSL secured count
+            const sslSecuredElement = document.getElementById('ssl-secured');
+            if (sslSecuredElement && data.ssl_secured !== undefined) {
+                sslSecuredElement.textContent = data.ssl_secured;
+                
+                // Add animation effect
+                sslSecuredElement.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    sslSecuredElement.style.transform = 'scale(1)';
+                }, 200);
+            }
+            
+            // Update Grade A+/A count
+            const gradeAElement = document.getElementById('grade-a-count');
+            if (gradeAElement && data.grade_a_count !== undefined) {
+                gradeAElement.textContent = data.grade_a_count;
+                
+                // Add animation effect
+                gradeAElement.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    gradeAElement.style.transform = 'scale(1)';
+                }, 200);
+            }
+            
+            // Update average response time
+            const avgResponseElement = document.getElementById('avg-response');
+            if (avgResponseElement && data.avg_response_time !== undefined) {
+                const responseText = data.avg_response_time !== 'N/A' ? 
+                    data.avg_response_time + 'ms' : 'N/A';
+                avgResponseElement.textContent = responseText;
+                
+                // Add animation effect
+                avgResponseElement.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    avgResponseElement.style.transform = 'scale(1)';
+                }, 200);
+            }
+            
+            console.log('Statistics updated:', data);
+        })
+        .catch(error => {
+            console.error('Error updating statistics:', error);
+        });
+}
+
+// Add smooth transition effects
+document.addEventListener('DOMContentLoaded', function() {
+    const statElements = ['total-scans', 'ssl-secured', 'grade-a-count', 'avg-response'];
+    
+    statElements.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.style.transition = 'transform 0.2s ease-in-out';
+        }
+    });
+    
+    // Update statistics every 10 seconds
+    setInterval(updateStatistics, 10000);
+    
+    // Also update when page becomes visible (user switches back to tab)
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            updateStatistics();
+        }
+    });
+    
+    console.log('Real-time statistics updates enabled');
+});
+
+// Manual refresh function
+function refreshStats() {
+    updateStatistics();
+    
+    // Show a brief "refreshing" indicator
+    const refreshButton = document.querySelector('.refresh-stats-btn');
+    if (refreshButton) {
+        const originalText = refreshButton.innerHTML;
+        refreshButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+        refreshButton.disabled = true;
+        
+        setTimeout(() => {
+            refreshButton.innerHTML = originalText;
+            refreshButton.disabled = false;
+        }, 1000);
+    }
+}
+</script>
 {% endblock %}

@@ -74,10 +74,20 @@ def api_health_check(request):
 def api_stats(request):
     """Get platform statistics"""
     try:
-        total_scans = SecurityScan.objects.count()
+        # Basic counts
+        scans = SecurityScan.objects.all()
+        total_scans = scans.count()
         advanced_scans = AdvancedSecurityScan.objects.count()
         total_findings = SecurityFinding.objects.count()
         breach_checks = DataBreachCheck.objects.count()
+        
+        # History page specific statistics
+        ssl_secured = scans.filter(ssl_valid=True).count()
+        grade_a_count = scans.filter(grade__in=['A+', 'A']).count()
+        
+        # Calculate average response time
+        response_times = scans.exclude(response_time__isnull=True).values_list('response_time', flat=True)
+        avg_response_time = round(sum(response_times) / len(response_times), 0) if response_times else 'N/A'
         
         # Recent activity (last 24 hours)
         from django.utils import timezone
@@ -88,11 +98,15 @@ def api_stats(request):
         
         return Response({
             'total_scans': total_scans,
+            'ssl_secured': ssl_secured,
+            'grade_a_count': grade_a_count,
+            'avg_response_time': avg_response_time,
             'advanced_scans': advanced_scans,
             'total_findings': total_findings,
             'breach_checks': breach_checks,
             'recent_scans_24h': recent_scans,
-            'platform_status': 'operational'
+            'platform_status': 'operational',
+            'last_updated': timezone.now().isoformat()
         })
     except Exception as e:
         return Response({
@@ -291,6 +305,42 @@ def api_breach_check(request):
         return Response({
             'error': 'Invalid JSON data'
         }, status=400)
+    except Exception as e:
+        return Response({
+            'error': str(e)
+        }, status=500)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def api_latest_scans(request):
+    """Get latest scans for real-time updates"""
+    try:
+        # Get the 5 most recent scans
+        latest_scans = SecurityScan.objects.order_by('-scan_date')[:5]
+        
+        scans_data = []
+        for scan in latest_scans:
+            scans_data.append({
+                'id': scan.id,
+                'url': scan.url,
+                'grade': scan.grade,
+                'security_score': scan.security_score,
+                'ssl_valid': scan.ssl_valid,
+                'response_time': scan.response_time,
+                'scan_date': scan.scan_date.isoformat(),
+                'cms_detected': scan.cms_detected or 'Unknown',
+                'has_hsts': scan.has_hsts,
+                'has_csp': scan.has_csp,
+                'has_xframe': scan.has_xframe,
+                'has_xss_protection': scan.has_xss_protection,
+                'has_content_type': scan.has_content_type,
+            })
+        
+        return Response({
+            'latest_scans': scans_data,
+            'count': len(scans_data),
+            'timestamp': timezone.now().isoformat()
+        })
     except Exception as e:
         return Response({
             'error': str(e)
