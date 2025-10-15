@@ -20,6 +20,12 @@ import concurrent.futures
 from bs4 import BeautifulSoup
 import subprocess
 import os
+import warnings
+
+# Suppress SSL warnings for security scanning
+warnings.filterwarnings('ignore', message='Unverified HTTPS request')
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 @dataclass
 class SecurityFinding:

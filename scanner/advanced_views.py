@@ -121,17 +121,17 @@ def perform_advanced_scan(url, scan_id):
         # Perform comprehensive scan
         results = scanner.comprehensive_scan()
         
-        # Update scan record with results
+        # Update scan record with results (ensure all fields are dicts)
         scan.ip_address = results.get('results', {}).get('dns', {}).get('ip_address')
-        scan.dns_analysis = results.get('results', {}).get('dns', {})
-        scan.ssl_analysis = results.get('results', {}).get('ssl', {})
-        scan.port_scan_results = results.get('results', {}).get('ports', {})
-        scan.webapp_scan_results = results.get('results', {}).get('webapp', {})
-        scan.vulnerability_results = results.get('results', {}).get('vulns', {})
-        scan.subdomain_results = results.get('results', {}).get('subdomains', {})
-        scan.technology_stack = results.get('results', {}).get('tech', {})
-        scan.security_headers = results.get('results', {}).get('headers', {})
-        scan.threat_intelligence = results.get('results', {}).get('threat_intel', {})
+        scan.dns_analysis = results.get('results', {}).get('dns', {}) or {}
+        scan.ssl_analysis = results.get('results', {}).get('ssl', {}) or {}
+        scan.port_scan_results = results.get('results', {}).get('ports', {}) or {}
+        scan.webapp_scan_results = results.get('results', {}).get('webapp', {}) or {}
+        scan.vulnerability_results = results.get('results', {}).get('vulns', {}) or {}
+        scan.subdomain_results = results.get('results', {}).get('subdomains', {}) or {}
+        scan.technology_stack = results.get('results', {}).get('tech', {}) or {}
+        scan.security_headers = results.get('results', {}).get('headers', {}) or {}
+        scan.threat_intelligence = results.get('results', {}).get('threat_intel', {}) or {}
         
         scan.security_score = results.get('security_score', 0)
         scan.risk_level = results.get('risk_level', 'unknown')
@@ -180,16 +180,21 @@ def perform_advanced_scan(url, scan_id):
                 threat_assessment = security_intel.comprehensive_threat_assessment({
                     'domain': scan.domain,
                     'ip_address': scan.ip_address,
-                    'technologies': scan.technology_stack
+                    'technologies': scan.technology_stack or {}
                 })
                 
-                # Update threat intelligence data
-                if isinstance(scan.threat_intelligence, dict):
-                    scan.threat_intelligence.update(threat_assessment)
+                # Update threat intelligence data safely
+                if hasattr(scan, 'threat_intelligence') and scan.threat_intelligence:
+                    if isinstance(scan.threat_intelligence, dict):
+                        scan.threat_intelligence.update(threat_assessment)
+                    else:
+                        scan.threat_intelligence = threat_assessment
                 else:
                     scan.threat_intelligence = threat_assessment
             except Exception as e:
                 print(f"Threat intelligence generation failed: {str(e)}")
+                # Set empty dict if threat intelligence fails
+                scan.threat_intelligence = {}
         
         scan.save()
         
@@ -197,6 +202,12 @@ def perform_advanced_scan(url, scan_id):
         
     except Exception as e:
         print(f"Error in advanced scan: {e}")
+        # Update scan status to failed
+        try:
+            scan.status = 'failed'
+            scan.save()
+        except:
+            pass
         return {'error': str(e)}
 
 def advanced_scan_results(request, scan_id):
