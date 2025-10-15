@@ -239,7 +239,7 @@ def contact(request):
     return render(request, 'scanner/contact.html')
 
 def privacy_policy(request):
-    """Privacy Policy page"""
+    """Privacy Policy page - Updated"""
     return render(request, 'scanner/privacy_policy.html')
 
 def terms_of_service(request):
