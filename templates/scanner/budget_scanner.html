@@ -3,45 +3,45 @@
 {% block title %}Budget Scanner - P4 Vulnerabilities - ZtionSec{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <!-- Header Section -->
-    <div class="row mb-4">
+<div class="container-fluid py-4">
+    <!-- Modern Header Section -->
+    <div class="row mb-5">
         <div class="col-12">
-            <div class="card bg-gradient-primary text-white shadow-lg">
-                <div class="card-body text-center p-5">
+            <div class="hero-section text-center py-5 rounded">
+                <div class="container">
                     <h1 class="display-4 fw-bold mb-3">
-                        <i class="fas fa-dollar-sign"></i> Budget Security Scanner
+                        <i class="fas fa-dollar-sign me-3"></i>Budget Security Scanner
                     </h1>
-                    <p class="lead mb-4">
-                        Find P4 category vulnerabilities - Easy to discover, perfect for bug bounty hunters on a budget!
+                    <p class="lead mb-4 fs-5">
+                        Discover P4 vulnerabilities quickly - Perfect for bug bounty hunters seeking easy wins!
                     </p>
-                    <div class="row text-center">
-                        <div class="col-md-3">
-                            <div class="budget-stat">
-                                <i class="fas fa-search fa-2x mb-2"></i>
-                                <h5>Easy to Find</h5>
-                                <p class="mb-0">Low-hanging fruit vulnerabilities</p>
+                    <div class="row g-4 mt-4">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="text-center">
+                                <i class="fas fa-search fa-3x mb-3 text-warning"></i>
+                                <h5 class="fw-bold">Easy Discovery</h5>
+                                <p class="mb-0 opacity-75">Low-hanging fruit vulnerabilities</p>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="budget-stat">
-                                <i class="fas fa-clock fa-2x mb-2"></i>
-                                <h5>Quick Results</h5>
-                                <p class="mb-0">Fast scanning, immediate findings</p>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="text-center">
+                                <i class="fas fa-clock fa-3x mb-3 text-info"></i>
+                                <h5 class="fw-bold">Quick Results</h5>
+                                <p class="mb-0 opacity-75">Fast scanning, immediate findings</p>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="budget-stat">
-                                <i class="fas fa-money-bill-wave fa-2x mb-2"></i>
-                                <h5>Bounty Potential</h5>
-                                <p class="mb-0">$25-$1000+ estimated rewards</p>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="text-center">
+                                <i class="fas fa-money-bill-wave fa-3x mb-3 text-success"></i>
+                                <h5 class="fw-bold">Bounty Potential</h5>
+                                <p class="mb-0 opacity-75">$25-$1000+ estimated rewards</p>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="budget-stat">
-                                <i class="fas fa-graduation-cap fa-2x mb-2"></i>
-                                <h5>Learning Friendly</h5>
-                                <p class="mb-0">Perfect for beginners</p>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="text-center">
+                                <i class="fas fa-graduation-cap fa-3x mb-3 text-light"></i>
+                                <h5 class="fw-bold">Beginner Friendly</h5>
+                                <p class="mb-0 opacity-75">Perfect learning platform</p>
                             </div>
                         </div>
                     </div>
@@ -81,527 +81,514 @@
     </div>
     {% endif %}
 
-    <!-- Scanner Interface -->
-    <div class="row mb-4">
-        <div class="col-lg-8">
-            <div class="card shadow">
-                <div class="card-header bg-success text-white">
-                    <h4 class="mb-0">
-                        <i class="fas fa-search"></i> P4 Vulnerability Scanner
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <form id="budgetScanForm" method="post" action="{% url 'budget_scan' %}">
-                        {% csrf_token %}
-                        <div class="mb-4">
-                            <label for="target_url" class="form-label">Target URL</label>
-                            <div class="input-group input-group-lg">
-                                <span class="input-group-text">
-                                    <i class="fas fa-globe"></i>
-                                </span>
-                                <input type="url" class="form-control" id="target_url" name="target_url" 
-                                       placeholder="https://example.com" required>
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-play"></i> Start Budget Scan
-                                </button>
-                            </div>
-                            <div class="form-text">
-                                <i class="fas fa-info-circle"></i> 
-                                Enter the target website URL. This scanner focuses on information disclosure and configuration issues.
-                            </div>
-                        </div>
-                        
-                        <!-- Scan Options -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h6>P4 Categories to Check:</h6>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="info_disclosure" name="scan_types" value="info_disclosure" checked>
-                                    <label class="form-check-label" for="info_disclosure">
-                                        Information Disclosure ($25-$500)
-                                    </label>
+    <!-- Modern Scanner Interface -->
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-success text-white py-3">
+                        <h4 class="mb-0 fw-bold">
+                            <i class="fas fa-search me-2"></i>P4 Vulnerability Scanner
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="budgetScanForm" method="post" action="{% url 'budget_scan' %}">
+                            {% csrf_token %}
+                            <div class="mb-4">
+                                <label for="target_url" class="form-label fw-semibold fs-5">Target Website</label>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text bg-light">
+                                        <i class="fas fa-globe text-primary"></i>
+                                    </span>
+                                    <input type="url" class="form-control" id="target_url" name="target_url" 
+                                           placeholder="https://example.com" required>
+                                    <button type="submit" class="btn btn-success px-4">
+                                        <i class="fas fa-play me-2"></i>Start Scan
+                                    </button>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="config_errors" name="scan_types" value="config_errors" checked>
-                                    <label class="form-check-label" for="config_errors">
-                                        Configuration Errors ($50-$300)
-                                    </label>
+                                <div class="form-text mt-2">
+                                    <i class="fas fa-info-circle text-info me-1"></i>
+                                    Enter target URL to scan for P4 vulnerabilities and configuration issues
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="backup_files" name="scan_types" value="backup_files" checked>
-                                    <label class="form-check-label" for="backup_files">
-                                        Backup File Exposure ($100-$1000)
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <h6>Additional Checks:</h6>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="admin_panels" name="scan_types" value="admin_panels" checked>
-                                    <label class="form-check-label" for="admin_panels">
-                                        Exposed Admin Panels ($100-$500)
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="debug_info" name="scan_types" value="debug_info" checked>
-                                    <label class="form-check-label" for="debug_info">
-                                        Debug Information ($50-$300)
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="version_disclosure" name="scan_types" value="version_disclosure" checked>
-                                    <label class="form-check-label" for="version_disclosure">
-                                        Version Disclosure ($25-$150)
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-4">
-            <div class="card shadow border-warning">
-                <div class="card-header bg-warning text-dark">
-                    <h5 class="mb-0">
-                        <i class="fas fa-lightbulb"></i> Budget Tips
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="tip-item mb-3">
-                        <h6><i class="fas fa-target text-success"></i> Target Selection</h6>
-                        <p class="small text-muted">Focus on smaller companies and startups - they often have more P4 vulnerabilities</p>
-                    </div>
-                    
-                    <div class="tip-item mb-3">
-                        <h6><i class="fas fa-clock text-info"></i> Time Investment</h6>
-                        <p class="small text-muted">P4 issues take 5-30 minutes to find and report - perfect for quick wins</p>
-                    </div>
-                    
-                    <div class="tip-item mb-3">
-                        <h6><i class="fas fa-money-bill text-warning"></i> Bounty Strategy</h6>
-                        <p class="small text-muted">Report multiple P4 issues together for higher total payouts</p>
-                    </div>
-                    
-                    <div class="tip-item">
-                        <h6><i class="fas fa-graduation-cap text-primary"></i> Learning Path</h6>
-                        <p class="small text-muted">Start with information disclosure, then move to configuration errors</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- P4 Vulnerability Categories -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <h3 class="mb-4">
-                <i class="fas fa-list-alt text-primary"></i> P4 Vulnerability Categories
-            </h3>
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100 border-info">
-                        <div class="card-header bg-info text-white">
-                            <h6 class="mb-0">Information Disclosure</h6>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled small">
-                                <li><i class="fas fa-check text-success"></i> Directory listing enabled</li>
-                                <li><i class="fas fa-check text-success"></i> Backup files exposed</li>
-                                <li><i class="fas fa-check text-success"></i> Configuration files accessible</li>
-                                <li><i class="fas fa-check text-success"></i> Email addresses in source</li>
-                                <li><i class="fas fa-check text-success"></i> Internal paths revealed</li>
-                            </ul>
-                            <div class="text-center">
-                                <span class="badge bg-success">$25-$500</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100 border-warning">
-                        <div class="card-header bg-warning text-dark">
-                            <h6 class="mb-0">Configuration Errors</h6>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled small">
-                                <li><i class="fas fa-check text-success"></i> Debug mode enabled</li>
-                                <li><i class="fas fa-check text-success"></i> Server status pages</li>
-                                <li><i class="fas fa-check text-success"></i> Error page information</li>
-                                <li><i class="fas fa-check text-success"></i> Version information</li>
-                                <li><i class="fas fa-check text-success"></i> Development files</li>
-                            </ul>
-                            <div class="text-center">
-                                <span class="badge bg-warning">$50-$300</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100 border-success">
-                        <div class="card-header bg-success text-white">
-                            <h6 class="mb-0">Access Control Issues</h6>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled small">
-                                <li><i class="fas fa-check text-success"></i> Admin panels accessible</li>
-                                <li><i class="fas fa-check text-success"></i> Test files exposed</li>
-                                <li><i class="fas fa-check text-success"></i> Sensitive directories</li>
-                                <li><i class="fas fa-check text-success"></i> Git/SVN repositories</li>
-                                <li><i class="fas fa-check text-success"></i> Robots.txt secrets</li>
-                            </ul>
-                            <div class="text-center">
-                                <span class="badge bg-success">$100-$1000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Recent Budget Findings -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow">
-                <div class="card-header">
-                    <h5 class="mb-0">
-                        <i class="fas fa-history"></i> Recent Budget Scan Results
-                    </h5>
-                </div>
-                <div class="card-body">
-                    {% if recent_scans %}
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Target</th>
-                                        <th>Findings</th>
-                                        <th>Estimated Value</th>
-                                        <th>Difficulty</th>
-                                        <th>Date</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for scan in recent_scans %}
-                                    <tr>
-                                        <td>{{ scan.target|truncatechars:30 }}</td>
-                                        <td>
-                                            <span class="badge bg-primary">{{ scan.total_findings }}</span>
-                                            issues found
-                                        </td>
-                                        <td>
-                                            <span class="text-success fw-bold">{{ scan.estimated_bounty }}</span>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-success">{{ scan.difficulty }}</span>
-                                        </td>
-                                        <td>{{ scan.scan_date|date:"M d, H:i" }}</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-outline-primary">
-                                                <i class="fas fa-eye"></i> View
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    {% else %}
-                        <div class="text-center py-4">
-                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                            <h5>No budget scans yet</h5>
-                            <p class="text-muted">Start your first P4 vulnerability scan above!</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Success Stories -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <h5 class="text-center mb-4">
-                        <i class="fas fa-trophy text-warning"></i> Budget Hunter Success Stories
-                    </h5>
-                    <div class="row text-center">
-                        <div class="col-md-4">
-                            <div class="success-story">
-                                <div class="story-amount text-success">$2,400</div>
-                                <div class="story-description">Found 12 P4 issues in 3 hours using ZtionSec budget scanner</div>
-                                <small class="text-muted">- Anonymous Bug Hunter</small>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="success-story">
-                                <div class="story-amount text-success">$850</div>
-                                <div class="story-description">Information disclosure findings in startup applications</div>
-                                <small class="text-muted">- Security Researcher</small>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="success-story">
-                                <div class="story-amount text-success">$1,200</div>
-                                <div class="story-description">Configuration errors and backup file exposure</div>
-                                <small class="text-muted">- Student Researcher</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Loading Modal -->
-<div class="modal fade" id="budgetScanModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body text-center py-4">
-                <div class="spinner-border text-success mb-3" role="status">
-                    <span class="visually-hidden">Scanning...</span>
-                </div>
-                <h5>Budget Security Scan in Progress</h5>
-                <p class="text-muted">Searching for easy-to-find P4 vulnerabilities...</p>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
-                         role="progressbar" style="width: 100%"></div>
-                </div>
-                <small class="text-muted mt-2">This usually takes 30-60 seconds</small>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scan Results Section -->
-    {% if scan_results %}
-    <div class="row mt-5" id="resultsSection">
-        <div class="col-12">
-            <div class="card shadow">
-                <div class="card-header bg-success text-white">
-                    <h4 class="mb-0">
-                        <i class="fas fa-check-circle"></i> Budget Scan Results
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <div class="alert alert-success">
-                        <h5><i class="fas fa-globe"></i> Target: {{ scan_results.target_url }}</h5>
-                        <p><i class="fas fa-clock"></i> Scanned: {{ scan_results.scan_time|date:"M d, Y H:i" }}</p>
-                        <p><i class="fas fa-bug"></i> Found: {{ scan_results.total_findings }} potential P4 vulnerabilities</p>
-                    </div>
-
-                    {% if scan_results.findings %}
-                        <div class="row">
-                            {% for finding in scan_results.findings %}
-                            <div class="col-md-6 mb-3">
-                                <div class="card border-warning">
-                                    <div class="card-header bg-warning text-dark">
-                                        <h6 class="mb-0">
-                                            <i class="fas fa-exclamation-triangle"></i> {{ finding.title }}
-                                        </h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="card-text">{{ finding.description }}</p>
-                                        <p><strong>Recommendation:</strong> {{ finding.recommendation }}</p>
-                                        <p><strong>Bounty Potential:</strong> 
-                                            <span class="badge bg-success">{{ finding.bounty_potential }}</span>
-                                        </p>
-                                        <p><strong>Category:</strong> 
-                                            <span class="badge bg-secondary">{{ finding.category }}</span>
-                                        </p>
-                                        {% if finding.proof_of_concept %}
-                                        <p><strong>Proof of Concept:</strong></p>
-                                        <div class="bg-light p-2 rounded">
-                                            <code>{{ finding.proof_of_concept }}</code>
-                                        </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        
-                        <!-- Summary and Action Buttons -->
-                        <div class="mt-4 text-center">
-                            <div class="alert alert-success">
-                                <h5><i class="fas fa-check-circle"></i> Scan Complete!</h5>
-                                <p>Found <strong>{{ scan_results.total_findings }}</strong> potential P4 vulnerabilities</p>
-                                {% if scan_results.report.estimated_bounty_potential %}
-                                <p>Estimated bounty potential: <strong>{{ scan_results.report.estimated_bounty_potential }}</strong></p>
-                                {% endif %}
                             </div>
                             
-                            <a href="{% url 'budget_results' %}" class="btn btn-primary btn-lg me-2">
-                                <i class="fas fa-eye"></i> View Detailed Results
-                            </a>
-                            <button class="btn btn-success btn-lg me-2" onclick="window.location.reload()">
-                                <i class="fas fa-redo"></i> Scan Another Target
-                            </button>
-                            <a href="{% url 'budget_clear_results' %}" class="btn btn-outline-secondary btn-lg">
-                                <i class="fas fa-trash"></i> Clear Results
-                            </a>
+                            <!-- Scan Categories -->
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold text-primary mb-3">
+                                        <i class="fas fa-list-check me-2"></i>Primary Categories
+                                    </h6>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="info_disclosure" name="scan_types" value="info_disclosure" checked>
+                                        <label class="form-check-label" for="info_disclosure">
+                                            <span class="fw-semibold">Information Disclosure</span>
+                                            <small class="text-success d-block">$25-$500 potential</small>
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="config_errors" name="scan_types" value="config_errors" checked>
+                                        <label class="form-check-label" for="config_errors">
+                                            <span class="fw-semibold">Configuration Errors</span>
+                                            <small class="text-success d-block">$50-$300 potential</small>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="backup_files" name="scan_types" value="backup_files" checked>
+                                        <label class="form-check-label" for="backup_files">
+                                            <span class="fw-semibold">Backup File Exposure</span>
+                                            <small class="text-success d-block">$100-$1000 potential</small>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold text-warning mb-3">
+                                        <i class="fas fa-plus-circle me-2"></i>Additional Checks
+                                    </h6>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="admin_panels" name="scan_types" value="admin_panels" checked>
+                                        <label class="form-check-label" for="admin_panels">
+                                            <span class="fw-semibold">Admin Panel Access</span>
+                                            <small class="text-success d-block">$100-$500 potential</small>
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="debug_info" name="scan_types" value="debug_info" checked>
+                                        <label class="form-check-label" for="debug_info">
+                                            <span class="fw-semibold">Debug Information</span>
+                                            <small class="text-success d-block">$50-$300 potential</small>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="version_disclosure" name="scan_types" value="version_disclosure" checked>
+                                        <label class="form-check-label" for="version_disclosure">
+                                            <span class="fw-semibold">Version Disclosure</span>
+                                            <small class="text-success d-block">$25-$150 potential</small>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-warning text-dark py-3">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-lightbulb me-2"></i>Pro Tips
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="mb-4">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-target text-success me-3 mt-1"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Target Selection</h6>
+                                    <p class="small text-muted mb-0">Focus on smaller companies - they often have more P4 vulnerabilities</p>
+                                </div>
+                            </div>
                         </div>
-                    {% else %}
-                        <div class="alert alert-info">
-                            <i class="fas fa-shield-alt"></i> Great! No common P4 vulnerabilities found. The target appears to have good security configuration.
+                        
+                        <div class="mb-4">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-clock text-info me-3 mt-1"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Time Investment</h6>
+                                    <p class="small text-muted mb-0">P4 issues take 5-30 minutes to find - perfect for quick wins</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="text-center mt-3">
-                            <button class="btn btn-primary" onclick="window.location.reload()">
-                                <i class="fas fa-search"></i> Try Another Target
-                            </button>
+                        
+                        <div class="mb-4">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-money-bill text-warning me-3 mt-1"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Bounty Strategy</h6>
+                                    <p class="small text-muted mb-0">Report multiple P4 issues together for higher payouts</p>
+                                </div>
+                            </div>
                         </div>
-                    {% endif %}
+                        
+                        <div>
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-graduation-cap text-primary me-3 mt-1"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Learning Path</h6>
+                                    <p class="small text-muted mb-0">Start with info disclosure, then move to config errors</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    {% endif %}
+
+    <!-- Modern P4 Categories Section -->
+    <div class="container mb-5">
+        <div class="text-center mb-5">
+            <h3 class="fw-bold text-primary">
+                <i class="fas fa-shield-alt me-2"></i>P4 Vulnerability Categories
+            </h3>
+            <p class="text-muted">Common security issues perfect for bug bounty hunting</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-info text-white text-center py-3">
+                        <i class="fas fa-eye fa-2x mb-2"></i>
+                        <h6 class="mb-0 fw-bold">Information Disclosure</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Directory listing enabled</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Backup files exposed</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Config files accessible</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Email addresses in source</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Internal paths revealed</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer text-center bg-light">
+                        <span class="badge bg-success fs-6 px-3 py-2">$25-$500</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-warning text-dark text-center py-3">
+                        <i class="fas fa-cog fa-2x mb-2"></i>
+                        <h6 class="mb-0 fw-bold">Configuration Errors</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Debug mode enabled</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Server status pages</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Error page information</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Version information</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Development files</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer text-center bg-light">
+                        <span class="badge bg-warning fs-6 px-3 py-2">$50-$300</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-success text-white text-center py-3">
+                        <i class="fas fa-lock-open fa-2x mb-2"></i>
+                        <h6 class="mb-0 fw-bold">Access Control Issues</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Admin panels accessible</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Test files exposed</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Sensitive directories</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Git/SVN repositories</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Robots.txt secrets</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer text-center bg-light">
+                        <span class="badge bg-success fs-6 px-3 py-2">$100-$1000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Stories Section -->
+    <div class="container">
+        <div class="card border-0 shadow-sm bg-light">
+            <div class="card-body py-5">
+                <div class="text-center mb-5">
+                    <h4 class="fw-bold text-primary">
+                        <i class="fas fa-trophy text-warning me-2"></i>Success Stories
+                    </h4>
+                    <p class="text-muted">Real earnings from P4 vulnerability discoveries</p>
+                </div>
+                
+                <div class="row g-4 text-center">
+                    <div class="col-lg-4">
+                        <div class="p-4">
+                            <div class="display-6 fw-bold text-success mb-2">$2,400</div>
+                            <p class="mb-2">Found 12 P4 issues in 3 hours using budget scanner</p>
+                            <small class="text-muted">- Anonymous Bug Hunter</small>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="p-4">
+                            <div class="display-6 fw-bold text-success mb-2">$850</div>
+                            <p class="mb-2">Information disclosure findings in startup apps</p>
+                            <small class="text-muted">- Security Researcher</small>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="p-4">
+                            <div class="display-6 fw-bold text-success mb-2">$1,200</div>
+                            <p class="mb-2">Config errors and backup file exposure</p>
+                            <small class="text-muted">- Student Researcher</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <!-- Results Popup Modal -->
 {% if scan_results %}
 <div class="modal fade" id="resultsModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title">
-                    <i class="fas fa-check-circle"></i> Budget Scan Results - {{ scan_results.total_findings }} Vulnerabilities Found!
+                <h5 class="modal-title fw-bold">
+                    <i class="fas fa-check-circle me-2"></i>Budget Scan Complete
+                    {% if scan_results.findings %}
+                        - {{ scan_results.findings|length }} Vulnerabilities Found!
+                    {% elif scan_results.total_findings %}
+                        - {{ scan_results.total_findings }} Issues Found!
+                    {% else %}
+                        - No Issues Found
+                    {% endif %}
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div class="alert alert-success mb-4">
-                    <div class="row text-center">
-                        <div class="col-md-4">
-                            <h3 class="text-success">{{ scan_results.total_findings }}</h3>
-                            <p class="mb-0">P4 Vulnerabilities Found</p>
-                        </div>
-                        <div class="col-md-4">
-                            <h3 class="text-warning">{{ scan_results.report.estimated_bounty_potential|default:"$1000+" }}</h3>
-                            <p class="mb-0">Estimated Bounty Value</p>
-                        </div>
-                        <div class="col-md-4">
-                            <h3 class="text-info">Easy</h3>
-                            <p class="mb-0">Difficulty Level</p>
+                <!-- Scan Summary Card -->
+                <div class="card border-0 bg-light mb-4">
+                    <div class="card-body">
+                        <div class="row g-3 text-center">
+                            <div class="col-md-3">
+                                <div class="border-end">
+                                    <i class="fas fa-globe text-primary fa-2x mb-2"></i>
+                                    <h6 class="fw-bold">Target</h6>
+                                    <p class="small text-muted mb-0">{{ scan_results.target_url|truncatechars:25 }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="border-end">
+                                    <i class="fas fa-bug text-warning fa-2x mb-2"></i>
+                                    <h6 class="fw-bold">Findings</h6>
+                                    <p class="small text-muted mb-0">
+                                        {% if scan_results.findings %}
+                                            {{ scan_results.findings|length }} P4 Issues
+                                        {% else %}
+                                            {{ scan_results.total_findings|default:"0" }} Issues
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="border-end">
+                                    <i class="fas fa-dollar-sign text-success fa-2x mb-2"></i>
+                                    <h6 class="fw-bold">Potential Value</h6>
+                                    <p class="small text-muted mb-0">{{ scan_results.estimated_bounty|default:"$25-$1000+" }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <i class="fas fa-clock text-info fa-2x mb-2"></i>
+                                <h6 class="fw-bold">Scanned</h6>
+                                <p class="small text-muted mb-0">{{ scan_results.scan_time|date:"M d, H:i"|default:"Just now" }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <h6 class="mb-3">Target: <code>{{ scan_results.target_url }}</code></h6>
-                
+                <!-- Findings Display -->
                 {% if scan_results.findings %}
-                <div class="row">
-                    {% for finding in scan_results.findings %}
-                    <div class="col-md-6 mb-3">
-                        <div class="card border-warning h-100">
-                            <div class="card-header bg-warning text-dark">
-                                <h6 class="mb-0">
-                                    <i class="fas fa-bug"></i> {{ finding.title }}
-                                </h6>
-                            </div>
-                            <div class="card-body">
-                                <p><strong>Description:</strong> {{ finding.description }}</p>
-                                <p><strong>Category:</strong> 
-                                    <span class="badge bg-info">{{ finding.category }}</span>
-                                </p>
-                                <p><strong>Bounty Potential:</strong> 
-                                    <span class="badge bg-success">{{ finding.bounty_potential }}</span>
-                                </p>
-                                {% if finding.proof_of_concept %}
-                                <p><strong>Proof of Concept:</strong></p>
-                                <div class="bg-light p-2 rounded small">
-                                    <code>{{ finding.proof_of_concept }}</code>
+                    <h6 class="fw-bold mb-3">
+                        <i class="fas fa-list-alt me-2"></i>Vulnerability Details
+                    </h6>
+                    <div class="row g-3">
+                        {% for finding in scan_results.findings %}
+                        <div class="col-lg-6">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-header bg-warning text-dark py-2">
+                                    <h6 class="mb-0 fw-bold">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>{{ finding.title }}
+                                    </h6>
                                 </div>
-                                {% endif %}
-                                <p class="mt-2"><strong>Fix:</strong> {{ finding.recommendation }}</p>
+                                <div class="card-body">
+                                    <p class="card-text mb-3">{{ finding.description }}</p>
+                                    
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <small class="text-muted">Category:</small><br>
+                                            <span class="badge bg-info">{{ finding.category|default:"P4 Issue" }}</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted">Bounty Potential:</small><br>
+                                            <span class="badge bg-success">{{ finding.bounty_potential|default:"$25-$500" }}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    {% if finding.recommendation %}
+                                    <div class="mb-3">
+                                        <small class="text-muted fw-bold">Recommendation:</small>
+                                        <p class="small mb-0">{{ finding.recommendation }}</p>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    {% if finding.proof_of_concept %}
+                                    <div class="mb-2">
+                                        <small class="text-muted fw-bold">Proof of Concept:</small>
+                                        <div class="bg-light p-2 rounded mt-1">
+                                            <code class="small text-dark">{{ finding.proof_of_concept }}</code>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary mt-2" 
+                                                onclick="copyToClipboard('{{ finding.proof_of_concept|escapejs }}')">
+                                            <i class="fas fa-copy me-1"></i>Copy PoC
+                                        </button>
+                                    </div>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
-                </div>
+                    
+                    <!-- Action Tips -->
+                    <div class="card border-0 bg-info bg-opacity-10 mt-4">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-info">
+                                <i class="fas fa-lightbulb me-2"></i>Next Steps
+                            </h6>
+                            <ul class="small mb-0">
+                                <li>Review each finding and verify the vulnerability</li>
+                                <li>Check if the target has a bug bounty program</li>
+                                <li>Prepare detailed reports with proof of concept</li>
+                                <li>Consider the business impact in your report</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-shield-alt text-success fa-4x mb-3"></i>
+                        <h5 class="text-success">Excellent Security Posture!</h5>
+                        <p class="text-muted">No P4 vulnerabilities found. The target appears to be well-configured.</p>
+                        <div class="mt-3">
+                            <small class="text-muted">Consider trying:</small>
+                            <ul class="list-unstyled small text-muted mt-2">
+                                <li>• Different subdomains or endpoints</li>
+                                <li>• Advanced scanning techniques</li>
+                                <li>• Manual testing approaches</li>
+                            </ul>
+                        </div>
+                    </div>
                 {% endif %}
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer bg-light">
+                {% if scan_results.findings %}
                 <a href="{% url 'budget_results' %}" class="btn btn-primary">
-                    <i class="fas fa-file-alt"></i> View Detailed Report
+                    <i class="fas fa-file-alt me-2"></i>Detailed Report
                 </a>
+                {% endif %}
                 <button type="button" class="btn btn-success" onclick="window.location.reload()">
-                    <i class="fas fa-redo"></i> Scan Another Target
+                    <i class="fas fa-redo me-2"></i>New Scan
                 </button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
             </div>
         </div>
     </div>
 </div>
 {% endif %}
 
-<style>
-.budget-stat {
-    padding: 20px 10px;
-    border-right: 1px solid rgba(255,255,255,0.2);
-}
-
-.budget-stat:last-child {
-    border-right: none;
-}
-
-.tip-item {
-    padding: 10px;
-    background: rgba(0,0,0,0.05);
-    border-radius: 5px;
-}
-
-.success-story {
-    padding: 20px;
-}
-
-.story-amount {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.story-description {
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-}
-
-.bg-gradient-primary {
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-}
-</style>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-document.getElementById('budgetScanForm').addEventListener('submit', function(e) {
-    // Show simple loading popup
-    showSimpleLoading('Processing Budget Scan - Analyzing security vulnerabilities and calculating potential bounty rewards...');
-});
-
-// Add tooltips for bounty estimates
 document.addEventListener('DOMContentLoaded', function() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    // Form submission handler
+    const budgetForm = document.getElementById('budgetScanForm');
+    if (budgetForm) {
+        budgetForm.addEventListener('submit', function(e) {
+            // Show simple loading popup if function exists
+            if (typeof showSimpleLoading === 'function') {
+                showSimpleLoading('Processing Budget Scan - Analyzing security vulnerabilities...');
+            }
+        });
+    }
+
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
     
     // Auto-show results modal if scan results are available
     {% if scan_results %}
-    var resultsModal = new bootstrap.Modal(document.getElementById('resultsModal'));
-    resultsModal.show();
-    
-    // Also scroll to results section for visibility
-    setTimeout(function() {
-        document.getElementById('resultsSection')?.scrollIntoView({ behavior: 'smooth' });
-    }, 500);
+    const resultsModal = document.getElementById('resultsModal');
+    if (resultsModal) {
+        const modal = new bootstrap.Modal(resultsModal);
+        modal.show();
+    }
     {% endif %}
 });
+
+// Function to copy text to clipboard
+function copyToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(function() {
+            showToast('Proof of concept copied to clipboard!', 'success');
+        }).catch(function(err) {
+            console.error('Failed to copy: ', err);
+            fallbackCopyTextToClipboard(text);
+        });
+    } else {
+        fallbackCopyTextToClipboard(text);
+    }
+}
+
+// Fallback copy function for older browsers
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showToast('Proof of concept copied to clipboard!', 'success');
+        } else {
+            showToast('Failed to copy text', 'error');
+        }
+    } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+        showToast('Failed to copy text', 'error');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+// Function to show toast notifications
+function showToast(message, type) {
+    const toastDiv = document.createElement('div');
+    toastDiv.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+    toastDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toastDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(toastDiv);
+    
+    setTimeout(function() {
+        if (toastDiv.parentNode) {
+            toastDiv.remove();
+        }
+    }, 4000);
+}
 </script>
 {% endblock %}

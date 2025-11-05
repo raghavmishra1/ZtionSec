@@ -126,6 +126,14 @@
     animation: none !important;
 }
 
+/* Budget Scanner Specific Styles */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    padding: 4rem 0 !important;
+    border-radius: 8px !important;
+}
+
 /* Simple Responsive Design */
 @media (max-width: 768px) {
     .container-fluid {
@@ -134,5 +142,56 @@
     
     .card {
         margin-bottom: 1rem !important;
+    }
+    
+    .hero-section {
+        padding: 2rem 0 !important;
+    }
+    
+    .display-4 {
+        font-size: 2rem !important;
+    }
+    
+    .display-6 {
+        font-size: 1.5rem !important;
+    }
+}
+
+/* Ensure inline cards stack on mobile */
+@media (max-width: 767px) {
+    .col-md-6 {
+        width: 100% !important;
+    }
+}
+
+/* AdSense Container Styling */
+.adsense-sidebar,
+.adsense-banner-footer,
+.adsense-in-article {
+    min-height: 50px !important;
+    background: #f8f9fa !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 4px !important;
+    padding: 10px !important;
+    margin: 10px 0 !important;
+}
+
+/* Hide empty ad containers */
+.adsense-sidebar:empty,
+.adsense-banner-footer:empty,
+.adsense-in-article:empty {
+    display: none !important;
+}
+
+/* Responsive ads */
+@media (max-width: 768px) {
+    .adsense-banner-footer ins {
+        width: 100% !important;
+        max-width: 320px !important;
+        height: 100px !important;
+    }
+    
+    .adsense-sidebar {
+        text-align: center !important;
     }
 }

@@ -22,9 +22,26 @@
     <!-- Simple Styles - No Animations -->
     <link rel="stylesheet" href="{% static 'css/simple-styles.css' %}">
     
-    <!-- Google AdSense -->
+    <!-- Google AdSense with Error Handling -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9693358517951567"
-            crossorigin="anonymous"></script>
+            crossorigin="anonymous"
+            onerror="console.log('AdSense blocked or failed to load')"></script>
+    
+    <script>
+        // AdSense error handling
+        window.adsbygoogle = window.adsbygoogle || [];
+        
+        // Handle AdSense load errors gracefully
+        window.addEventListener('error', function(e) {
+            if (e.target && e.target.src && e.target.src.includes('adsbygoogle')) {
+                console.log('AdSense script blocked - this is normal with ad blockers');
+                // Hide ad containers if ads are blocked
+                document.querySelectorAll('.adsense-sidebar, .adsense-banner-footer, .adsense-in-article').forEach(function(el) {
+                    el.style.display = 'none';
+                });
+            }
+        }, true);
+    </script>
     
     <!-- SEO Meta Tags -->
     <meta name="description" content="{% block description %}Professional security analysis and vulnerability scanning tool. Free comprehensive security assessment for websites and web applications.{% endblock %}">
@@ -1485,32 +1502,30 @@
             });
         }, observerOptions);
 
-            });
+        // Simple popup functionality - NO ANIMATIONS
+        window.showModernPopup = function(title, content) {
+            showSimpleInfo(title, content);
+        };
 
-            // Simple popup functionality - NO ANIMATIONS
-            window.showModernPopup = function(title, content) {
-                showSimpleInfo(title, content);
-            };
+        window.closeModernPopup = function() {
+            closeAllSimplePopups();
+        };
 
-            window.closeModernPopup = function() {
-                closeAllSimplePopups();
-            };
+        // Simple toast - just use popup
+        window.showToast = function(message, type = 'success') {
+            if (type === 'success') {
+                showSimpleSuccess('Notification', message);
+            } else if (type === 'error') {
+                showSimpleError('Notification', message);
+            } else {
+                showSimpleInfo('Notification', message);
+            }
+        };
 
-            // Simple toast - just use popup
-            window.showToast = function(message, type = 'success') {
-                if (type === 'success') {
-                    showSimpleSuccess('Notification', message);
-                } else if (type === 'error') {
-                    showSimpleError('Notification', message);
-                } else {
-                    showSimpleInfo('Notification', message);
-                }
-            };
+        // Simple button interactions - NO ANIMATIONS
 
-            // Simple button interactions - NO ANIMATIONS
-
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
                     const target = document.querySelector(this.getAttribute('href'));
@@ -1567,7 +1582,6 @@
                     requestAnimationFrame(updateNavbar);
                     ticking = true;
                 }
-            });
             });
         });
 
@@ -1747,7 +1761,62 @@
         // Initialize newsletter when page loads
         document.addEventListener('DOMContentLoaded', function() {
             initializeNewsletterForm();
+            initializeAdSense();
         });
+
+        // AdSense Initialization and Error Handling
+        function initializeAdSense() {
+            // Check if AdSense is loaded
+            if (typeof adsbygoogle === 'undefined') {
+                console.log('AdSense not loaded - likely blocked by ad blocker');
+                hideAdContainers();
+                return;
+            }
+
+            // Initialize all ad units
+            const adElements = document.querySelectorAll('.adsbygoogle');
+            adElements.forEach(function(ad, index) {
+                try {
+                    // Check if ad is already initialized
+                    if (!ad.getAttribute('data-adsbygoogle-status')) {
+                        console.log('Initializing ad unit ' + (index + 1));
+                    }
+                } catch (e) {
+                    console.log('Ad unit ' + (index + 1) + ' failed to initialize:', e.message);
+                }
+            });
+
+            // Check for blocked ads after 3 seconds
+            setTimeout(function() {
+                checkAdStatus();
+            }, 3000);
+        }
+
+        function hideAdContainers() {
+            const containers = document.querySelectorAll('.adsense-sidebar, .adsense-banner-footer, .adsense-in-article');
+            containers.forEach(function(container) {
+                container.style.display = 'none';
+            });
+            console.log('Ad containers hidden due to ad blocker');
+        }
+
+        function checkAdStatus() {
+            const adElements = document.querySelectorAll('.adsbygoogle');
+            let blockedCount = 0;
+            
+            adElements.forEach(function(ad) {
+                const status = ad.getAttribute('data-adsbygoogle-status');
+                if (!status || status === 'unfilled') {
+                    blockedCount++;
+                }
+            });
+
+            if (blockedCount > 0) {
+                console.log(blockedCount + ' ad units blocked or unfilled');
+            } else {
+                console.log('All ad units loaded successfully');
+            }
+        }
 
         // No animations or complex styles needed
     </script>

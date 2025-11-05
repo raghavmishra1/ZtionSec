@@ -283,7 +283,11 @@
                              data-ad-client="ca-pub-9693358517951567"
                              data-ad-slot="6305965263"></ins>
                         <script>
-                             (adsbygoogle = window.adsbygoogle || []).push({});
+                             try {
+                                 (adsbygoogle = window.adsbygoogle || []).push({});
+                             } catch (e) {
+                                 console.log('AdSense push failed:', e.message);
+                             }
                         </script>
                     </div>
                 </div>
@@ -292,33 +296,56 @@
             <!-- Sidebar with AdSense -->
             <div class="col-lg-4">
                 <div class="sticky-top" style="top: 20px;">
-                    <!-- Quick Stats Card -->
-                    <div class="card mb-4">
-                        <div class="card-header bg-info text-white">
-                            <h6 class="mb-0"><i class="fas fa-chart-bar"></i> Live Security Stats</h6>
+                    <!-- Stats and Tips Row -->
+                    <div class="row g-3 mb-4">
+                        <!-- Quick Stats Card -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-info text-white">
+                                    <h6 class="mb-0"><i class="fas fa-chart-bar"></i> Live Security Stats</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="small">Scans Today</span>
+                                        <span class="badge bg-primary">{{ scans_today|default:"47" }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="small">Threats Blocked</span>
+                                        <span class="badge bg-danger">{{ threats_blocked|default:"0" }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="small">SSL Issues Found</span>
+                                        <span class="badge bg-warning">{{ ssl_issues|default:"89" }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="small">Security Score Avg</span>
+                                        <span class="badge bg-success">{{ avg_security_score|default:"87%" }}</span>
+                                    </div>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a href="{% url 'security_analytics' %}" class="btn btn-sm btn-info w-100">
+                                            <i class="fas fa-chart-line"></i> View Analytics
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="small">Scans Today</span>
-                                <span class="badge bg-primary">{{ scans_today|default:"47" }}</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="small">Threats Blocked</span>
-                                <span class="badge bg-danger">{{ threats_blocked|default:"1,234" }}</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="small">SSL Issues Found</span>
-                                <span class="badge bg-warning">{{ ssl_issues|default:"89" }}</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="small">Security Score Avg</span>
-                                <span class="badge bg-success">{{ avg_security_score|default:"87%" }}</span>
-                            </div>
-                            <hr>
-                            <div class="text-center">
-                                <a href="{% url 'security_analytics' %}" class="btn btn-sm btn-info w-100">
-                                    <i class="fas fa-chart-line"></i> View Analytics
-                                </a>
+                        
+                        <!-- Security Tips Card -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-success text-white">
+                                    <h6 class="mb-0"><i class="fas fa-lightbulb"></i> Security Tips</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2"><i class="fas fa-check text-success"></i> Use HTTPS everywhere</li>
+                                        <li class="mb-2"><i class="fas fa-check text-success"></i> Keep software updated</li>
+                                        <li class="mb-2"><i class="fas fa-check text-success"></i> Enable security headers</li>
+                                        <li class="mb-2"><i class="fas fa-check text-success"></i> Regular security scans</li>
+                                        <li class="mb-2"><i class="fas fa-check text-success"></i> Strong passwords</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -330,24 +357,12 @@
                              data-ad-client="ca-pub-9693358517951567"
                              data-ad-slot="6305965263"></ins>
                         <script>
-                             (adsbygoogle = window.adsbygoogle || []).push({});
+                             try {
+                                 (adsbygoogle = window.adsbygoogle || []).push({});
+                             } catch (e) {
+                                 console.log('AdSense push failed:', e.message);
+                             }
                         </script>
-                    </div>
-                    
-                    <!-- Security Tips Card -->
-                    <div class="card">
-                        <div class="card-header bg-success text-white">
-                            <h6 class="mb-0"><i class="fas fa-lightbulb"></i> Security Tips</h6>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><i class="fas fa-check text-success"></i> Use HTTPS everywhere</li>
-                                <li class="mb-2"><i class="fas fa-check text-success"></i> Keep software updated</li>
-                                <li class="mb-2"><i class="fas fa-check text-success"></i> Enable security headers</li>
-                                <li class="mb-2"><i class="fas fa-check text-success"></i> Regular security scans</li>
-                                <li class="mb-2"><i class="fas fa-check text-success"></i> Strong passwords</li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -397,13 +412,17 @@
 {% endif %}
 
 <!-- Ztion Footer AdSense Banner -->
-<div class="adsense-banner-footer">
+<div class="adsense-banner-footer text-center my-4">
     <ins class="adsbygoogle"
          style="display:inline-block;width:728px;height:90px"
          data-ad-client="ca-pub-9693358517951567"
          data-ad-slot="6305965263"></ins>
     <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
+         try {
+             (adsbygoogle = window.adsbygoogle || []).push({});
+         } catch (e) {
+             console.log('AdSense push failed:', e.message);
+         }
     </script>
 </div>
 

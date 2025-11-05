@@ -21,10 +21,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 import os
-SECRET_KEY = os.environ.get('SECRET_KEY', 'ztionsec-prod-key-2024-secure-random-string-for-production-deployment-with-high-entropy-values-12345')
+import secrets
+
+# Generate a secure random secret key if not provided
+def generate_secret_key():
+    return secrets.token_urlsafe(50)
+
+SECRET_KEY = os.environ.get('SECRET_KEY', generate_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'  # Default to True for development
+# Default to True for development - set DEBUG=False for production
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
 ALLOWED_HOSTS = [
     'ztionsec-security-platform.onrender.com',
@@ -33,7 +40,12 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
     'ztionsec.local',
     '.onrender.com',
-    '*',  # Allow all hosts in development - remove in production
+] if not DEBUG else [
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0',
+    'ztionsec.local',
+    '.onrender.com',
 ]
 
 

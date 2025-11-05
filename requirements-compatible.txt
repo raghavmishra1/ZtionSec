@@ -1,0 +1,41 @@
+# Core Django Dependencies - Python 3.13 Compatible
+Django==4.2.25
+requests==2.31.0
+reportlab==4.0.7
+Pillow>=10.2.0  # Updated for Python 3.13 compatibility
+django-csp==3.7
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+cryptography>=41.0.0
+
+# Security Enhancement Dependencies (Required for new features)
+dnspython>=2.4.0
+python-whois>=0.8.0
+
+# Web Application Security (Essential)
+selenium>=4.15.0
+wappalyzer>=0.3.1
+
+# Network Analysis (Core)
+netaddr>=0.9.0
+
+# Advanced Reporting (Essential)
+matplotlib>=3.8.0
+jinja2>=3.1.0
+
+# Performance & Monitoring (Core)
+psutil>=5.9.0
+
+# Production Deployment (Required)
+gunicorn>=21.2.0
+whitenoise>=6.6.0
+dj-database-url>=2.1.0
+python-decouple>=3.8
+
+# REST API (Core)
+djangorestframework>=3.14.0
+django-cors-headers>=4.3.0
+
+# Security Tools (Essential for new features)
+pyopenssl>=23.2.0
+pycryptodome>=3.19.0

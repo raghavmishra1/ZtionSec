@@ -15,16 +15,24 @@ security_logger = logging.getLogger('security')
 
 class RateLimitMiddleware:
     """
-    Rate limiting middleware to prevent abuse
+    Enhanced rate limiting middleware to prevent abuse and ensure compliance
     """
     
     def __init__(self, get_response):
         self.get_response = get_response
         self.rate_limits = {
-            'scan': {'limit': 10, 'period': 3600},  # 10 scans per hour
-            'api': {'limit': 100, 'period': 3600},   # 100 API calls per hour
-            'breach': {'limit': 20, 'period': 3600}, # 20 breach checks per hour
-            'default': {'limit': 200, 'period': 3600} # 200 requests per hour
+            'scan': {'limit': 5, 'period': 3600, 'burst': 2},  # 5 scans per hour, max 2 burst
+            'api': {'limit': 50, 'period': 3600, 'burst': 10},   # 50 API calls per hour, max 10 burst
+            'breach': {'limit': 10, 'period': 3600, 'burst': 3}, # 10 breach checks per hour, max 3 burst
+            'budget_scan': {'limit': 3, 'period': 3600, 'burst': 1}, # 3 budget scans per hour, max 1 burst
+            'advanced_scan': {'limit': 2, 'period': 3600, 'burst': 1}, # 2 advanced scans per hour, max 1 burst
+            'default': {'limit': 100, 'period': 3600, 'burst': 20} # 100 requests per hour, max 20 burst
+        }
+        self.abuse_detection = {
+            'suspicious_patterns': 0,
+            'blocked_ips': set(),
+            'warning_threshold': 5,
+            'block_threshold': 10
         }
         
     def __call__(self, request):

@@ -42,12 +42,12 @@ class SecurityHeadersMiddleware:
                 # Production CSP with comprehensive AdSense support
                 csp_policy = (
                     "default-src 'self'; "
-                    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com https://www.googletagmanager.com https://www.google.com https://googleads.g.doubleclick.net https://partner.googleadservices.com https://tpc.googlesyndication.com; "
+                    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com https://www.googletagmanager.com https://www.google.com https://googleads.g.doubleclick.net https://partner.googleadservices.com https://tpc.googlesyndication.com https://securepubads.g.doubleclick.net; "
                     "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; "
-                    "img-src 'self' data: https: blob: https://pagead2.googlesyndication.com https://www.google.com https://googleads.g.doubleclick.net https://partner.googleadservices.com https://tpc.googlesyndication.com; "
+                    "img-src 'self' data: https: blob: https://pagead2.googlesyndication.com https://www.google.com https://googleads.g.doubleclick.net https://partner.googleadservices.com https://tpc.googlesyndication.com https://securepubads.g.doubleclick.net; "
                     "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; "
-                    "connect-src 'self' https://pagead2.googlesyndication.com https://www.google.com https://googleads.g.doubleclick.net https://partner.googleadservices.com; "
-                    "frame-src 'self' https://googleads.g.doubleclick.net https://www.google.com https://partner.googleadservices.com https://tpc.googlesyndication.com; "
+                    "connect-src 'self' https://pagead2.googlesyndication.com https://www.google.com https://googleads.g.doubleclick.net https://partner.googleadservices.com https://securepubads.g.doubleclick.net; "
+                    "frame-src 'self' https://googleads.g.doubleclick.net https://www.google.com https://partner.googleadservices.com https://tpc.googlesyndication.com https://securepubads.g.doubleclick.net; "
                     "object-src 'none'; "
                     "base-uri 'self'; "
                     "form-action 'self'; "
@@ -71,17 +71,18 @@ class SecurityHeadersMiddleware:
         # Referrer Policy - Control referrer information
         response['Referrer-Policy'] = 'strict-origin-when-cross-origin'
         
-        # Permissions Policy - Control browser features
+        # Permissions Policy - Control browser features (updated to remove deprecated features)
         permissions_policy = (
             "geolocation=(), "
             "microphone=(), "
             "camera=(), "
             "magnetometer=(), "
             "gyroscope=(), "
-            "speaker=(), "
-            "vibrate=(), "
             "fullscreen=(self), "
-            "payment=()"
+            "payment=(), "
+            "usb=(), "
+            "accelerometer=(), "
+            "autoplay=()"
         )
         response['Permissions-Policy'] = permissions_policy
         
@@ -210,7 +211,11 @@ class HTTPSRedirectMiddleware:
         # Check if request is not secure and not in debug mode
         from django.conf import settings
         
-        if not request.is_secure() and not settings.DEBUG:
+        # Skip HTTPS redirect for localhost/127.0.0.1 in development
+        host = request.get_host().split(':')[0]  # Remove port
+        localhost_hosts = ['localhost', '127.0.0.1', '0.0.0.0']
+        
+        if not request.is_secure() and not settings.DEBUG and host not in localhost_hosts:
             # Build HTTPS URL
             https_url = request.build_absolute_uri().replace('http://', 'https://')
             
